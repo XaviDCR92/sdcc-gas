@@ -1,0 +1,55 @@
+                                      1 ;--------------------------------------------------------------------------
+                                      2 ;  strcpy.s
+                                      3 ;
+                                      4 ;  Copyright (C) 2016, Philipp Klaus Krause
+                                      5 ;
+                                      6 ;  This library is free software; you can redistribute it and/or modify it
+                                      7 ;  under the terms of the GNU General Public License as published by the
+                                      8 ;  Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;  later version.
+                                     10 ;
+                                     11 ;  This library is distributed in the hope that it will be useful,
+                                     12 ;  but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+                                     14 ;  GNU General Public License for more details.
+                                     15 ;
+                                     16 ;  You should have received a copy of the GNU General Public License 
+                                     17 ;  along with this library; see the file COPYING. If not, write to the
+                                     18 ;  Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;  As a special exception, if you link this library with other files,
+                                     22 ;  some of which are compiled with SDCC, to produce an executable,
+                                     23 ;  this library does not by itself cause the resulting executable to
+                                     24 ;  be covered by the GNU General Public License. This exception does
+                                     25 ;  not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;--------------------------------------------------------------------------
+                                     28 
+                                     29 	.globl _strcpy
+                                     30 
+                                     31 	.area CODE
+                                     32 
+      000000                         33 _strcpy:
+                                     34 
+      000000 16 03            [ 2]   35 	ldw	y, (0x03, sp)
+      000002 1E 05            [ 2]   36 	ldw	x, (0x05, sp)
+                                     37 
+      000004                         38 loop:
+      000004 F6               [ 1]   39 	ld	a, (x)
+      000005 90 F7            [ 1]   40 	ld	(y), a
+      000007 27 17            [ 1]   41 	jreq	end
+      000009 E6 01            [ 1]   42 	ld	a, (1, x)
+      00000B 90 E7 01         [ 1]   43 	ld	(1, y), a
+      00000E 27 10            [ 1]   44 	jreq	end
+      000010 E6 02            [ 1]   45 	ld	a, (2, x)
+      000012 90 E7 02         [ 1]   46 	ld	(2, y), a
+      000015 27 09            [ 1]   47 	jreq	end
+      000017 1C 00 03         [ 2]   48 	addw	x, #3
+      00001A 72 A9 00 03      [ 2]   49 	addw	y, #3
+      00001E 20 E4            [ 2]   50 	jra	loop
+                                     51 
+      000020                         52 end:
+      000020 1E 03            [ 2]   53 	ldw	x, (0x03, sp)
+      000022 81               [ 4]   54 	ret
+                                     55 

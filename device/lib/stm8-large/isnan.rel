@@ -1,0 +1,27 @@
+XH3
+H B areas 2 global symbols
+M isnan
+O -mstm8
+S .__.ABS. Def000000
+A _CODE size 0 flags 0 addr 0
+A DATA size 0 flags 0 addr 0
+A INITIALIZED size 0 flags 0 addr 0
+A DABS size 0 flags 8 addr 0
+A HOME size 0 flags 0 addr 0
+A GSINIT size 0 flags 0 addr 0
+A GSFINAL size 0 flags 0 addr 0
+A CONST size 0 flags 0 addr 0
+A INITIALIZER size 0 flags 0 addr 0
+A CODE size 29 flags 0 addr 0
+S _isnan Def000000
+A CABS size 0 flags 8 addr 0
+T 00 00 00
+R 00 00 00 09
+T 00 00 00 52 04 96 1C 00 08 90 93 90 EE 02 FE 17
+R 00 00 00 09
+T 00 00 0D 03 41 6B 02 41 9E A4 7F 6B 01 5F 13 03
+R 00 00 00 09
+T 00 00 1A A6 80 12 02 A6 7F 12 01 4F 49 5F 97 5B
+R 00 00 00 09
+T 00 00 27 04 87
+R 00 00 00 09

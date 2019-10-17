@@ -1,0 +1,77 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.9.3 #11345 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module wcrtomb
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _wctomb
+                                     12 	.globl _wcrtomb
+                                     13 ;--------------------------------------------------------
+                                     14 ; ram data
+                                     15 ;--------------------------------------------------------
+                                     16 	.area DATA
+                                     17 ;--------------------------------------------------------
+                                     18 ; ram data
+                                     19 ;--------------------------------------------------------
+                                     20 	.area INITIALIZED
+                                     21 ;--------------------------------------------------------
+                                     22 ; absolute external ram data
+                                     23 ;--------------------------------------------------------
+                                     24 	.area DABS (ABS)
+                                     25 
+                                     26 ; default segment ordering for linker
+                                     27 	.area HOME
+                                     28 	.area GSINIT
+                                     29 	.area GSFINAL
+                                     30 	.area CONST
+                                     31 	.area INITIALIZER
+                                     32 	.area CODE
+                                     33 
+                                     34 ;--------------------------------------------------------
+                                     35 ; global & static initialisations
+                                     36 ;--------------------------------------------------------
+                                     37 	.area HOME
+                                     38 	.area GSINIT
+                                     39 	.area GSFINAL
+                                     40 	.area GSINIT
+                                     41 ;--------------------------------------------------------
+                                     42 ; Home
+                                     43 ;--------------------------------------------------------
+                                     44 	.area HOME
+                                     45 	.area HOME
+                                     46 ;--------------------------------------------------------
+                                     47 ; code
+                                     48 ;--------------------------------------------------------
+                                     49 	.area CODE
+                                     50 ;	../wcrtomb.c: 34: size_t wcrtomb(char *restrict s, wchar_t wc, mbstate_t *restrict ps)
+                                     51 ;	-----------------------------------------
+                                     52 ;	 function wcrtomb
+                                     53 ;	-----------------------------------------
+      000000                         54 _wcrtomb:
+                                     55 ;	../wcrtomb.c: 40: ret = wctomb(s, wc);
+      000000 1E 08            [ 2]   56 	ldw	x, (0x08, sp)
+      000002 89               [ 2]   57 	pushw	x
+      000003 1E 08            [ 2]   58 	ldw	x, (0x08, sp)
+      000005 89               [ 2]   59 	pushw	x
+      000006 1E 08            [ 2]   60 	ldw	x, (0x08, sp)
+      000008 89               [ 2]   61 	pushw	x
+      000009 8Ds00r00r00      [ 5]   62 	callf	_wctomb
+      00000D 5B 06            [ 2]   63 	addw	sp, #6
+                                     64 ;	../wcrtomb.c: 42: if(ret == (size_t)(-1))
+      00000F A3 FF FF         [ 2]   65 	cpw	x, #0xffff
+      000012 26 08            [ 1]   66 	jrne	00102$
+                                     67 ;	../wcrtomb.c: 43: errno = EILSEQ;
+      000014 35 54u00u01      [ 1]   68 	mov	_errno+1, #0x54
+      000018 72 5Fu00u00      [ 1]   69 	clr	_errno+0
+      00001C                         70 00102$:
+                                     71 ;	../wcrtomb.c: 45: return(ret);
+                                     72 ;	../wcrtomb.c: 46: }
+      00001C 87               [ 5]   73 	retf
+                                     74 	.area CODE
+                                     75 	.area CONST
+                                     76 	.area INITIALIZER
+                                     77 	.area CABS (ABS)

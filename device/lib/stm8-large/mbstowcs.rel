@@ -1,0 +1,48 @@
+XH3
+H B areas 3 global symbols
+M mbstowcs
+O -mstm8
+S .__.ABS. Def000000
+S _mbtowc Ref000000
+A _CODE size 0 flags 0 addr 0
+A DATA size 0 flags 0 addr 0
+A INITIALIZED size 0 flags 0 addr 0
+A DABS size 0 flags 8 addr 0
+A HOME size 0 flags 0 addr 0
+A GSINIT size 0 flags 0 addr 0
+A GSFINAL size 0 flags 0 addr 0
+A CONST size 0 flags 0 addr 0
+A INITIALIZER size 0 flags 0 addr 0
+A CODE size 50 flags 0 addr 0
+S _mbstowcs Def000000
+A CABS size 0 flags 8 addr 0
+T 00 00 00
+R 00 00 00 09
+T 00 00 00 52 08 5F 1F 01 16 0C 17 03 5F 1F 05 16
+R 00 00 00 09
+T 00 00 0D 10 17 07
+R 00 00 00 09
+T 00 00 10
+R 00 00 00 09
+T 00 00 10 1E 07 16 07 90 5A 17 07 5D 27 30 16 03
+R 00 00 00 09
+T 00 00 1D 1E 03 1C 00 04 1F 03 4B 04 4B 00 1E 10
+R 00 00 00 09
+T 00 00 2A 89 90 89 8D 00 00 00 5B 06 5D 27 15 5D
+R 00 00 00 09 82 07 00 01
+T 00 00 37 2A 04 5F 5A 20 10
+R 00 00 00 09
+T 00 00 3D
+R 00 00 00 09
+T 00 00 3D 72 FB 0E 1F 0E 1E 05 5C 1F 05 1F 01 20
+R 00 00 00 09
+T 00 00 4A C5
+R 00 00 00 09
+T 00 00 4B
+R 00 00 00 09
+T 00 00 4B 1E 01
+R 00 00 00 09
+T 00 00 4D
+R 00 00 00 09
+T 00 00 4D 5B 08 87
+R 00 00 00 09

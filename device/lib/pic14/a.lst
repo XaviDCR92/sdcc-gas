@@ -1,0 +1,22 @@
+gplink-1.4.0 #1107 (Apr  3 2018)
+Copyright (c) 1998-2014 gputils project
+Listing File Generated: 10-15-2019  15:44:38
+ 
+ 
+Address  Value    Disassembly              Source
+-------  -----    -----------              ------
+                                             include "p16f1788.inc"
+                                                   LIST
+                                           
+                                           ;==========================================================================
+                                           ; Build date : Aug 07 2014
+                                           ;  MPASM PIC16F1788 processor include
+                                           ; 
+                                           ;  (c) Copyright 1999-2014 Microchip Technology, All rights reserved
+                                           ;==========================================================================
+                                           
+                                                   NOLIST
+                                             CODE
+000000   3104     addfsr  4, .4              ADDFSR FSR0, 4
+000001   0012     moviw   0++                MOVIW FSR0++
+                                             END

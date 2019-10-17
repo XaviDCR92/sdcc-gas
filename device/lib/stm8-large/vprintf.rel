@@ -1,0 +1,40 @@
+XH3
+H B areas 5 global symbols
+M vprintf
+O -mstm8
+S __print_format Ref000000
+S _putchar Ref000000
+S .__.ABS. Def000000
+A _CODE size 0 flags 0 addr 0
+A DATA size 0 flags 0 addr 0
+A INITIALIZED size 0 flags 0 addr 0
+A DABS size 0 flags 8 addr 0
+A HOME size 0 flags 0 addr 0
+A GSINIT size 0 flags 0 addr 0
+A GSFINAL size 0 flags 0 addr 0
+A CONST size 0 flags 0 addr 0
+A INITIALIZER size 0 flags 0 addr 0
+A CODE size 3A flags 0 addr 0
+S _vprintf Def00000C
+S _printf Def000021
+A CABS size 0 flags 8 addr 0
+T 00 00 00
+R 00 00 00 09
+T 00 00 00 5F 7B 04 97 89 8D 00 00 00 5B 02 87
+R 00 00 00 09 82 09 00 01
+T 00 00 0C
+R 00 00 00 09
+T 00 00 0C 1E 06 89 1E 06 89 5F 89 4B 00 00 00 4B
+R 00 00 00 09 F1 09 0C 00 09
+T 00 00 17 00 00 00 4B 00 00 00 8D
+R 00 00 00 09 F1 81 03 00 09 F3 01 07 00 09
+T 00 00 1B 00 00 00 5B 09 87
+R 00 00 00 09 82 03 00 00
+T 00 00 21
+R 00 00 00 09
+T 00 00 21 96 1C 00 04 5C 5C 89 1E 06 89 5F 89 4B
+R 00 00 00 09
+T 00 00 2E 00 00 00 4B 00 00 00 4B
+R 00 00 00 09 F1 09 03 00 09 F1 81 07 00 09
+T 00 00 32 00 00 00 8D 00 00 00 5B 09 87
+R 00 00 00 09 F3 01 03 00 09 82 07 00 00

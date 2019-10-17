@@ -1,0 +1,31 @@
+XH3
+H B areas 2 global symbols
+M btowc
+O -mstm8
+S .__.ABS. Def000000
+A _CODE size 0 flags 0 addr 0
+A DATA size 0 flags 0 addr 0
+A INITIALIZED size 0 flags 0 addr 0
+A DABS size 0 flags 8 addr 0
+A HOME size 0 flags 0 addr 0
+A GSINIT size 0 flags 0 addr 0
+A GSFINAL size 0 flags 0 addr 0
+A CONST size 0 flags 0 addr 0
+A INITIALIZER size 0 flags 0 addr 0
+A CODE size 14 flags 0 addr 0
+S _btowc Def000000
+A CABS size 0 flags 8 addr 0
+T 00 00 00
+R 00 00 00 09
+T 00 00 00 0D 05 2A 06 5F 5A 90 93 20 09
+R 00 00 00 09
+T 00 00 0A
+R 00 00 00 09
+T 00 00 0A 1E 04 90 5F 5D 2A 02 90 5A
+R 00 00 00 09
+T 00 00 13
+R 00 00 00 09
+T 00 00 13
+R 00 00 00 09
+T 00 00 13 87
+R 00 00 00 09

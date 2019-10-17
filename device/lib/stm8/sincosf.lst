@@ -1,0 +1,412 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.9.3 #11345 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module sincosf
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _sincosf
+                                     12 	.globl _fabsf
+                                     13 ;--------------------------------------------------------
+                                     14 ; ram data
+                                     15 ;--------------------------------------------------------
+                                     16 	.area DATA
+                                     17 ;--------------------------------------------------------
+                                     18 ; ram data
+                                     19 ;--------------------------------------------------------
+                                     20 	.area INITIALIZED
+                                     21 ;--------------------------------------------------------
+                                     22 ; absolute external ram data
+                                     23 ;--------------------------------------------------------
+                                     24 	.area DABS (ABS)
+                                     25 
+                                     26 ; default segment ordering for linker
+                                     27 	.area HOME
+                                     28 	.area GSINIT
+                                     29 	.area GSFINAL
+                                     30 	.area CONST
+                                     31 	.area INITIALIZER
+                                     32 	.area CODE
+                                     33 
+                                     34 ;--------------------------------------------------------
+                                     35 ; global & static initialisations
+                                     36 ;--------------------------------------------------------
+                                     37 	.area HOME
+                                     38 	.area GSINIT
+                                     39 	.area GSFINAL
+                                     40 	.area GSINIT
+                                     41 ;--------------------------------------------------------
+                                     42 ; Home
+                                     43 ;--------------------------------------------------------
+                                     44 	.area HOME
+                                     45 	.area HOME
+                                     46 ;--------------------------------------------------------
+                                     47 ; code
+                                     48 ;--------------------------------------------------------
+                                     49 	.area CODE
+                                     50 ;	../sincosf.c: 50: float sincosf(float x, bool iscos)
+                                     51 ;	-----------------------------------------
+                                     52 ;	 function sincosf
+                                     53 ;	-----------------------------------------
+      000000                         54 _sincosf:
+      000000 52 0D            [ 2]   55 	sub	sp, #13
+                                     56 ;	../sincosf.c: 56: if(iscos)
+      000002 0D 14            [ 1]   57 	tnz	(0x14, sp)
+      000004 27 23            [ 1]   58 	jreq	00105$
+                                     59 ;	../sincosf.c: 58: y=fabsf(x)+HALF_PI;
+      000006 1E 12            [ 2]   60 	ldw	x, (0x12, sp)
+      000008 89               [ 2]   61 	pushw	x
+      000009 1E 12            [ 2]   62 	ldw	x, (0x12, sp)
+      00000B 89               [ 2]   63 	pushw	x
+      00000C CDr00r00         [ 4]   64 	call	_fabsf
+      00000F 5B 04            [ 2]   65 	addw	sp, #4
+      000011 4B DB            [ 1]   66 	push	#0xdb
+      000013 4B 0F            [ 1]   67 	push	#0x0f
+      000015 4B C9            [ 1]   68 	push	#0xc9
+      000017 4B 3F            [ 1]   69 	push	#0x3f
+      000019 89               [ 2]   70 	pushw	x
+      00001A 90 89            [ 2]   71 	pushw	y
+      00001C CDr00r00         [ 4]   72 	call	___fsadd
+      00001F 5B 08            [ 2]   73 	addw	sp, #8
+      000021 1F 0A            [ 2]   74 	ldw	(0x0a, sp), x
+      000023 17 08            [ 2]   75 	ldw	(0x08, sp), y
+                                     76 ;	../sincosf.c: 59: sign=0;
+      000025 0F 0D            [ 1]   77 	clr	(0x0d, sp)
+      000027 20 2D            [ 2]   78 	jra	00106$
+      000029                         79 00105$:
+                                     80 ;	../sincosf.c: 63: if(x<0.0)
+      000029 5F               [ 1]   81 	clrw	x
+      00002A 89               [ 2]   82 	pushw	x
+      00002B 5F               [ 1]   83 	clrw	x
+      00002C 89               [ 2]   84 	pushw	x
+      00002D 1E 16            [ 2]   85 	ldw	x, (0x16, sp)
+      00002F 89               [ 2]   86 	pushw	x
+      000030 1E 16            [ 2]   87 	ldw	x, (0x16, sp)
+      000032 89               [ 2]   88 	pushw	x
+      000033 CDr00r00         [ 4]   89 	call	___fslt
+      000036 5B 08            [ 2]   90 	addw	sp, #8
+      000038 4D               [ 1]   91 	tnz	a
+      000039 27 11            [ 1]   92 	jreq	00102$
+                                     93 ;	../sincosf.c: 64: { y=-x; sign=1; }
+      00003B 16 12            [ 2]   94 	ldw	y, (0x12, sp)
+      00003D 1E 10            [ 2]   95 	ldw	x, (0x10, sp)
+      00003F 58               [ 2]   96 	sllw	x
+      000040 8C               [ 1]   97 	ccf
+      000041 56               [ 2]   98 	rrcw	x
+      000042 17 0A            [ 2]   99 	ldw	(0x0a, sp), y
+      000044 1F 08            [ 2]  100 	ldw	(0x08, sp), x
+      000046 A6 01            [ 1]  101 	ld	a, #0x01
+      000048 6B 0D            [ 1]  102 	ld	(0x0d, sp), a
+      00004A 20 0A            [ 2]  103 	jra	00106$
+      00004C                        104 00102$:
+                                    105 ;	../sincosf.c: 66: { y=x; sign=0; }
+      00004C 16 12            [ 2]  106 	ldw	y, (0x12, sp)
+      00004E 17 0A            [ 2]  107 	ldw	(0x0a, sp), y
+      000050 16 10            [ 2]  108 	ldw	y, (0x10, sp)
+      000052 17 08            [ 2]  109 	ldw	(0x08, sp), y
+      000054 0F 0D            [ 1]  110 	clr	(0x0d, sp)
+      000056                        111 00106$:
+                                    112 ;	../sincosf.c: 69: if(y>YMAX)
+      000056 1E 0A            [ 2]  113 	ldw	x, (0x0a, sp)
+      000058 89               [ 2]  114 	pushw	x
+      000059 1E 0A            [ 2]  115 	ldw	x, (0x0a, sp)
+      00005B 89               [ 2]  116 	pushw	x
+      00005C 4B 00            [ 1]  117 	push	#0x00
+      00005E 4B 0C            [ 1]  118 	push	#0x0c
+      000060 4B 49            [ 1]  119 	push	#0x49
+      000062 4B 46            [ 1]  120 	push	#0x46
+      000064 CDr00r00         [ 4]  121 	call	___fslt
+      000067 5B 08            [ 2]  122 	addw	sp, #8
+      000069 6B 0C            [ 1]  123 	ld	(0x0c, sp), a
+      00006B 27 0C            [ 1]  124 	jreq	00108$
+                                    125 ;	../sincosf.c: 71: errno=ERANGE;
+      00006D AE 00 22         [ 2]  126 	ldw	x, #0x0022
+      000070 CFu00u00         [ 2]  127 	ldw	_errno+0, x
+                                    128 ;	../sincosf.c: 72: return 0.0;
+      000073 5F               [ 1]  129 	clrw	x
+      000074 90 5F            [ 1]  130 	clrw	y
+      000076 CCr02r4A         [ 2]  131 	jp	00115$
+      000079                        132 00108$:
+                                    133 ;	../sincosf.c: 76: N=((y*iPI)+0.5); /*y is positive*/
+      000079 1E 0A            [ 2]  134 	ldw	x, (0x0a, sp)
+      00007B 89               [ 2]  135 	pushw	x
+      00007C 1E 0A            [ 2]  136 	ldw	x, (0x0a, sp)
+      00007E 89               [ 2]  137 	pushw	x
+      00007F 4B 83            [ 1]  138 	push	#0x83
+      000081 4B F9            [ 1]  139 	push	#0xf9
+      000083 4B A2            [ 1]  140 	push	#0xa2
+      000085 4B 3E            [ 1]  141 	push	#0x3e
+      000087 CDr00r00         [ 4]  142 	call	___fsmul
+      00008A 5B 08            [ 2]  143 	addw	sp, #8
+      00008C 4B 00            [ 1]  144 	push	#0x00
+      00008E 4B 00            [ 1]  145 	push	#0x00
+      000090 4B 00            [ 1]  146 	push	#0x00
+      000092 4B 3F            [ 1]  147 	push	#0x3f
+      000094 89               [ 2]  148 	pushw	x
+      000095 90 89            [ 2]  149 	pushw	y
+      000097 CDr00r00         [ 4]  150 	call	___fsadd
+      00009A 5B 08            [ 2]  151 	addw	sp, #8
+      00009C 89               [ 2]  152 	pushw	x
+      00009D 90 89            [ 2]  153 	pushw	y
+      00009F CDr00r00         [ 4]  154 	call	___fs2sint
+      0000A2 5B 04            [ 2]  155 	addw	sp, #4
+                                    156 ;	../sincosf.c: 79: if(N&1) sign=!sign;
+      0000A4 9F               [ 1]  157 	ld	a, xl
+      0000A5 44               [ 1]  158 	srl	a
+      0000A6 24 08            [ 1]  159 	jrnc	00110$
+      0000A8 7B 0D            [ 1]  160 	ld	a, (0x0d, sp)
+      0000AA A0 01            [ 1]  161 	sub	a, #0x01
+      0000AC 4F               [ 1]  162 	clr	a
+      0000AD 49               [ 1]  163 	rlc	a
+      0000AE 6B 0D            [ 1]  164 	ld	(0x0d, sp), a
+      0000B0                        165 00110$:
+                                    166 ;	../sincosf.c: 81: XN=N;
+      0000B0 89               [ 2]  167 	pushw	x
+      0000B1 CDr00r00         [ 4]  168 	call	___sint2fs
+      0000B4 5B 02            [ 2]  169 	addw	sp, #2
+      0000B6 1F 03            [ 2]  170 	ldw	(0x03, sp), x
+      0000B8 17 01            [ 2]  171 	ldw	(0x01, sp), y
+                                    172 ;	../sincosf.c: 83: if(iscos) XN-=0.5;
+      0000BA 0D 14            [ 1]  173 	tnz	(0x14, sp)
+      0000BC 27 15            [ 1]  174 	jreq	00112$
+      0000BE 5F               [ 1]  175 	clrw	x
+      0000BF 89               [ 2]  176 	pushw	x
+      0000C0 4B 00            [ 1]  177 	push	#0x00
+      0000C2 4B 3F            [ 1]  178 	push	#0x3f
+      0000C4 1E 07            [ 2]  179 	ldw	x, (0x07, sp)
+      0000C6 89               [ 2]  180 	pushw	x
+      0000C7 1E 07            [ 2]  181 	ldw	x, (0x07, sp)
+      0000C9 89               [ 2]  182 	pushw	x
+      0000CA CDr00r00         [ 4]  183 	call	___fssub
+      0000CD 5B 08            [ 2]  184 	addw	sp, #8
+      0000CF 1F 03            [ 2]  185 	ldw	(0x03, sp), x
+      0000D1 17 01            [ 2]  186 	ldw	(0x01, sp), y
+      0000D3                        187 00112$:
+                                    188 ;	../sincosf.c: 85: y=fabsf(x);
+      0000D3 1E 12            [ 2]  189 	ldw	x, (0x12, sp)
+      0000D5 89               [ 2]  190 	pushw	x
+      0000D6 1E 12            [ 2]  191 	ldw	x, (0x12, sp)
+      0000D8 89               [ 2]  192 	pushw	x
+      0000D9 CDr00r00         [ 4]  193 	call	_fabsf
+      0000DC 5B 04            [ 2]  194 	addw	sp, #4
+      0000DE 1F 07            [ 2]  195 	ldw	(0x07, sp), x
+      0000E0 17 05            [ 2]  196 	ldw	(0x05, sp), y
+                                    197 ;	../sincosf.c: 86: r=(int)y;
+      0000E2 1E 07            [ 2]  198 	ldw	x, (0x07, sp)
+      0000E4 89               [ 2]  199 	pushw	x
+      0000E5 1E 07            [ 2]  200 	ldw	x, (0x07, sp)
+      0000E7 89               [ 2]  201 	pushw	x
+      0000E8 CDr00r00         [ 4]  202 	call	___fs2sint
+      0000EB 5B 04            [ 2]  203 	addw	sp, #4
+      0000ED 89               [ 2]  204 	pushw	x
+      0000EE CDr00r00         [ 4]  205 	call	___sint2fs
+      0000F1 5B 02            [ 2]  206 	addw	sp, #2
+      0000F3 1F 0B            [ 2]  207 	ldw	(0x0b, sp), x
+      0000F5 17 09            [ 2]  208 	ldw	(0x09, sp), y
+                                    209 ;	../sincosf.c: 87: g=y-r;
+      0000F7 1E 0B            [ 2]  210 	ldw	x, (0x0b, sp)
+      0000F9 89               [ 2]  211 	pushw	x
+      0000FA 1E 0B            [ 2]  212 	ldw	x, (0x0b, sp)
+      0000FC 89               [ 2]  213 	pushw	x
+      0000FD 1E 0B            [ 2]  214 	ldw	x, (0x0b, sp)
+      0000FF 89               [ 2]  215 	pushw	x
+      000100 1E 0B            [ 2]  216 	ldw	x, (0x0b, sp)
+      000102 89               [ 2]  217 	pushw	x
+      000103 CDr00r00         [ 4]  218 	call	___fssub
+      000106 5B 08            [ 2]  219 	addw	sp, #8
+      000108 1F 07            [ 2]  220 	ldw	(0x07, sp), x
+      00010A 17 05            [ 2]  221 	ldw	(0x05, sp), y
+                                    222 ;	../sincosf.c: 88: f=((r-XN*C1)+g)-XN*C2;
+      00010C 1E 03            [ 2]  223 	ldw	x, (0x03, sp)
+      00010E 89               [ 2]  224 	pushw	x
+      00010F 1E 03            [ 2]  225 	ldw	x, (0x03, sp)
+      000111 89               [ 2]  226 	pushw	x
+      000112 5F               [ 1]  227 	clrw	x
+      000113 89               [ 2]  228 	pushw	x
+      000114 4B 49            [ 1]  229 	push	#0x49
+      000116 4B 40            [ 1]  230 	push	#0x40
+      000118 CDr00r00         [ 4]  231 	call	___fsmul
+      00011B 5B 08            [ 2]  232 	addw	sp, #8
+      00011D 89               [ 2]  233 	pushw	x
+      00011E 90 89            [ 2]  234 	pushw	y
+      000120 1E 0F            [ 2]  235 	ldw	x, (0x0f, sp)
+      000122 89               [ 2]  236 	pushw	x
+      000123 1E 0F            [ 2]  237 	ldw	x, (0x0f, sp)
+      000125 89               [ 2]  238 	pushw	x
+      000126 CDr00r00         [ 4]  239 	call	___fssub
+      000129 5B 08            [ 2]  240 	addw	sp, #8
+      00012B 1F 0B            [ 2]  241 	ldw	(0x0b, sp), x
+      00012D 1E 07            [ 2]  242 	ldw	x, (0x07, sp)
+      00012F 89               [ 2]  243 	pushw	x
+      000130 1E 07            [ 2]  244 	ldw	x, (0x07, sp)
+      000132 89               [ 2]  245 	pushw	x
+      000133 1E 0F            [ 2]  246 	ldw	x, (0x0f, sp)
+      000135 89               [ 2]  247 	pushw	x
+      000136 90 89            [ 2]  248 	pushw	y
+      000138 CDr00r00         [ 4]  249 	call	___fsadd
+      00013B 5B 08            [ 2]  250 	addw	sp, #8
+      00013D 1F 0B            [ 2]  251 	ldw	(0x0b, sp), x
+      00013F 17 09            [ 2]  252 	ldw	(0x09, sp), y
+      000141 1E 03            [ 2]  253 	ldw	x, (0x03, sp)
+      000143 89               [ 2]  254 	pushw	x
+      000144 1E 03            [ 2]  255 	ldw	x, (0x03, sp)
+      000146 89               [ 2]  256 	pushw	x
+      000147 4B 22            [ 1]  257 	push	#0x22
+      000149 4B AA            [ 1]  258 	push	#0xaa
+      00014B 4B 7D            [ 1]  259 	push	#0x7d
+      00014D 4B 3A            [ 1]  260 	push	#0x3a
+      00014F CDr00r00         [ 4]  261 	call	___fsmul
+      000152 5B 08            [ 2]  262 	addw	sp, #8
+      000154 89               [ 2]  263 	pushw	x
+      000155 90 89            [ 2]  264 	pushw	y
+      000157 1E 0F            [ 2]  265 	ldw	x, (0x0f, sp)
+      000159 89               [ 2]  266 	pushw	x
+      00015A 1E 0F            [ 2]  267 	ldw	x, (0x0f, sp)
+      00015C 89               [ 2]  268 	pushw	x
+      00015D CDr00r00         [ 4]  269 	call	___fssub
+      000160 5B 08            [ 2]  270 	addw	sp, #8
+      000162 1F 03            [ 2]  271 	ldw	(0x03, sp), x
+      000164 17 01            [ 2]  272 	ldw	(0x01, sp), y
+                                    273 ;	../sincosf.c: 90: g=f*f;
+      000166 1E 03            [ 2]  274 	ldw	x, (0x03, sp)
+      000168 89               [ 2]  275 	pushw	x
+      000169 1E 03            [ 2]  276 	ldw	x, (0x03, sp)
+      00016B 89               [ 2]  277 	pushw	x
+      00016C 1E 07            [ 2]  278 	ldw	x, (0x07, sp)
+      00016E 89               [ 2]  279 	pushw	x
+      00016F 1E 07            [ 2]  280 	ldw	x, (0x07, sp)
+      000171 89               [ 2]  281 	pushw	x
+      000172 CDr00r00         [ 4]  282 	call	___fsmul
+      000175 5B 08            [ 2]  283 	addw	sp, #8
+      000177 1F 07            [ 2]  284 	ldw	(0x07, sp), x
+      000179 17 05            [ 2]  285 	ldw	(0x05, sp), y
+                                    286 ;	../sincosf.c: 91: if(g>EPS2) //Used to be if(fabsf(f)>EPS)
+      00017B 1E 07            [ 2]  287 	ldw	x, (0x07, sp)
+      00017D 89               [ 2]  288 	pushw	x
+      00017E 1E 07            [ 2]  289 	ldw	x, (0x07, sp)
+      000180 89               [ 2]  290 	pushw	x
+      000181 4B F3            [ 1]  291 	push	#0xf3
+      000183 4B FF            [ 1]  292 	push	#0xff
+      000185 4B 7F            [ 1]  293 	push	#0x7f
+      000187 4B 33            [ 1]  294 	push	#0x33
+      000189 CDr00r00         [ 4]  295 	call	___fslt
+      00018C 5B 08            [ 2]  296 	addw	sp, #8
+      00018E 4D               [ 1]  297 	tnz	a
+      00018F 26 03            [ 1]  298 	jrne	00159$
+      000191 CCr02r2D         [ 2]  299 	jp	00114$
+      000194                        300 00159$:
+                                    301 ;	../sincosf.c: 93: r=(((r4*g+r3)*g+r2)*g+r1)*g;
+      000194 1E 07            [ 2]  302 	ldw	x, (0x07, sp)
+      000196 89               [ 2]  303 	pushw	x
+      000197 1E 07            [ 2]  304 	ldw	x, (0x07, sp)
+      000199 89               [ 2]  305 	pushw	x
+      00019A 4B 5B            [ 1]  306 	push	#0x5b
+      00019C 4B 9C            [ 1]  307 	push	#0x9c
+      00019E 4B 2E            [ 1]  308 	push	#0x2e
+      0001A0 4B 36            [ 1]  309 	push	#0x36
+      0001A2 CDr00r00         [ 4]  310 	call	___fsmul
+      0001A5 5B 08            [ 2]  311 	addw	sp, #8
+      0001A7 4B 22            [ 1]  312 	push	#0x22
+      0001A9 4B B2            [ 1]  313 	push	#0xb2
+      0001AB 4B 4F            [ 1]  314 	push	#0x4f
+      0001AD 4B B9            [ 1]  315 	push	#0xb9
+      0001AF 89               [ 2]  316 	pushw	x
+      0001B0 90 89            [ 2]  317 	pushw	y
+      0001B2 CDr00r00         [ 4]  318 	call	___fsadd
+      0001B5 5B 08            [ 2]  319 	addw	sp, #8
+      0001B7 1F 0B            [ 2]  320 	ldw	(0x0b, sp), x
+      0001B9 1E 07            [ 2]  321 	ldw	x, (0x07, sp)
+      0001BB 89               [ 2]  322 	pushw	x
+      0001BC 1E 07            [ 2]  323 	ldw	x, (0x07, sp)
+      0001BE 89               [ 2]  324 	pushw	x
+      0001BF 1E 0F            [ 2]  325 	ldw	x, (0x0f, sp)
+      0001C1 89               [ 2]  326 	pushw	x
+      0001C2 90 89            [ 2]  327 	pushw	y
+      0001C4 CDr00r00         [ 4]  328 	call	___fsmul
+      0001C7 5B 08            [ 2]  329 	addw	sp, #8
+      0001C9 4B 3E            [ 1]  330 	push	#0x3e
+      0001CB 4B 87            [ 1]  331 	push	#0x87
+      0001CD 4B 08            [ 1]  332 	push	#0x08
+      0001CF 4B 3C            [ 1]  333 	push	#0x3c
+      0001D1 89               [ 2]  334 	pushw	x
+      0001D2 90 89            [ 2]  335 	pushw	y
+      0001D4 CDr00r00         [ 4]  336 	call	___fsadd
+      0001D7 5B 08            [ 2]  337 	addw	sp, #8
+      0001D9 1F 0B            [ 2]  338 	ldw	(0x0b, sp), x
+      0001DB 1E 07            [ 2]  339 	ldw	x, (0x07, sp)
+      0001DD 89               [ 2]  340 	pushw	x
+      0001DE 1E 07            [ 2]  341 	ldw	x, (0x07, sp)
+      0001E0 89               [ 2]  342 	pushw	x
+      0001E1 1E 0F            [ 2]  343 	ldw	x, (0x0f, sp)
+      0001E3 89               [ 2]  344 	pushw	x
+      0001E4 90 89            [ 2]  345 	pushw	y
+      0001E6 CDr00r00         [ 4]  346 	call	___fsmul
+      0001E9 5B 08            [ 2]  347 	addw	sp, #8
+      0001EB 4B A4            [ 1]  348 	push	#0xa4
+      0001ED 4B AA            [ 1]  349 	push	#0xaa
+      0001EF 4B 2A            [ 1]  350 	push	#0x2a
+      0001F1 4B BE            [ 1]  351 	push	#0xbe
+      0001F3 89               [ 2]  352 	pushw	x
+      0001F4 90 89            [ 2]  353 	pushw	y
+      0001F6 CDr00r00         [ 4]  354 	call	___fsadd
+      0001F9 5B 08            [ 2]  355 	addw	sp, #8
+      0001FB 1F 0B            [ 2]  356 	ldw	(0x0b, sp), x
+      0001FD 1E 07            [ 2]  357 	ldw	x, (0x07, sp)
+      0001FF 89               [ 2]  358 	pushw	x
+      000200 1E 07            [ 2]  359 	ldw	x, (0x07, sp)
+      000202 89               [ 2]  360 	pushw	x
+      000203 1E 0F            [ 2]  361 	ldw	x, (0x0f, sp)
+      000205 89               [ 2]  362 	pushw	x
+      000206 90 89            [ 2]  363 	pushw	y
+      000208 CDr00r00         [ 4]  364 	call	___fsmul
+      00020B 5B 08            [ 2]  365 	addw	sp, #8
+                                    366 ;	../sincosf.c: 94: f+=f*r;
+      00020D 89               [ 2]  367 	pushw	x
+      00020E 90 89            [ 2]  368 	pushw	y
+      000210 1E 07            [ 2]  369 	ldw	x, (0x07, sp)
+      000212 89               [ 2]  370 	pushw	x
+      000213 1E 07            [ 2]  371 	ldw	x, (0x07, sp)
+      000215 89               [ 2]  372 	pushw	x
+      000216 CDr00r00         [ 4]  373 	call	___fsmul
+      000219 5B 08            [ 2]  374 	addw	sp, #8
+      00021B 89               [ 2]  375 	pushw	x
+      00021C 90 89            [ 2]  376 	pushw	y
+      00021E 1E 07            [ 2]  377 	ldw	x, (0x07, sp)
+      000220 89               [ 2]  378 	pushw	x
+      000221 1E 07            [ 2]  379 	ldw	x, (0x07, sp)
+      000223 89               [ 2]  380 	pushw	x
+      000224 CDr00r00         [ 4]  381 	call	___fsadd
+      000227 5B 08            [ 2]  382 	addw	sp, #8
+      000229 1F 03            [ 2]  383 	ldw	(0x03, sp), x
+      00022B 17 01            [ 2]  384 	ldw	(0x01, sp), y
+      00022D                        385 00114$:
+                                    386 ;	../sincosf.c: 96: return (sign?-f:f);
+      00022D 0D 0D            [ 1]  387 	tnz	(0x0d, sp)
+      00022F 27 0D            [ 1]  388 	jreq	00117$
+      000231 16 03            [ 2]  389 	ldw	y, (0x03, sp)
+      000233 1E 01            [ 2]  390 	ldw	x, (0x01, sp)
+      000235 58               [ 2]  391 	sllw	x
+      000236 8C               [ 1]  392 	ccf
+      000237 56               [ 2]  393 	rrcw	x
+      000238 17 0C            [ 2]  394 	ldw	(0x0c, sp), y
+      00023A 1F 0A            [ 2]  395 	ldw	(0x0a, sp), x
+      00023C 20 08            [ 2]  396 	jra	00118$
+      00023E                        397 00117$:
+      00023E 16 03            [ 2]  398 	ldw	y, (0x03, sp)
+      000240 17 0C            [ 2]  399 	ldw	(0x0c, sp), y
+      000242 16 01            [ 2]  400 	ldw	y, (0x01, sp)
+      000244 17 0A            [ 2]  401 	ldw	(0x0a, sp), y
+      000246                        402 00118$:
+      000246 1E 0C            [ 2]  403 	ldw	x, (0x0c, sp)
+      000248 16 0A            [ 2]  404 	ldw	y, (0x0a, sp)
+      00024A                        405 00115$:
+                                    406 ;	../sincosf.c: 97: }
+      00024A 5B 0D            [ 2]  407 	addw	sp, #13
+      00024C 81               [ 4]  408 	ret
+                                    409 	.area CODE
+                                    410 	.area CONST
+                                    411 	.area INITIALIZER
+                                    412 	.area CABS (ABS)

@@ -1,0 +1,407 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.9.3 #11345 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module mbrtowc
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _mbrtowc
+                                     12 ;--------------------------------------------------------
+                                     13 ; ram data
+                                     14 ;--------------------------------------------------------
+                                     15 	.area DATA
+      000000                         16 _mbrtowc_sps_65536_10:
+      000000                         17 	.ds 3
+                                     18 ;--------------------------------------------------------
+                                     19 ; ram data
+                                     20 ;--------------------------------------------------------
+                                     21 	.area INITIALIZED
+                                     22 ;--------------------------------------------------------
+                                     23 ; absolute external ram data
+                                     24 ;--------------------------------------------------------
+                                     25 	.area DABS (ABS)
+                                     26 
+                                     27 ; default segment ordering for linker
+                                     28 	.area HOME
+                                     29 	.area GSINIT
+                                     30 	.area GSFINAL
+                                     31 	.area CONST
+                                     32 	.area INITIALIZER
+                                     33 	.area CODE
+                                     34 
+                                     35 ;--------------------------------------------------------
+                                     36 ; global & static initialisations
+                                     37 ;--------------------------------------------------------
+                                     38 	.area HOME
+                                     39 	.area GSINIT
+                                     40 	.area GSFINAL
+                                     41 	.area GSINIT
+                                     42 ;--------------------------------------------------------
+                                     43 ; Home
+                                     44 ;--------------------------------------------------------
+                                     45 	.area HOME
+                                     46 	.area HOME
+                                     47 ;--------------------------------------------------------
+                                     48 ; code
+                                     49 ;--------------------------------------------------------
+                                     50 	.area CODE
+                                     51 ;	../mbrtowc.c: 32: size_t mbrtowc(wchar_t *restrict pwc, const char *restrict s, size_t n, mbstate_t *restrict ps)
+                                     52 ;	-----------------------------------------
+                                     53 ;	 function mbrtowc
+                                     54 ;	-----------------------------------------
+      000000                         55 _mbrtowc:
+      000000 52 11            [ 2]   56 	sub	sp, #17
+                                     57 ;	../mbrtowc.c: 41: if(!s)
+      000002 1E 17            [ 2]   58 	ldw	x, (0x17, sp)
+      000004 26 17            [ 1]   59 	jrne	00102$
+                                     60 ;	../mbrtowc.c: 42: return(mbrtowc(0, "", 1, ps));
+      000006 1E 1B            [ 2]   61 	ldw	x, (0x1b, sp)
+      000008 89               [ 2]   62 	pushw	x
+      000009 4B 01            [ 1]   63 	push	#0x01
+      00000B 4B 00            [ 1]   64 	push	#0x00
+      00000D 4Br00            [ 1]   65 	push	#<(___str_0 + 0)
+      00000F 4Bs00            [ 1]   66 	push	#((___str_0 + 0) >> 8)
+      000011 5F               [ 1]   67 	clrw	x
+      000012 89               [ 2]   68 	pushw	x
+      000013 8Ds00r00r00      [ 5]   69 	callf	_mbrtowc
+      000017 5B 08            [ 2]   70 	addw	sp, #8
+      000019 ACs00r01rED      [ 2]   71 	jpf	00145$
+      00001D                         72 00102$:
+                                     73 ;	../mbrtowc.c: 43: if(!n)
+      00001D 1E 19            [ 2]   74 	ldw	x, (0x19, sp)
+      00001F 26 04            [ 1]   75 	jrne	00280$
+      000021 ACs00r01rE5      [ 2]   76 	jpf	00128$
+      000025                         77 00280$:
+                                     78 ;	../mbrtowc.c: 45: if(!ps)
+      000025 1E 1B            [ 2]   79 	ldw	x, (0x1b, sp)
+      000027 26 05            [ 1]   80 	jrne	00106$
+                                     81 ;	../mbrtowc.c: 47: ps = &sps;
+      000029 AEr00r00         [ 2]   82 	ldw	x, #(_mbrtowc_sps_65536_10 + 0)
+      00002C 1F 1B            [ 2]   83 	ldw	(0x1b, sp), x
+      00002E                         84 00106$:
+                                     85 ;	../mbrtowc.c: 50: for(i = 0; ps->c[i] && i < 3; i++)
+      00002E 96               [ 1]   86 	ldw	x, sp
+      00002F 1C 00 03         [ 2]   87 	addw	x, #3
+      000032 1F 07            [ 2]   88 	ldw	(0x07, sp), x
+      000034 16 1B            [ 2]   89 	ldw	y, (0x1b, sp)
+      000036 17 0F            [ 2]   90 	ldw	(0x0f, sp), y
+      000038 17 0D            [ 2]   91 	ldw	(0x0d, sp), y
+      00003A 0F 11            [ 1]   92 	clr	(0x11, sp)
+      00003C                         93 00131$:
+      00003C 5F               [ 1]   94 	clrw	x
+      00003D 7B 11            [ 1]   95 	ld	a, (0x11, sp)
+      00003F 97               [ 1]   96 	ld	xl, a
+      000040 72 FB 0D         [ 2]   97 	addw	x, (0x0d, sp)
+      000043 F6               [ 1]   98 	ld	a, (x)
+      000044 27 15            [ 1]   99 	jreq	00174$
+      000046 88               [ 1]  100 	push	a
+      000047 7B 12            [ 1]  101 	ld	a, (0x12, sp)
+      000049 A1 03            [ 1]  102 	cp	a, #0x03
+      00004B 84               [ 1]  103 	pop	a
+      00004C 24 0D            [ 1]  104 	jrnc	00174$
+                                    105 ;	../mbrtowc.c: 51: mbseq[i] = ps->c[i];
+      00004E 5F               [ 1]  106 	clrw	x
+      00004F 41               [ 1]  107 	exg	a, xl
+      000050 7B 11            [ 1]  108 	ld	a, (0x11, sp)
+      000052 41               [ 1]  109 	exg	a, xl
+      000053 72 FB 07         [ 2]  110 	addw	x, (0x07, sp)
+      000056 F7               [ 1]  111 	ld	(x), a
+                                    112 ;	../mbrtowc.c: 50: for(i = 0; ps->c[i] && i < 3; i++)
+      000057 0C 11            [ 1]  113 	inc	(0x11, sp)
+      000059 20 E1            [ 2]  114 	jra	00131$
+      00005B                        115 00174$:
+      00005B 7B 11            [ 1]  116 	ld	a, (0x11, sp)
+      00005D 6B 09            [ 1]  117 	ld	(0x09, sp), a
+                                    118 ;	../mbrtowc.c: 53: seqlen = 1;
+      00005F A6 01            [ 1]  119 	ld	a, #0x01
+      000061 6B 0A            [ 1]  120 	ld	(0x0a, sp), a
+                                    121 ;	../mbrtowc.c: 54: first_byte = ps->c[0] ? ps->c[0] : *s;
+      000063 1E 1B            [ 2]  122 	ldw	x, (0x1b, sp)
+      000065 F6               [ 1]  123 	ld	a, (x)
+      000066 16 17            [ 2]  124 	ldw	y, (0x17, sp)
+      000068 17 0B            [ 2]  125 	ldw	(0x0b, sp), y
+      00006A 4D               [ 1]  126 	tnz	a
+      00006B 26 03            [ 1]  127 	jrne	00148$
+      00006D 1E 0B            [ 2]  128 	ldw	x, (0x0b, sp)
+      00006F F6               [ 1]  129 	ld	a, (x)
+      000070                        130 00148$:
+                                    131 ;	../mbrtowc.c: 56: if(first_byte & 0x80)
+      000070 6B 11            [ 1]  132 	ld	(0x11, sp), a
+      000072 2A 3E            [ 1]  133 	jrpl	00112$
+                                    134 ;	../mbrtowc.c: 58: while (first_byte & (0x80 >> seqlen))
+      000074 A6 01            [ 1]  135 	ld	a, #0x01
+      000076 6B 0D            [ 1]  136 	ld	(0x0d, sp), a
+      000078                        137 00108$:
+      000078 AE 00 80         [ 2]  138 	ldw	x, #0x0080
+      00007B 7B 0D            [ 1]  139 	ld	a, (0x0d, sp)
+      00007D 27 04            [ 1]  140 	jreq	00287$
+      00007F                        141 00286$:
+      00007F 57               [ 2]  142 	sraw	x
+      000080 4A               [ 1]  143 	dec	a
+      000081 26 FC            [ 1]  144 	jrne	00286$
+      000083                        145 00287$:
+      000083 7B 11            [ 1]  146 	ld	a, (0x11, sp)
+      000085 6B 02            [ 1]  147 	ld	(0x02, sp), a
+      000087 0F 01            [ 1]  148 	clr	(0x01, sp)
+                                    149 ;	../mbrtowc.c: 59: seqlen++;
+      000089 7B 0D            [ 1]  150 	ld	a, (0x0d, sp)
+      00008B 4C               [ 1]  151 	inc	a
+      00008C 6B 0E            [ 1]  152 	ld	(0x0e, sp), a
+                                    153 ;	../mbrtowc.c: 58: while (first_byte & (0x80 >> seqlen))
+      00008E 9F               [ 1]  154 	ld	a, xl
+      00008F 14 02            [ 1]  155 	and	a, (0x02, sp)
+      000091 02               [ 1]  156 	rlwa	x
+      000092 14 01            [ 1]  157 	and	a, (0x01, sp)
+      000094 95               [ 1]  158 	ld	xh, a
+      000095 5D               [ 2]  159 	tnzw	x
+      000096 27 06            [ 1]  160 	jreq	00175$
+                                    161 ;	../mbrtowc.c: 59: seqlen++;
+      000098 7B 0E            [ 1]  162 	ld	a, (0x0e, sp)
+      00009A 6B 0D            [ 1]  163 	ld	(0x0d, sp), a
+      00009C 20 DA            [ 2]  164 	jra	00108$
+      00009E                        165 00175$:
+      00009E 7B 0D            [ 1]  166 	ld	a, (0x0d, sp)
+      0000A0 6B 0A            [ 1]  167 	ld	(0x0a, sp), a
+                                    168 ;	../mbrtowc.c: 60: first_byte &= (0xff >> (seqlen + 1));
+      0000A2 AE 00 FF         [ 2]  169 	ldw	x, #0x00ff
+      0000A5 7B 0E            [ 1]  170 	ld	a, (0x0e, sp)
+      0000A7 27 04            [ 1]  171 	jreq	00290$
+      0000A9                        172 00289$:
+      0000A9 57               [ 2]  173 	sraw	x
+      0000AA 4A               [ 1]  174 	dec	a
+      0000AB 26 FC            [ 1]  175 	jrne	00289$
+      0000AD                        176 00290$:
+      0000AD 9F               [ 1]  177 	ld	a, xl
+      0000AE 14 11            [ 1]  178 	and	a, (0x11, sp)
+      0000B0 6B 11            [ 1]  179 	ld	(0x11, sp), a
+      0000B2                        180 00112$:
+                                    181 ;	../mbrtowc.c: 63: if(seqlen > 4)
+      0000B2 7B 0A            [ 1]  182 	ld	a, (0x0a, sp)
+      0000B4 A1 04            [ 1]  183 	cp	a, #0x04
+      0000B6 23 04            [ 2]  184 	jrule	00291$
+      0000B8 ACs00r01rE5      [ 2]  185 	jpf	00128$
+      0000BC                        186 00291$:
+                                    187 ;	../mbrtowc.c: 66: if(i + n < seqlen) // Incomplete multibyte character
+      0000BC 7B 09            [ 1]  188 	ld	a, (0x09, sp)
+      0000BE 6B 0E            [ 1]  189 	ld	(0x0e, sp), a
+      0000C0 0F 0D            [ 1]  190 	clr	(0x0d, sp)
+      0000C2 1E 0D            [ 2]  191 	ldw	x, (0x0d, sp)
+      0000C4 72 FB 19         [ 2]  192 	addw	x, (0x19, sp)
+      0000C7 7B 0A            [ 1]  193 	ld	a, (0x0a, sp)
+      0000C9 6B 02            [ 1]  194 	ld	(0x02, sp), a
+      0000CB 0F 01            [ 1]  195 	clr	(0x01, sp)
+      0000CD 13 01            [ 2]  196 	cpw	x, (0x01, sp)
+      0000CF 24 38            [ 1]  197 	jrnc	00164$
+                                    198 ;	../mbrtowc.c: 70: return(-2);
+      0000D1 16 0F            [ 2]  199 	ldw	y, (0x0f, sp)
+      0000D3 17 07            [ 2]  200 	ldw	(0x07, sp), y
+      0000D5 16 0B            [ 2]  201 	ldw	y, (0x0b, sp)
+      0000D7 17 10            [ 2]  202 	ldw	(0x10, sp), y
+      0000D9 7B 09            [ 1]  203 	ld	a, (0x09, sp)
+      0000DB 6B 0F            [ 1]  204 	ld	(0x0f, sp), a
+      0000DD 16 19            [ 2]  205 	ldw	y, (0x19, sp)
+      0000DF 17 0D            [ 2]  206 	ldw	(0x0d, sp), y
+      0000E1                        207 00134$:
+                                    208 ;	../mbrtowc.c: 68: for(;n-- ; i++)
+      0000E1 1E 0D            [ 2]  209 	ldw	x, (0x0d, sp)
+      0000E3 16 0D            [ 2]  210 	ldw	y, (0x0d, sp)
+      0000E5 90 5A            [ 2]  211 	decw	y
+      0000E7 17 0D            [ 2]  212 	ldw	(0x0d, sp), y
+      0000E9 5D               [ 2]  213 	tnzw	x
+      0000EA 27 16            [ 1]  214 	jreq	00115$
+                                    215 ;	../mbrtowc.c: 69: ps->c[i] = *s++;
+      0000EC 5F               [ 1]  216 	clrw	x
+      0000ED 7B 0F            [ 1]  217 	ld	a, (0x0f, sp)
+      0000EF 97               [ 1]  218 	ld	xl, a
+      0000F0 72 FB 07         [ 2]  219 	addw	x, (0x07, sp)
+      0000F3 16 10            [ 2]  220 	ldw	y, (0x10, sp)
+      0000F5 90 F6            [ 1]  221 	ld	a, (y)
+      0000F7 16 10            [ 2]  222 	ldw	y, (0x10, sp)
+      0000F9 90 5C            [ 1]  223 	incw	y
+      0000FB 17 10            [ 2]  224 	ldw	(0x10, sp), y
+      0000FD F7               [ 1]  225 	ld	(x), a
+                                    226 ;	../mbrtowc.c: 68: for(;n-- ; i++)
+      0000FE 0C 0F            [ 1]  227 	inc	(0x0f, sp)
+      000100 20 DF            [ 2]  228 	jra	00134$
+      000102                        229 00115$:
+                                    230 ;	../mbrtowc.c: 70: return(-2);
+      000102 AE FF FE         [ 2]  231 	ldw	x, #0xfffe
+      000105 ACs00r01rED      [ 2]  232 	jpf	00145$
+                                    233 ;	../mbrtowc.c: 73: for(j = 0; j < i; j++)
+      000109                        234 00164$:
+      000109 4F               [ 1]  235 	clr	a
+      00010A                        236 00137$:
+      00010A 11 09            [ 1]  237 	cp	a, (0x09, sp)
+      00010C 24 09            [ 1]  238 	jrnc	00118$
+                                    239 ;	../mbrtowc.c: 74: ps->c[j] = 0;
+      00010E 5F               [ 1]  240 	clrw	x
+      00010F 97               [ 1]  241 	ld	xl, a
+      000110 72 FB 0F         [ 2]  242 	addw	x, (0x0f, sp)
+      000113 7F               [ 1]  243 	clr	(x)
+                                    244 ;	../mbrtowc.c: 73: for(j = 0; j < i; j++)
+      000114 4C               [ 1]  245 	inc	a
+      000115 20 F3            [ 2]  246 	jra	00137$
+      000117                        247 00118$:
+                                    248 ;	../mbrtowc.c: 76: for(n = 1, i = i ? i : 1; i < seqlen; i++, n++)
+      000117 AE 00 01         [ 2]  249 	ldw	x, #0x0001
+      00011A 1F 19            [ 2]  250 	ldw	(0x19, sp), x
+      00011C 0D 09            [ 1]  251 	tnz	(0x09, sp)
+      00011E 27 03            [ 1]  252 	jreq	00149$
+      000120 1E 0D            [ 2]  253 	ldw	x, (0x0d, sp)
+      000122 C5                     254 	.byte 0xc5
+      000123                        255 00149$:
+      000123 5F               [ 1]  256 	clrw	x
+      000124 5C               [ 1]  257 	incw	x
+      000125                        258 00150$:
+      000125 41               [ 1]  259 	exg	a, xl
+      000126 6B 10            [ 1]  260 	ld	(0x10, sp), a
+      000128 41               [ 1]  261 	exg	a, xl
+      000129 16 07            [ 2]  262 	ldw	y, (0x07, sp)
+      00012B 17 01            [ 2]  263 	ldw	(0x01, sp), y
+      00012D 16 0B            [ 2]  264 	ldw	y, (0x0b, sp)
+      00012F AE 00 01         [ 2]  265 	ldw	x, #0x0001
+      000132 1F 0E            [ 2]  266 	ldw	(0x0e, sp), x
+      000134                        267 00140$:
+      000134 7B 10            [ 1]  268 	ld	a, (0x10, sp)
+      000136 11 0A            [ 1]  269 	cp	a, (0x0a, sp)
+      000138 24 2B            [ 1]  270 	jrnc	00121$
+                                    271 ;	../mbrtowc.c: 78: mbseq[i] = *s++;
+      00013A 5F               [ 1]  272 	clrw	x
+      00013B 7B 10            [ 1]  273 	ld	a, (0x10, sp)
+      00013D 97               [ 1]  274 	ld	xl, a
+      00013E 72 FB 01         [ 2]  275 	addw	x, (0x01, sp)
+      000141 90 F6            [ 1]  276 	ld	a, (y)
+      000143 90 5C            [ 1]  277 	incw	y
+      000145 F7               [ 1]  278 	ld	(x), a
+                                    279 ;	../mbrtowc.c: 79: if((mbseq[i] & 0xc0) != 0x80)
+      000146 6B 0D            [ 1]  280 	ld	(0x0d, sp), a
+      000148 0F 0C            [ 1]  281 	clr	(0x0c, sp)
+      00014A 7B 0D            [ 1]  282 	ld	a, (0x0d, sp)
+      00014C A4 C0            [ 1]  283 	and	a, #0xc0
+      00014E 97               [ 1]  284 	ld	xl, a
+      00014F 4F               [ 1]  285 	clr	a
+      000150 95               [ 1]  286 	ld	xh, a
+      000151 A3 00 80         [ 2]  287 	cpw	x, #0x0080
+      000154 27 04            [ 1]  288 	jreq	00299$
+      000156 ACs00r01rE5      [ 2]  289 	jpf	00128$
+      00015A                        290 00299$:
+                                    291 ;	../mbrtowc.c: 76: for(n = 1, i = i ? i : 1; i < seqlen; i++, n++)
+      00015A 0C 10            [ 1]  292 	inc	(0x10, sp)
+      00015C 1E 0E            [ 2]  293 	ldw	x, (0x0e, sp)
+      00015E 5C               [ 1]  294 	incw	x
+      00015F 1F 0E            [ 2]  295 	ldw	(0x0e, sp), x
+      000161 1F 19            [ 2]  296 	ldw	(0x19, sp), x
+      000163 20 CF            [ 2]  297 	jra	00140$
+      000165                        298 00121$:
+                                    299 ;	../mbrtowc.c: 83: codepoint = first_byte;
+      000165 5F               [ 1]  300 	clrw	x
+      000166 7B 11            [ 1]  301 	ld	a, (0x11, sp)
+      000168 97               [ 1]  302 	ld	xl, a
+      000169 90 5F            [ 1]  303 	clrw	y
+      00016B 1F 0F            [ 2]  304 	ldw	(0x0f, sp), x
+      00016D 17 0D            [ 2]  305 	ldw	(0x0d, sp), y
+                                    306 ;	../mbrtowc.c: 85: for(s = mbseq + 1, seqlen--; seqlen; seqlen--)
+      00016F 1E 07            [ 2]  307 	ldw	x, (0x07, sp)
+      000171 5C               [ 1]  308 	incw	x
+      000172 7B 0A            [ 1]  309 	ld	a, (0x0a, sp)
+      000174 4A               [ 1]  310 	dec	a
+      000175 6B 11            [ 1]  311 	ld	(0x11, sp), a
+      000177 1F 0B            [ 2]  312 	ldw	(0x0b, sp), x
+      000179                        313 00143$:
+      000179 0D 11            [ 1]  314 	tnz	(0x11, sp)
+      00017B 27 39            [ 1]  315 	jreq	00122$
+                                    316 ;	../mbrtowc.c: 87: codepoint <<= 6;
+      00017D A6 06            [ 1]  317 	ld	a, #0x06
+      00017F                        318 00302$:
+      00017F 08 10            [ 1]  319 	sll	(0x10, sp)
+      000181 09 0F            [ 1]  320 	rlc	(0x0f, sp)
+      000183 09 0E            [ 1]  321 	rlc	(0x0e, sp)
+      000185 09 0D            [ 1]  322 	rlc	(0x0d, sp)
+      000187 4A               [ 1]  323 	dec	a
+      000188 26 F5            [ 1]  324 	jrne	00302$
+                                    325 ;	../mbrtowc.c: 88: codepoint |= (*s & 0x3f);
+      00018A 1E 0B            [ 2]  326 	ldw	x, (0x0b, sp)
+      00018C F6               [ 1]  327 	ld	a, (x)
+      00018D A4 3F            [ 1]  328 	and	a, #0x3f
+      00018F 97               [ 1]  329 	ld	xl, a
+      000190 4F               [ 1]  330 	clr	a
+      000191 95               [ 1]  331 	ld	xh, a
+      000192 49               [ 1]  332 	rlc	a
+      000193 4F               [ 1]  333 	clr	a
+      000194 A2 00            [ 1]  334 	sbc	a, #0x00
+      000196 90 97            [ 1]  335 	ld	yl, a
+      000198 1A 0D            [ 1]  336 	or	a, (0x0d, sp)
+      00019A 90 95            [ 1]  337 	ld	yh, a
+      00019C 9F               [ 1]  338 	ld	a, xl
+      00019D 1A 10            [ 1]  339 	or	a, (0x10, sp)
+      00019F 02               [ 1]  340 	rlwa	x
+      0001A0 1A 0F            [ 1]  341 	or	a, (0x0f, sp)
+      0001A2 95               [ 1]  342 	ld	xh, a
+      0001A3 90 9F            [ 1]  343 	ld	a, yl
+      0001A5 1A 0E            [ 1]  344 	or	a, (0x0e, sp)
+      0001A7 90 97            [ 1]  345 	ld	yl, a
+      0001A9 1F 0F            [ 2]  346 	ldw	(0x0f, sp), x
+      0001AB 17 0D            [ 2]  347 	ldw	(0x0d, sp), y
+                                    348 ;	../mbrtowc.c: 89: s++;
+      0001AD 1E 0B            [ 2]  349 	ldw	x, (0x0b, sp)
+      0001AF 5C               [ 1]  350 	incw	x
+      0001B0 1F 0B            [ 2]  351 	ldw	(0x0b, sp), x
+                                    352 ;	../mbrtowc.c: 85: for(s = mbseq + 1, seqlen--; seqlen; seqlen--)
+      0001B2 0A 11            [ 1]  353 	dec	(0x11, sp)
+      0001B4 20 C3            [ 2]  354 	jra	00143$
+      0001B6                        355 00122$:
+                                    356 ;	../mbrtowc.c: 92: if(codepoint >= 0xd800 && codepoint <= 0xdfff) // UTF-16 surrogate.
+      0001B6 1E 0F            [ 2]  357 	ldw	x, (0x0f, sp)
+      0001B8 A3 D8 00         [ 2]  358 	cpw	x, #0xd800
+      0001BB 7B 0E            [ 1]  359 	ld	a, (0x0e, sp)
+      0001BD A2 00            [ 1]  360 	sbc	a, #0x00
+      0001BF 7B 0D            [ 1]  361 	ld	a, (0x0d, sp)
+      0001C1 A2 00            [ 1]  362 	sbc	a, #0x00
+      0001C3 25 11            [ 1]  363 	jrc	00124$
+      0001C5 AE DF FF         [ 2]  364 	ldw	x, #0xdfff
+      0001C8 13 0F            [ 2]  365 	cpw	x, (0x0f, sp)
+      0001CA 4F               [ 1]  366 	clr	a
+      0001CB 12 0E            [ 1]  367 	sbc	a, (0x0e, sp)
+      0001CD 4F               [ 1]  368 	clr	a
+      0001CE 12 0D            [ 1]  369 	sbc	a, (0x0d, sp)
+      0001D0 25 04            [ 1]  370 	jrc	00124$
+                                    371 ;	../mbrtowc.c: 93: return(-1);
+      0001D2 5F               [ 1]  372 	clrw	x
+      0001D3 5A               [ 2]  373 	decw	x
+      0001D4 20 17            [ 2]  374 	jra	00145$
+      0001D6                        375 00124$:
+                                    376 ;	../mbrtowc.c: 95: if(pwc)
+                                    377 ;	../mbrtowc.c: 96: *pwc = codepoint;
+      0001D6 1E 15            [ 2]  378 	ldw	x, (0x15, sp)
+      0001D8 27 07            [ 1]  379 	jreq	00127$
+      0001DA 16 0F            [ 2]  380 	ldw	y, (0x0f, sp)
+      0001DC EF 02            [ 2]  381 	ldw	(0x2, x), y
+      0001DE 16 0D            [ 2]  382 	ldw	y, (0x0d, sp)
+      0001E0 FF               [ 2]  383 	ldw	(x), y
+      0001E1                        384 00127$:
+                                    385 ;	../mbrtowc.c: 97: return(n);
+      0001E1 1E 19            [ 2]  386 	ldw	x, (0x19, sp)
+      0001E3 20 08            [ 2]  387 	jra	00145$
+                                    388 ;	../mbrtowc.c: 99: eilseq:
+      0001E5                        389 00128$:
+                                    390 ;	../mbrtowc.c: 100: errno = EILSEQ;
+      0001E5 AE 00 54         [ 2]  391 	ldw	x, #0x0054
+      0001E8 CFu00u00         [ 2]  392 	ldw	_errno+0, x
+                                    393 ;	../mbrtowc.c: 101: return(-1);
+      0001EB 5F               [ 1]  394 	clrw	x
+      0001EC 5A               [ 2]  395 	decw	x
+      0001ED                        396 00145$:
+                                    397 ;	../mbrtowc.c: 102: }
+      0001ED 5B 11            [ 2]  398 	addw	sp, #17
+      0001EF 87               [ 5]  399 	retf
+                                    400 	.area CODE
+                                    401 	.area CONST
+                                    402 	.area CONST
+      000000                        403 ___str_0:
+      000000 00                     404 	.db 0x00
+                                    405 	.area CODE
+                                    406 	.area INITIALIZER
+                                    407 	.area CABS (ABS)

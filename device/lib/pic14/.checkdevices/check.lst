@@ -1,0 +1,2105 @@
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE  1
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00001   include "p16f1788.inc"
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Aug 07 2014
+                      00005 ;  MPASM PIC16F1788 processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2014 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      03036         LIST
+                      00002   CODE
+0000   3104           00003   ADDFSR FSR0, 4
+0001   0012           00004   MOVIW FSR0++
+                      00005   END
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE  2
+
+
+SYMBOL TABLE
+  LABEL                             VALUE
+
+ABDEN                             00000000
+ABDOVF                            00000007
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ACKTIM                            00000007
+ADCON0                            0000009D
+ADCON1                            0000009E
+ADCON2                            0000009F
+ADCS0                             00000004
+ADCS1                             00000005
+ADCS2                             00000006
+ADD0                              00000000
+ADD1                              00000001
+ADD2                              00000002
+ADD3                              00000003
+ADD4                              00000004
+ADD5                              00000005
+ADD6                              00000006
+ADD7                              00000007
+ADDEN                             00000003
+ADFM                              00000007
+ADFVR0                            00000000
+ADFVR1                            00000001
+ADGO                              00000001
+ADIE                              00000006
+ADIF                              00000006
+ADNREF                            00000002
+ADON                              00000000
+ADPREF0                           00000000
+ADPREF1                           00000001
+ADRES                             0000009B
+ADRESH                            0000009C
+ADRESL                            0000009B
+ADRMD                             00000007
+AHEN                              00000001
+ANSA0                             00000000
+ANSA1                             00000001
+ANSA2                             00000002
+ANSA3                             00000003
+ANSA4                             00000004
+ANSA5                             00000005
+ANSA7                             00000007
+ANSB0                             00000000
+ANSB1                             00000001
+ANSB2                             00000002
+ANSB3                             00000003
+ANSB4                             00000004
+ANSB5                             00000005
+ANSB6                             00000006
+ANSC0                             00000000
+ANSC1                             00000001
+ANSC2                             00000002
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE  3
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ANSC3                             00000003
+ANSC4                             00000004
+ANSC5                             00000005
+ANSC6                             00000006
+ANSC7                             00000007
+ANSELA                            0000018C
+ANSELB                            0000018D
+ANSELC                            0000018E
+APFCON                            0000011D
+APFCON0                           0000011D
+APFCON1                           0000011D
+APFCON2                           0000011C
+BAUD1CON                          0000019F
+BAUDCON                           0000019F
+BAUDCON1                          0000019F
+BAUDCTL                           0000019F
+BAUDCTL1                          0000019F
+BCL1IE                            00000003
+BCL1IF                            00000003
+BF                                00000000
+BOEN                              00000004
+BORCON                            00000116
+BORFS                             00000006
+BORRDY                            00000000
+BRG16                             00000003
+BRGH                              00000002
+BSR                               00000008
+BSR0                              00000000
+BSR1                              00000001
+BSR2                              00000002
+BSR3                              00000003
+BSR4                              00000004
+BSR_SHAD                          00000FE6
+BUF0                              00000000
+BUF1                              00000001
+BUF2                              00000002
+BUF3                              00000003
+BUF4                              00000004
+BUF5                              00000005
+BUF6                              00000006
+BUF7                              00000007
+C                                 00000000
+C1HYS                             00000001
+C1IE                              00000005
+C1IF                              00000005
+C1INTN                            00000006
+C1INTP                            00000007
+C1NCH0                            00000000
+C1NCH1                            00000001
+C1NCH2                            00000002
+C1OE                              00000005
+C1ON                              00000007
+C1OUT                             00000006
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE  4
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+C1PCH0                            00000003
+C1PCH1                            00000004
+C1PCH2                            00000005
+C1POL                             00000004
+C1SP                              00000002
+C1SYNC                            00000000
+C1ZLF                             00000003
+C2HYS                             00000001
+C2IE                              00000006
+C2IF                              00000006
+C2INTN                            00000006
+C2INTP                            00000007
+C2NCH0                            00000000
+C2NCH1                            00000001
+C2NCH2                            00000002
+C2OE                              00000005
+C2ON                              00000007
+C2OUT                             00000006
+C2OUTSEL                          00000007
+C2PCH0                            00000003
+C2PCH1                            00000004
+C2PCH2                            00000005
+C2POL                             00000004
+C2SP                              00000002
+C2SYNC                            00000000
+C2ZLF                             00000003
+C3HYS                             00000001
+C3IE                              00000001
+C3IF                              00000001
+C3INTN                            00000006
+C3INTP                            00000007
+C3NCH0                            00000000
+C3NCH1                            00000001
+C3NCH2                            00000002
+C3OE                              00000005
+C3ON                              00000007
+C3OUT                             00000006
+C3PCH0                            00000003
+C3PCH1                            00000004
+C3PCH2                            00000005
+C3POL                             00000004
+C3SP                              00000002
+C3SYNC                            00000000
+C3ZLF                             00000003
+C4HYS                             00000001
+C4IE                              00000002
+C4IF                              00000002
+C4INTN                            00000006
+C4INTP                            00000007
+C4NCH0                            00000000
+C4NCH1                            00000001
+C4NCH2                            00000002
+C4OE                              00000005
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE  5
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+C4ON                              00000007
+C4OUT                             00000006
+C4PCH0                            00000003
+C4PCH1                            00000004
+C4PCH2                            00000005
+C4POL                             00000004
+C4SP                              00000002
+C4SYNC                            00000000
+C4ZLF                             00000003
+CCP1CON                           00000293
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1SEL                           00000006
+CCP2CON                           0000029A
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2SEL                           00000000
+CCP3CON                           00000313
+CCP3IE                            00000004
+CCP3IF                            00000004
+CCP3M0                            00000000
+CCP3M1                            00000001
+CCP3M2                            00000002
+CCP3M3                            00000003
+CCP3SEL                           00000000
+CCPR1                             00000291
+CCPR1H                            00000292
+CCPR1L                            00000291
+CCPR2                             00000298
+CCPR2H                            00000299
+CCPR2L                            00000298
+CCPR3                             00000311
+CCPR3H                            00000312
+CCPR3L                            00000311
+CDAFVR0                           00000002
+CDAFVR1                           00000003
+CFGS                              00000006
+CHS0                              00000002
+CHS1                              00000003
+CHS2                              00000004
+CHS3                              00000005
+CHS4                              00000006
+CHSN0                             00000000
+CHSN1                             00000001
+CHSN2                             00000002
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE  6
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CHSN3                             00000003
+CKE                               00000006
+CKP                               00000004
+CLKRCON                           0000051A
+CLKRDC0                           00000003
+CLKRDC1                           00000004
+CLKRDIV0                          00000000
+CLKRDIV1                          00000001
+CLKRDIV2                          00000002
+CLKREN                            00000007
+CLKROE                            00000006
+CLKRSLR                           00000005
+CM1CON0                           00000111
+CM1CON1                           00000112
+CM2CON0                           00000113
+CM2CON1                           00000114
+CM3CON0                           0000011E
+CM3CON1                           0000011F
+CM4CON0                           0000011A
+CM4CON1                           0000011B
+CMOUT                             00000115
+CREN                              00000004
+CSRC                              00000007
+C_SHAD                            00000000
+DAC1CON0                          00000118
+DAC1CON1                          00000119
+DAC1EN                            00000007
+DAC1NSS                           00000000
+DAC1OE1                           00000005
+DAC1OE2                           00000004
+DAC1PSS0                          00000002
+DAC1PSS1                          00000003
+DAC1R0                            00000000
+DAC1R1                            00000001
+DAC1R2                            00000002
+DAC1R3                            00000003
+DAC1R4                            00000004
+DAC1R5                            00000005
+DAC1R6                            00000006
+DAC1R7                            00000007
+DAC2CON0                          00000591
+DAC2EN                            00000007
+DAC2OE1                           00000005
+DAC2OE2                           00000004
+DAC2REF                           00000592
+DAC3CON0                          00000593
+DAC3EN                            00000007
+DAC3OE1                           00000005
+DAC3OE2                           00000004
+DAC3REF                           00000594
+DAC4CON0                          00000595
+DAC4EN                            00000007
+DAC4OE1                           00000005
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+DAC4OE2                           00000004
+DAC4REF                           00000596
+DACEN                             00000007
+DACNSS                            00000000
+DACOE0                            00000004
+DACOE1                            00000005
+DACPSS0                           00000002
+DACPSS1                           00000003
+DACR0                             00000000
+DACR1                             00000001
+DACR2                             00000002
+DACR3                             00000003
+DACR4                             00000004
+DACR5                             00000005
+DACR6                             00000006
+DACR7                             00000007
+DC                                00000001
+DC1B0                             00000004
+DC1B1                             00000005
+DC2B0                             00000004
+DC2B1                             00000005
+DC3B0                             00000004
+DC3B1                             00000005
+DC_SHAD                           00000001
+DHEN                              00000000
+DONE                              00000001
+D_NOT_A                           00000005
+EEADR                             00000191
+EEADRH                            00000192
+EEADRL                            00000191
+EECON1                            00000195
+EECON2                            00000196
+EEDAT                             00000193
+EEDATH                            00000194
+EEDATL                            00000193
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+EN                                00000007
+F                                 00000001
+FERR                              00000002
+FREE                              00000004
+FSR0                              00000004
+FSR0H                             00000005
+FSR0H_SHAD                        00000FE9
+FSR0L                             00000004
+FSR0L_SHAD                        00000FE8
+FSR1                              00000006
+FSR1H                             00000007
+FSR1H_SHAD                        00000FEB
+FSR1L                             00000006
+FSR1L_SHAD                        00000FEA
+FVRCON                            00000117
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+FVREN                             00000007
+FVRRDY                            00000006
+GCEN                              00000007
+GIE                               00000007
+GO                                00000001
+GO_NOT_DONE                       00000001
+HFIOFL                            00000003
+HFIOFR                            00000004
+HFIOFS                            00000000
+INDF0                             00000000
+INDF1                             00000001
+INLVLA                            0000038C
+INLVLA0                           00000000
+INLVLA1                           00000001
+INLVLA2                           00000002
+INLVLA3                           00000003
+INLVLA4                           00000004
+INLVLA5                           00000005
+INLVLA6                           00000006
+INLVLA7                           00000007
+INLVLB                            0000038D
+INLVLB0                           00000000
+INLVLB1                           00000001
+INLVLB2                           00000002
+INLVLB3                           00000003
+INLVLB4                           00000004
+INLVLB5                           00000005
+INLVLB6                           00000006
+INLVLB7                           00000007
+INLVLC                            0000038E
+INLVLC0                           00000000
+INLVLC1                           00000001
+INLVLC2                           00000002
+INLVLC3                           00000003
+INLVLC4                           00000004
+INLVLC5                           00000005
+INLVLC6                           00000006
+INLVLC7                           00000007
+INLVLE                            00000390
+INLVLE3                           00000003
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IOCAF                             00000393
+IOCAF0                            00000000
+IOCAF1                            00000001
+IOCAF2                            00000002
+IOCAF3                            00000003
+IOCAF4                            00000004
+IOCAF5                            00000005
+IOCAF6                            00000006
+IOCAF7                            00000007
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+IOCAN                             00000392
+IOCAN0                            00000000
+IOCAN1                            00000001
+IOCAN2                            00000002
+IOCAN3                            00000003
+IOCAN4                            00000004
+IOCAN5                            00000005
+IOCAN6                            00000006
+IOCAN7                            00000007
+IOCAP                             00000391
+IOCAP0                            00000000
+IOCAP1                            00000001
+IOCAP2                            00000002
+IOCAP3                            00000003
+IOCAP4                            00000004
+IOCAP5                            00000005
+IOCAP6                            00000006
+IOCAP7                            00000007
+IOCBF                             00000396
+IOCBF0                            00000000
+IOCBF1                            00000001
+IOCBF2                            00000002
+IOCBF3                            00000003
+IOCBF4                            00000004
+IOCBF5                            00000005
+IOCBF6                            00000006
+IOCBF7                            00000007
+IOCBN                             00000395
+IOCBN0                            00000000
+IOCBN1                            00000001
+IOCBN2                            00000002
+IOCBN3                            00000003
+IOCBN4                            00000004
+IOCBN5                            00000005
+IOCBN6                            00000006
+IOCBN7                            00000007
+IOCBP                             00000394
+IOCBP0                            00000000
+IOCBP1                            00000001
+IOCBP2                            00000002
+IOCBP3                            00000003
+IOCBP4                            00000004
+IOCBP5                            00000005
+IOCBP6                            00000006
+IOCBP7                            00000007
+IOCCF                             00000399
+IOCCF0                            00000000
+IOCCF1                            00000001
+IOCCF2                            00000002
+IOCCF3                            00000003
+IOCCF4                            00000004
+IOCCF5                            00000005
+IOCCF6                            00000006
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+IOCCF7                            00000007
+IOCCN                             00000398
+IOCCN0                            00000000
+IOCCN1                            00000001
+IOCCN2                            00000002
+IOCCN3                            00000003
+IOCCN4                            00000004
+IOCCN5                            00000005
+IOCCN6                            00000006
+IOCCN7                            00000007
+IOCCP                             00000397
+IOCCP0                            00000000
+IOCCP1                            00000001
+IOCCP2                            00000002
+IOCCP3                            00000003
+IOCCP4                            00000004
+IOCCP5                            00000005
+IOCCP6                            00000006
+IOCCP7                            00000007
+IOCEF                             0000039F
+IOCEF3                            00000003
+IOCEN                             0000039E
+IOCEN3                            00000003
+IOCEP                             0000039D
+IOCEP3                            00000003
+IOCIE                             00000003
+IOCIF                             00000000
+IRCF0                             00000003
+IRCF1                             00000004
+IRCF2                             00000005
+IRCF3                             00000006
+LATA                              0000010C
+LATA0                             00000000
+LATA1                             00000001
+LATA2                             00000002
+LATA3                             00000003
+LATA4                             00000004
+LATA5                             00000005
+LATA6                             00000006
+LATA7                             00000007
+LATB                              0000010D
+LATB0                             00000000
+LATB1                             00000001
+LATB2                             00000002
+LATB3                             00000003
+LATB4                             00000004
+LATB5                             00000005
+LATB6                             00000006
+LATB7                             00000007
+LATC                              0000010E
+LATC0                             00000000
+LATC1                             00000001
+LATC2                             00000002
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+LATC3                             00000003
+LATC4                             00000004
+LATC5                             00000005
+LATC6                             00000006
+LATC7                             00000007
+LFIOFR                            00000001
+LWLO                              00000005
+MC1OUT                            00000000
+MC2OUT                            00000001
+MC3OUT                            00000002
+MC4OUT                            00000003
+MFIOFR                            00000002
+MSK0                              00000000
+MSK1                              00000001
+MSK2                              00000002
+MSK3                              00000003
+MSK4                              00000004
+MSK5                              00000005
+MSK6                              00000006
+MSK7                              00000007
+NOT_BOR                           00000000
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RI                            00000002
+NOT_RMCLR                         00000003
+NOT_RWDT                          00000004
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_WPUEN                         00000007
+ODCONA                            0000028C
+ODCONA0                           00000000
+ODCONA1                           00000001
+ODCONA2                           00000002
+ODCONA3                           00000003
+ODCONA4                           00000004
+ODCONA5                           00000005
+ODCONA6                           00000006
+ODCONA7                           00000007
+ODCONB                            0000028D
+ODCONB0                           00000000
+ODCONB1                           00000001
+ODCONB2                           00000002
+ODCONB3                           00000003
+ODCONB4                           00000004
+ODCONB5                           00000005
+ODCONB6                           00000006
+ODCONB7                           00000007
+ODCONC                            0000028E
+ODCONC0                           00000000
+ODCONC1                           00000001
+ODCONC2                           00000002
+ODCONC3                           00000003
+ODCONC4                           00000004
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ODCONC5                           00000005
+ODCONC6                           00000006
+ODCONC7                           00000007
+OERR                              00000001
+OPA1CON                           00000511
+OPA1EN                            00000007
+OPA1PCH0                          00000000
+OPA1PCH1                          00000001
+OPA1PCH2                          00000002
+OPA1SP                            00000006
+OPA2CON                           00000513
+OPA2EN                            00000007
+OPA2PCH0                          00000000
+OPA2PCH1                          00000001
+OPA2PCH2                          00000002
+OPA2SP                            00000006
+OPTION_REG                        00000095
+OSCCON                            00000099
+OSCSTAT                           0000009A
+OSCTUNE                           00000098
+OSFIE                             00000007
+OSFIF                             00000007
+OSTS                              00000005
+P                                 00000004
+P1ARSEN                           00000005
+P1ASDEN                           00000006
+P1ASDLA                           00000000
+P1ASDLB                           00000001
+P1ASDLC                           00000002
+P1ASDLD                           00000003
+P1ASDLE                           00000004
+P1ASDLF                           00000005
+P1ASDOV                           00000000
+P1ASDSC1                          00000001
+P1ASDSC2                          00000002
+P1ASDSC3                          00000003
+P1ASDSC4                          00000004
+P1ASDSIN                          00000007
+P1ASE                             00000007
+P1CPRE0                           00000004
+P1CPRE1                           00000005
+P1CSRC0                           00000000
+P1CSRC1                           00000001
+P1DBFE                            00000005
+P1DBRE                            00000004
+P1DCPOL                           00000005
+P1DCSC1                           00000001
+P1DCSC2                           00000002
+P1DCSC3                           00000003
+P1DCSC4                           00000004
+P1DCSIN                           00000007
+P1DCST                            00000000
+P1FEBM0                           00000004
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+P1FEBM1                           00000005
+P1FEBSC1                          00000001
+P1FEBSC2                          00000002
+P1FEBSC3                          00000003
+P1FEBSC4                          00000004
+P1FEBSIN                          00000007
+P1HSMEN                           00000000
+P1INPOL                           00000006
+P1LSMEN                           00000001
+P1MDLBIT                          00000005
+P1MDLEN                           00000007
+P1MDLPOL                          00000006
+P1MODE0                           00000000
+P1MODE1                           00000001
+P1MODE2                           00000002
+P1MODE3                           00000003
+P1MSRC0                           00000000
+P1MSRC1                           00000001
+P1MSRC2                           00000002
+P1MSRC3                           00000003
+P1OEA                             00000000
+P1OEB                             00000001
+P1OEC                             00000002
+P1OED                             00000003
+P1OEE                             00000004
+P1OEF                             00000005
+P1PHSC1                           00000001
+P1PHSC2                           00000002
+P1PHSC3                           00000003
+P1PHSC4                           00000004
+P1PHSIN                           00000007
+P1PHST                            00000000
+P1POFST                           00000007
+P1POLA                            00000000
+P1POLB                            00000001
+P1POLC                            00000002
+P1POLD                            00000003
+P1POLE                            00000004
+P1POLF                            00000005
+P1PRPOL                           00000006
+P1PRSC1                           00000001
+P1PRSC2                           00000002
+P1PRSC3                           00000003
+P1PRSC4                           00000004
+P1PRSIN                           00000007
+P1PRST                            00000000
+P1REBM0                           00000000
+P1REBM1                           00000001
+P1REBSC1                          00000001
+P1REBSC2                          00000002
+P1REBSC3                          00000003
+P1REBSC4                          00000004
+P1REBSIN                          00000007
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+P1SSYNC                           00000007
+P1STRA                            00000000
+P1STRB                            00000001
+P1STRC                            00000002
+P1STRD                            00000003
+P1STRE                            00000004
+P1STRF                            00000005
+P1SYNC0                           00000000
+P1SYNC1                           00000001
+P1SYNC2                           00000002
+P1TDCIE                           00000005
+P1TDCIF                           00000001
+P1TOVIE                           00000007
+P1TOVIF                           00000003
+P1TPHIE                           00000006
+P1TPHIF                           00000002
+P1TPRIE                           00000004
+P1TPRIF                           00000000
+P2ARSEN                           00000005
+P2ASDEN                           00000006
+P2ASDLA                           00000000
+P2ASDLB                           00000001
+P2ASDOV                           00000000
+P2ASDSC1                          00000001
+P2ASDSC2                          00000002
+P2ASDSC3                          00000003
+P2ASDSC4                          00000004
+P2ASDSIN                          00000007
+P2ASE                             00000007
+P2CPRE0                           00000004
+P2CPRE1                           00000005
+P2CSRC0                           00000000
+P2CSRC1                           00000001
+P2DBFE                            00000005
+P2DBRE                            00000004
+P2DCPOL                           00000005
+P2DCSC1                           00000001
+P2DCSC2                           00000002
+P2DCSC3                           00000003
+P2DCSC4                           00000004
+P2DCSIN                           00000007
+P2DCST                            00000000
+P2FEBM0                           00000004
+P2FEBM1                           00000005
+P2FEBSC1                          00000001
+P2FEBSC2                          00000002
+P2FEBSC3                          00000003
+P2FEBSC4                          00000004
+P2FEBSIN                          00000007
+P2HSMEN                           00000000
+P2INPOL                           00000006
+P2LSMEN                           00000001
+P2MDLBIT                          00000005
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+P2MDLEN                           00000007
+P2MDLPOL                          00000006
+P2MODE0                           00000000
+P2MODE1                           00000001
+P2MODE2                           00000002
+P2MODE3                           00000003
+P2MSRC0                           00000000
+P2MSRC1                           00000001
+P2MSRC2                           00000002
+P2MSRC3                           00000003
+P2OEA                             00000000
+P2OEB                             00000001
+P2PHSC1                           00000001
+P2PHSC2                           00000002
+P2PHSC3                           00000003
+P2PHSC4                           00000004
+P2PHSIN                           00000007
+P2PHST                            00000000
+P2POFST                           00000007
+P2POLA                            00000000
+P2POLB                            00000001
+P2PRPOL                           00000006
+P2PRSC1                           00000001
+P2PRSC2                           00000002
+P2PRSC3                           00000003
+P2PRSC4                           00000004
+P2PRSIN                           00000007
+P2PRST                            00000000
+P2REBM0                           00000000
+P2REBM1                           00000001
+P2REBSC1                          00000001
+P2REBSC2                          00000002
+P2REBSC3                          00000003
+P2REBSC4                          00000004
+P2REBSIN                          00000007
+P2SSYNC                           00000007
+P2STRA                            00000000
+P2STRB                            00000001
+P2SYNC0                           00000000
+P2SYNC1                           00000001
+P2SYNC2                           00000002
+P2TDCIE                           00000005
+P2TDCIF                           00000001
+P2TOVIE                           00000007
+P2TOVIF                           00000003
+P2TPHIE                           00000006
+P2TPHIF                           00000002
+P2TPRIE                           00000004
+P2TPRIF                           00000000
+P3ARSEN                           00000005
+P3ASDEN                           00000006
+P3ASDLA                           00000000
+P3ASDLB                           00000001
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 16
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+P3ASDOV                           00000000
+P3ASDSC1                          00000001
+P3ASDSC2                          00000002
+P3ASDSC3                          00000003
+P3ASDSC4                          00000004
+P3ASDSIN                          00000007
+P3ASE                             00000007
+P3CPRE0                           00000004
+P3CPRE1                           00000005
+P3CSRC0                           00000000
+P3CSRC1                           00000001
+P3DBFE                            00000005
+P3DBRE                            00000004
+P3DCPOL                           00000005
+P3DCSC1                           00000001
+P3DCSC2                           00000002
+P3DCSC3                           00000003
+P3DCSC4                           00000004
+P3DCSIN                           00000007
+P3DCST                            00000000
+P3FEBM0                           00000004
+P3FEBM1                           00000005
+P3FEBSC1                          00000001
+P3FEBSC2                          00000002
+P3FEBSC3                          00000003
+P3FEBSC4                          00000004
+P3FEBSIN                          00000007
+P3HSMEN                           00000000
+P3INPOL                           00000006
+P3LSMEN                           00000001
+P3MDLBIT                          00000005
+P3MDLEN                           00000007
+P3MDLPOL                          00000006
+P3MODE0                           00000000
+P3MODE1                           00000001
+P3MODE2                           00000002
+P3MODE3                           00000003
+P3MSRC0                           00000000
+P3MSRC1                           00000001
+P3MSRC2                           00000002
+P3MSRC3                           00000003
+P3OEA                             00000000
+P3OEB                             00000001
+P3PHSC1                           00000001
+P3PHSC2                           00000002
+P3PHSC3                           00000003
+P3PHSC4                           00000004
+P3PHSIN                           00000007
+P3PHST                            00000000
+P3POFST                           00000007
+P3POLA                            00000000
+P3POLB                            00000001
+P3PRPOL                           00000006
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 17
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+P3PRSC1                           00000001
+P3PRSC2                           00000002
+P3PRSC3                           00000003
+P3PRSC4                           00000004
+P3PRSIN                           00000007
+P3PRST                            00000000
+P3REBM0                           00000000
+P3REBM1                           00000001
+P3REBSC1                          00000001
+P3REBSC2                          00000002
+P3REBSC3                          00000003
+P3REBSC4                          00000004
+P3REBSIN                          00000007
+P3SSYNC                           00000007
+P3STRA                            00000000
+P3STRB                            00000001
+P3SYNC0                           00000000
+P3SYNC1                           00000001
+P3SYNC2                           00000002
+P3TDCIE                           00000005
+P3TDCIF                           00000001
+P3TOVIE                           00000007
+P3TOVIF                           00000003
+P3TPHIE                           00000006
+P3TPHIF                           00000002
+P3TPRIE                           00000004
+P3TPRIF                           00000000
+P4ARSEN                           00000005
+P4ASDEN                           00000006
+P4ASDLA                           00000000
+P4ASDLB                           00000001
+P4ASDOV                           00000000
+P4ASDSC1                          00000001
+P4ASDSC2                          00000002
+P4ASDSC3                          00000003
+P4ASDSC4                          00000004
+P4ASDSIN                          00000007
+P4ASE                             00000007
+P4CPRE0                           00000004
+P4CPRE1                           00000005
+P4CSRC0                           00000000
+P4CSRC1                           00000001
+P4DBFE                            00000005
+P4DBRE                            00000004
+P4DCPOL                           00000005
+P4DCSC1                           00000001
+P4DCSC2                           00000002
+P4DCSC3                           00000003
+P4DCSC4                           00000004
+P4DCSIN                           00000007
+P4DCST                            00000000
+P4FEBM0                           00000004
+P4FEBM1                           00000005
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 18
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+P4FEBSC1                          00000001
+P4FEBSC2                          00000002
+P4FEBSC3                          00000003
+P4FEBSC4                          00000004
+P4FEBSIN                          00000007
+P4HSMEN                           00000000
+P4INPOL                           00000006
+P4LSMEN                           00000001
+P4MDLBIT                          00000005
+P4MDLEN                           00000007
+P4MDLPOL                          00000006
+P4MODE0                           00000000
+P4MODE1                           00000001
+P4MODE2                           00000002
+P4MODE3                           00000003
+P4MSRC0                           00000000
+P4MSRC1                           00000001
+P4MSRC2                           00000002
+P4MSRC3                           00000003
+P4OEA                             00000000
+P4OEB                             00000001
+P4PHSC1                           00000001
+P4PHSC2                           00000002
+P4PHSC3                           00000003
+P4PHSC4                           00000004
+P4PHSIN                           00000007
+P4PHST                            00000000
+P4POFST                           00000007
+P4POLA                            00000000
+P4POLB                            00000001
+P4PRPOL                           00000006
+P4PRSC1                           00000001
+P4PRSC2                           00000002
+P4PRSC3                           00000003
+P4PRSC4                           00000004
+P4PRSIN                           00000007
+P4PRST                            00000000
+P4REBM0                           00000000
+P4REBM1                           00000001
+P4REBSC1                          00000001
+P4REBSC2                          00000002
+P4REBSC3                          00000003
+P4REBSC4                          00000004
+P4REBSIN                          00000007
+P4SSYNC                           00000007
+P4STRA                            00000000
+P4STRB                            00000001
+P4SYNC0                           00000000
+P4SYNC1                           00000001
+P4SYNC2                           00000002
+P4TDCIE                           00000005
+P4TDCIF                           00000001
+P4TOVIE                           00000007
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 19
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+P4TOVIF                           00000003
+P4TPHIE                           00000006
+P4TPHIF                           00000002
+P4TPRIE                           00000004
+P4TPRIF                           00000000
+PCH0                              00000000
+PCH1                              00000001
+PCH2                              00000002
+PCIE                              00000006
+PCL                               00000002
+PCLATH                            0000000A
+PCLATH_SHAD                       00000FE7
+PCON                              00000096
+PEIE                              00000006
+PEN                               00000002
+PIE1                              00000091
+PIE2                              00000092
+PIE3                              00000093
+PIE4                              00000094
+PIR1                              00000011
+PIR2                              00000012
+PIR3                              00000013
+PIR4                              00000014
+PLLR                              00000006
+PMSC3TIE                          00000006
+PORTA                             0000000C
+PORTB                             0000000D
+PORTC                             0000000E
+PORTE                             00000010
+PR2                               0000001B
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSMC1ASDC                         00000E9D
+PSMC1ASDL                         00000E9E
+PSMC1ASDS                         00000E9F
+PSMC1BLKF                         00000EAC
+PSMC1BLKF0                        00000000
+PSMC1BLKF1                        00000001
+PSMC1BLKF2                        00000002
+PSMC1BLKF3                        00000003
+PSMC1BLKF4                        00000004
+PSMC1BLKF5                        00000005
+PSMC1BLKF6                        00000006
+PSMC1BLKF7                        00000007
+PSMC1BLKR                         00000EAB
+PSMC1BLKR0                        00000000
+PSMC1BLKR1                        00000001
+PSMC1BLKR2                        00000002
+PSMC1BLKR3                        00000003
+PSMC1BLKR4                        00000004
+PSMC1BLKR5                        00000005
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 20
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PSMC1BLKR6                        00000006
+PSMC1BLKR7                        00000007
+PSMC1BLNK                         00000E97
+PSMC1CLK                          00000E94
+PSMC1CON                          00000E91
+PSMC1DBF                          00000EAA
+PSMC1DBF0                         00000000
+PSMC1DBF1                         00000001
+PSMC1DBF2                         00000002
+PSMC1DBF3                         00000003
+PSMC1DBF4                         00000004
+PSMC1DBF5                         00000005
+PSMC1DBF6                         00000006
+PSMC1DBF7                         00000007
+PSMC1DBR                          00000EA9
+PSMC1DBR0                         00000000
+PSMC1DBR1                         00000001
+PSMC1DBR2                         00000002
+PSMC1DBR3                         00000003
+PSMC1DBR4                         00000004
+PSMC1DBR5                         00000005
+PSMC1DBR6                         00000006
+PSMC1DBR7                         00000007
+PSMC1DC                           00000EA3
+PSMC1DC0                          00000000
+PSMC1DC1                          00000001
+PSMC1DC10                         00000002
+PSMC1DC11                         00000003
+PSMC1DC12                         00000004
+PSMC1DC13                         00000005
+PSMC1DC14                         00000006
+PSMC1DC15                         00000007
+PSMC1DC2                          00000002
+PSMC1DC3                          00000003
+PSMC1DC4                          00000004
+PSMC1DC5                          00000005
+PSMC1DC6                          00000006
+PSMC1DC7                          00000007
+PSMC1DC8                          00000000
+PSMC1DC9                          00000001
+PSMC1DCH                          00000EA4
+PSMC1DCL                          00000EA3
+PSMC1DCS                          00000E9B
+PSMC1EN                           00000007
+PSMC1FEBS                         00000E99
+PSMC1FFA                          00000EAD
+PSMC1FFA0                         00000000
+PSMC1FFA1                         00000001
+PSMC1FFA2                         00000002
+PSMC1FFA3                         00000003
+PSMC1INT                          00000EA0
+PSMC1LD                           00000006
+PSMC1MDL                          00000E92
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 21
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PSMC1OEN                          00000E95
+PSMC1PH                           00000EA1
+PSMC1PH0                          00000000
+PSMC1PH1                          00000001
+PSMC1PH10                         00000002
+PSMC1PH11                         00000003
+PSMC1PH12                         00000004
+PSMC1PH13                         00000005
+PSMC1PH14                         00000006
+PSMC1PH15                         00000007
+PSMC1PH2                          00000002
+PSMC1PH3                          00000003
+PSMC1PH4                          00000004
+PSMC1PH5                          00000005
+PSMC1PH6                          00000006
+PSMC1PH7                          00000007
+PSMC1PH8                          00000000
+PSMC1PH9                          00000001
+PSMC1PHH                          00000EA2
+PSMC1PHL                          00000EA1
+PSMC1PHS                          00000E9A
+PSMC1POL                          00000E96
+PSMC1PR                           00000EA5
+PSMC1PR0                          00000000
+PSMC1PR1                          00000001
+PSMC1PR10                         00000002
+PSMC1PR11                         00000003
+PSMC1PR12                         00000004
+PSMC1PR13                         00000005
+PSMC1PR14                         00000006
+PSMC1PR15                         00000007
+PSMC1PR2                          00000002
+PSMC1PR3                          00000003
+PSMC1PR4                          00000004
+PSMC1PR5                          00000005
+PSMC1PR6                          00000006
+PSMC1PR7                          00000007
+PSMC1PR8                          00000000
+PSMC1PR9                          00000001
+PSMC1PRH                          00000EA6
+PSMC1PRL                          00000EA5
+PSMC1PRS                          00000E9C
+PSMC1REBS                         00000E98
+PSMC1SIE                          00000000
+PSMC1SIF                          00000000
+PSMC1STR0                         00000EAE
+PSMC1STR1                         00000EAF
+PSMC1SYNC                         00000E93
+PSMC1TIE                          00000004
+PSMC1TIF                          00000004
+PSMC1TMR                          00000EA7
+PSMC1TMR0                         00000000
+PSMC1TMR1                         00000001
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 22
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PSMC1TMR10                        00000002
+PSMC1TMR11                        00000003
+PSMC1TMR12                        00000004
+PSMC1TMR13                        00000005
+PSMC1TMR14                        00000006
+PSMC1TMR15                        00000007
+PSMC1TMR2                         00000002
+PSMC1TMR3                         00000003
+PSMC1TMR4                         00000004
+PSMC1TMR5                         00000005
+PSMC1TMR6                         00000006
+PSMC1TMR7                         00000007
+PSMC1TMR8                         00000000
+PSMC1TMR9                         00000001
+PSMC1TMRH                         00000EA8
+PSMC1TMRL                         00000EA7
+PSMC2ASDC                         00000EBD
+PSMC2ASDL                         00000EBE
+PSMC2ASDS                         00000EBF
+PSMC2BLKF                         00000ECC
+PSMC2BLKF0                        00000000
+PSMC2BLKF1                        00000001
+PSMC2BLKF2                        00000002
+PSMC2BLKF3                        00000003
+PSMC2BLKF4                        00000004
+PSMC2BLKF5                        00000005
+PSMC2BLKF6                        00000006
+PSMC2BLKF7                        00000007
+PSMC2BLKR                         00000ECB
+PSMC2BLKR0                        00000000
+PSMC2BLKR1                        00000001
+PSMC2BLKR2                        00000002
+PSMC2BLKR3                        00000003
+PSMC2BLKR4                        00000004
+PSMC2BLKR5                        00000005
+PSMC2BLKR6                        00000006
+PSMC2BLKR7                        00000007
+PSMC2BLNK                         00000EB7
+PSMC2CLK                          00000EB4
+PSMC2CON                          00000EB1
+PSMC2DBF                          00000ECA
+PSMC2DBF0                         00000000
+PSMC2DBF1                         00000001
+PSMC2DBF2                         00000002
+PSMC2DBF3                         00000003
+PSMC2DBF4                         00000004
+PSMC2DBF5                         00000005
+PSMC2DBF6                         00000006
+PSMC2DBF7                         00000007
+PSMC2DBR                          00000EC9
+PSMC2DBR0                         00000000
+PSMC2DBR1                         00000001
+PSMC2DBR2                         00000002
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 23
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PSMC2DBR3                         00000003
+PSMC2DBR4                         00000004
+PSMC2DBR5                         00000005
+PSMC2DBR6                         00000006
+PSMC2DBR7                         00000007
+PSMC2DC                           00000EC3
+PSMC2DC0                          00000000
+PSMC2DC1                          00000001
+PSMC2DC10                         00000002
+PSMC2DC11                         00000003
+PSMC2DC12                         00000004
+PSMC2DC13                         00000005
+PSMC2DC14                         00000006
+PSMC2DC15                         00000007
+PSMC2DC2                          00000002
+PSMC2DC3                          00000003
+PSMC2DC4                          00000004
+PSMC2DC5                          00000005
+PSMC2DC6                          00000006
+PSMC2DC7                          00000007
+PSMC2DC8                          00000000
+PSMC2DC9                          00000001
+PSMC2DCH                          00000EC4
+PSMC2DCL                          00000EC3
+PSMC2DCS                          00000EBB
+PSMC2EN                           00000007
+PSMC2FEBS                         00000EB9
+PSMC2FFA                          00000ECD
+PSMC2FFA0                         00000000
+PSMC2FFA1                         00000001
+PSMC2FFA2                         00000002
+PSMC2FFA3                         00000003
+PSMC2INT                          00000EC0
+PSMC2LD                           00000006
+PSMC2MDL                          00000EB2
+PSMC2OEN                          00000EB5
+PSMC2PH                           00000EC1
+PSMC2PH0                          00000000
+PSMC2PH1                          00000001
+PSMC2PH10                         00000002
+PSMC2PH11                         00000003
+PSMC2PH12                         00000004
+PSMC2PH13                         00000005
+PSMC2PH14                         00000006
+PSMC2PH15                         00000007
+PSMC2PH2                          00000002
+PSMC2PH3                          00000003
+PSMC2PH4                          00000004
+PSMC2PH5                          00000005
+PSMC2PH6                          00000006
+PSMC2PH7                          00000007
+PSMC2PH8                          00000000
+PSMC2PH9                          00000001
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 24
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PSMC2PHH                          00000EC2
+PSMC2PHL                          00000EC1
+PSMC2PHS                          00000EBA
+PSMC2POL                          00000EB6
+PSMC2PR                           00000EC5
+PSMC2PR0                          00000000
+PSMC2PR1                          00000001
+PSMC2PR10                         00000002
+PSMC2PR11                         00000003
+PSMC2PR12                         00000004
+PSMC2PR13                         00000005
+PSMC2PR14                         00000006
+PSMC2PR15                         00000007
+PSMC2PR2                          00000002
+PSMC2PR3                          00000003
+PSMC2PR4                          00000004
+PSMC2PR5                          00000005
+PSMC2PR6                          00000006
+PSMC2PR7                          00000007
+PSMC2PR8                          00000000
+PSMC2PR9                          00000001
+PSMC2PRH                          00000EC6
+PSMC2PRL                          00000EC5
+PSMC2PRS                          00000EBC
+PSMC2REBS                         00000EB8
+PSMC2SIE                          00000001
+PSMC2SIF                          00000001
+PSMC2STR0                         00000ECE
+PSMC2STR1                         00000ECF
+PSMC2SYNC                         00000EB3
+PSMC2TIE                          00000005
+PSMC2TIF                          00000005
+PSMC2TMR                          00000EC7
+PSMC2TMR0                         00000000
+PSMC2TMR1                         00000001
+PSMC2TMR10                        00000002
+PSMC2TMR11                        00000003
+PSMC2TMR12                        00000004
+PSMC2TMR13                        00000005
+PSMC2TMR14                        00000006
+PSMC2TMR15                        00000007
+PSMC2TMR2                         00000002
+PSMC2TMR3                         00000003
+PSMC2TMR4                         00000004
+PSMC2TMR5                         00000005
+PSMC2TMR6                         00000006
+PSMC2TMR7                         00000007
+PSMC2TMR8                         00000000
+PSMC2TMR9                         00000001
+PSMC2TMRH                         00000EC8
+PSMC2TMRL                         00000EC7
+PSMC3ASDC                         00000EDD
+PSMC3ASDL                         00000EDE
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 25
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PSMC3ASDS                         00000EDF
+PSMC3BLKF                         00000EEC
+PSMC3BLKF0                        00000000
+PSMC3BLKF1                        00000001
+PSMC3BLKF2                        00000002
+PSMC3BLKF3                        00000003
+PSMC3BLKF4                        00000004
+PSMC3BLKF5                        00000005
+PSMC3BLKF6                        00000006
+PSMC3BLKF7                        00000007
+PSMC3BLKR                         00000EEB
+PSMC3BLKR0                        00000000
+PSMC3BLKR1                        00000001
+PSMC3BLKR2                        00000002
+PSMC3BLKR3                        00000003
+PSMC3BLKR4                        00000004
+PSMC3BLKR5                        00000005
+PSMC3BLKR6                        00000006
+PSMC3BLKR7                        00000007
+PSMC3BLNK                         00000ED7
+PSMC3CLK                          00000ED4
+PSMC3CON                          00000ED1
+PSMC3DBF                          00000EEA
+PSMC3DBF0                         00000000
+PSMC3DBF1                         00000001
+PSMC3DBF2                         00000002
+PSMC3DBF3                         00000003
+PSMC3DBF4                         00000004
+PSMC3DBF5                         00000005
+PSMC3DBF6                         00000006
+PSMC3DBF7                         00000007
+PSMC3DBR                          00000EE9
+PSMC3DBR0                         00000000
+PSMC3DBR1                         00000001
+PSMC3DBR2                         00000002
+PSMC3DBR3                         00000003
+PSMC3DBR4                         00000004
+PSMC3DBR5                         00000005
+PSMC3DBR6                         00000006
+PSMC3DBR7                         00000007
+PSMC3DC                           00000EE3
+PSMC3DC0                          00000000
+PSMC3DC1                          00000001
+PSMC3DC10                         00000002
+PSMC3DC11                         00000003
+PSMC3DC12                         00000004
+PSMC3DC13                         00000005
+PSMC3DC14                         00000006
+PSMC3DC15                         00000007
+PSMC3DC2                          00000002
+PSMC3DC3                          00000003
+PSMC3DC4                          00000004
+PSMC3DC5                          00000005
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 26
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PSMC3DC6                          00000006
+PSMC3DC7                          00000007
+PSMC3DC8                          00000000
+PSMC3DC9                          00000001
+PSMC3DCH                          00000EE4
+PSMC3DCL                          00000EE3
+PSMC3DCS                          00000EDB
+PSMC3EN                           00000007
+PSMC3FEBS                         00000ED9
+PSMC3FFA                          00000EED
+PSMC3FFA0                         00000000
+PSMC3FFA1                         00000001
+PSMC3FFA2                         00000002
+PSMC3FFA3                         00000003
+PSMC3INT                          00000EE0
+PSMC3LD                           00000006
+PSMC3MDL                          00000ED2
+PSMC3OEN                          00000ED5
+PSMC3PH                           00000EE1
+PSMC3PH0                          00000000
+PSMC3PH1                          00000001
+PSMC3PH10                         00000002
+PSMC3PH11                         00000003
+PSMC3PH12                         00000004
+PSMC3PH13                         00000005
+PSMC3PH14                         00000006
+PSMC3PH15                         00000007
+PSMC3PH2                          00000002
+PSMC3PH3                          00000003
+PSMC3PH4                          00000004
+PSMC3PH5                          00000005
+PSMC3PH6                          00000006
+PSMC3PH7                          00000007
+PSMC3PH8                          00000000
+PSMC3PH9                          00000001
+PSMC3PHH                          00000EE2
+PSMC3PHL                          00000EE1
+PSMC3PHS                          00000EDA
+PSMC3POL                          00000ED6
+PSMC3PR                           00000EE5
+PSMC3PR0                          00000000
+PSMC3PR1                          00000001
+PSMC3PR10                         00000002
+PSMC3PR11                         00000003
+PSMC3PR12                         00000004
+PSMC3PR13                         00000005
+PSMC3PR14                         00000006
+PSMC3PR15                         00000007
+PSMC3PR2                          00000002
+PSMC3PR3                          00000003
+PSMC3PR4                          00000004
+PSMC3PR5                          00000005
+PSMC3PR6                          00000006
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 27
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PSMC3PR7                          00000007
+PSMC3PR8                          00000000
+PSMC3PR9                          00000001
+PSMC3PRH                          00000EE6
+PSMC3PRL                          00000EE5
+PSMC3PRS                          00000EDC
+PSMC3REBS                         00000ED8
+PSMC3SIE                          00000002
+PSMC3SIF                          00000002
+PSMC3STR0                         00000EEE
+PSMC3STR1                         00000EEF
+PSMC3SYNC                         00000ED3
+PSMC3TIE                          00000006
+PSMC3TIF                          00000006
+PSMC3TMR                          00000EE7
+PSMC3TMR0                         00000000
+PSMC3TMR1                         00000001
+PSMC3TMR10                        00000002
+PSMC3TMR11                        00000003
+PSMC3TMR12                        00000004
+PSMC3TMR13                        00000005
+PSMC3TMR14                        00000006
+PSMC3TMR15                        00000007
+PSMC3TMR2                         00000002
+PSMC3TMR3                         00000003
+PSMC3TMR4                         00000004
+PSMC3TMR5                         00000005
+PSMC3TMR6                         00000006
+PSMC3TMR7                         00000007
+PSMC3TMR8                         00000000
+PSMC3TMR9                         00000001
+PSMC3TMRH                         00000EE8
+PSMC3TMRL                         00000EE7
+PSMC4ASDC                         00000F1D
+PSMC4ASDL                         00000F1E
+PSMC4ASDS                         00000F1F
+PSMC4BLKF                         00000F2C
+PSMC4BLKF0                        00000000
+PSMC4BLKF1                        00000001
+PSMC4BLKF2                        00000002
+PSMC4BLKF3                        00000003
+PSMC4BLKF4                        00000004
+PSMC4BLKF5                        00000005
+PSMC4BLKF6                        00000006
+PSMC4BLKF7                        00000007
+PSMC4BLKR                         00000F2B
+PSMC4BLKR0                        00000000
+PSMC4BLKR1                        00000001
+PSMC4BLKR2                        00000002
+PSMC4BLKR3                        00000003
+PSMC4BLKR4                        00000004
+PSMC4BLKR5                        00000005
+PSMC4BLKR6                        00000006
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 28
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PSMC4BLKR7                        00000007
+PSMC4BLNK                         00000F17
+PSMC4CLK                          00000F14
+PSMC4CON                          00000F11
+PSMC4DBF                          00000F2A
+PSMC4DBF0                         00000000
+PSMC4DBF1                         00000001
+PSMC4DBF2                         00000002
+PSMC4DBF3                         00000003
+PSMC4DBF4                         00000004
+PSMC4DBF5                         00000005
+PSMC4DBF6                         00000006
+PSMC4DBF7                         00000007
+PSMC4DBR                          00000F29
+PSMC4DBR0                         00000000
+PSMC4DBR1                         00000001
+PSMC4DBR2                         00000002
+PSMC4DBR3                         00000003
+PSMC4DBR4                         00000004
+PSMC4DBR5                         00000005
+PSMC4DBR6                         00000006
+PSMC4DBR7                         00000007
+PSMC4DC                           00000F23
+PSMC4DC0                          00000000
+PSMC4DC1                          00000001
+PSMC4DC10                         00000002
+PSMC4DC11                         00000003
+PSMC4DC12                         00000004
+PSMC4DC13                         00000005
+PSMC4DC14                         00000006
+PSMC4DC15                         00000007
+PSMC4DC2                          00000002
+PSMC4DC3                          00000003
+PSMC4DC4                          00000004
+PSMC4DC5                          00000005
+PSMC4DC6                          00000006
+PSMC4DC7                          00000007
+PSMC4DC8                          00000000
+PSMC4DC9                          00000001
+PSMC4DCH                          00000F24
+PSMC4DCL                          00000F23
+PSMC4DCS                          00000F1B
+PSMC4EN                           00000007
+PSMC4FEBS                         00000F19
+PSMC4FFA                          00000F2D
+PSMC4FFA0                         00000000
+PSMC4FFA1                         00000001
+PSMC4FFA2                         00000002
+PSMC4FFA3                         00000003
+PSMC4INT                          00000F20
+PSMC4LD                           00000006
+PSMC4MDL                          00000F12
+PSMC4OEN                          00000F15
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 29
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PSMC4PH                           00000F21
+PSMC4PH0                          00000000
+PSMC4PH1                          00000001
+PSMC4PH10                         00000002
+PSMC4PH11                         00000003
+PSMC4PH12                         00000004
+PSMC4PH13                         00000005
+PSMC4PH14                         00000006
+PSMC4PH15                         00000007
+PSMC4PH2                          00000002
+PSMC4PH3                          00000003
+PSMC4PH4                          00000004
+PSMC4PH5                          00000005
+PSMC4PH6                          00000006
+PSMC4PH7                          00000007
+PSMC4PH8                          00000000
+PSMC4PH9                          00000001
+PSMC4PHH                          00000F22
+PSMC4PHL                          00000F21
+PSMC4PHS                          00000F1A
+PSMC4POL                          00000F16
+PSMC4PR                           00000F25
+PSMC4PR0                          00000000
+PSMC4PR1                          00000001
+PSMC4PR10                         00000002
+PSMC4PR11                         00000003
+PSMC4PR12                         00000004
+PSMC4PR13                         00000005
+PSMC4PR14                         00000006
+PSMC4PR15                         00000007
+PSMC4PR2                          00000002
+PSMC4PR3                          00000003
+PSMC4PR4                          00000004
+PSMC4PR5                          00000005
+PSMC4PR6                          00000006
+PSMC4PR7                          00000007
+PSMC4PR8                          00000000
+PSMC4PR9                          00000001
+PSMC4PRH                          00000F26
+PSMC4PRL                          00000F25
+PSMC4PRS                          00000F1C
+PSMC4REBS                         00000F18
+PSMC4SIE                          00000003
+PSMC4SIF                          00000003
+PSMC4STR0                         00000F2E
+PSMC4STR1                         00000F2F
+PSMC4SYNC                         00000F13
+PSMC4TIE                          00000007
+PSMC4TIF                          00000007
+PSMC4TMR                          00000F27
+PSMC4TMR0                         00000000
+PSMC4TMR1                         00000001
+PSMC4TMR10                        00000002
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 30
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PSMC4TMR11                        00000003
+PSMC4TMR12                        00000004
+PSMC4TMR13                        00000005
+PSMC4TMR14                        00000006
+PSMC4TMR15                        00000007
+PSMC4TMR2                         00000002
+PSMC4TMR3                         00000003
+PSMC4TMR4                         00000004
+PSMC4TMR5                         00000005
+PSMC4TMR6                         00000006
+PSMC4TMR7                         00000007
+PSMC4TMR8                         00000000
+PSMC4TMR9                         00000001
+PSMC4TMRH                         00000F28
+PSMC4TMRL                         00000F27
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RA6                               00000006
+RA7                               00000007
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RC0                               00000000
+RC1                               00000001
+RC1REG                            00000199
+RC1STA                            0000019D
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RCEN                              00000003
+RCIDL                             00000006
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             00000199
+RCREG1                            00000199
+RCSTA                             0000019D
+RCSTA1                            0000019D
+RD                                00000000
+RE3                               00000003
+RSEN                              00000001
+RX9                               00000006
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 31
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RX9D                              00000000
+RXSEL                             00000001
+R_NOT_W                           00000002
+S                                 00000003
+SBCDE                             00000002
+SBOREN                            00000007
+SCIE                              00000005
+SCKP                              00000004
+SCKSEL                            00000004
+SCS0                              00000000
+SCS1                              00000001
+SDAHT                             00000003
+SDISEL                            00000003
+SDOSEL                            00000005
+SEN                               00000000
+SENDB                             00000003
+SLRCONA                           0000030C
+SLRCONA0                          00000000
+SLRCONA1                          00000001
+SLRCONA2                          00000002
+SLRCONA3                          00000003
+SLRCONA4                          00000004
+SLRCONA5                          00000005
+SLRCONA6                          00000006
+SLRCONA7                          00000007
+SLRCONB                           0000030D
+SLRCONB0                          00000000
+SLRCONB1                          00000001
+SLRCONB2                          00000002
+SLRCONB3                          00000003
+SLRCONB4                          00000004
+SLRCONB5                          00000005
+SLRCONB6                          00000006
+SLRCONB7                          00000007
+SLRCONC                           0000030E
+SLRCONC0                          00000000
+SLRCONC1                          00000001
+SLRCONC2                          00000002
+SLRCONC3                          00000003
+SLRCONC4                          00000004
+SLRCONC5                          00000005
+SLRCONC6                          00000006
+SLRCONC7                          00000007
+SMP                               00000007
+SP                                00000006
+SP1BRG                            0000019B
+SP1BRGH                           0000019C
+SP1BRGL                           0000019B
+SPBRG                             0000019B
+SPBRG1                            0000019B
+SPBRGH                            0000019C
+SPBRGH1                           0000019C
+SPBRGL                            0000019B
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 32
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SPEN                              00000007
+SPLLEN                            00000007
+SREN                              00000005
+SSP1ADD                           00000212
+SSP1ADD0                          00000000
+SSP1ADD1                          00000001
+SSP1ADD2                          00000002
+SSP1ADD3                          00000003
+SSP1ADD4                          00000004
+SSP1ADD5                          00000005
+SSP1ADD6                          00000006
+SSP1ADD7                          00000007
+SSP1BUF                           00000211
+SSP1BUF0                          00000000
+SSP1BUF1                          00000001
+SSP1BUF2                          00000002
+SSP1BUF3                          00000003
+SSP1BUF4                          00000004
+SSP1BUF5                          00000005
+SSP1BUF6                          00000006
+SSP1BUF7                          00000007
+SSP1CON                           00000215
+SSP1CON1                          00000215
+SSP1CON2                          00000216
+SSP1CON3                          00000217
+SSP1IE                            00000003
+SSP1IF                            00000003
+SSP1MSK                           00000213
+SSP1MSK0                          00000000
+SSP1MSK1                          00000001
+SSP1MSK2                          00000002
+SSP1MSK3                          00000003
+SSP1MSK4                          00000004
+SSP1MSK5                          00000005
+SSP1MSK6                          00000006
+SSP1MSK7                          00000007
+SSP1STAT                          00000214
+SSPADD                            00000212
+SSPBUF                            00000211
+SSPCON                            00000215
+SSPCON1                           00000215
+SSPCON2                           00000216
+SSPCON3                           00000217
+SSPEN                             00000005
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPMSK                            00000213
+SSPOV                             00000006
+SSPSTAT                           00000214
+STATUS                            00000003
+STATUS_SHAD                       00000FE4
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 33
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+STKOVF                            00000007
+STKPTR                            00000FED
+STKUNF                            00000006
+SWDTEN                            00000000
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000018
+T1GCON                            00000019
+T1GGO                             00000003
+T1GPOL                            00000006
+T1GSPM                            00000004
+T1GSS0                            00000000
+T1GSS1                            00000001
+T1GTM                             00000005
+T1GVAL                            00000002
+T1OSCEN                           00000003
+T1OSCR                            00000007
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             0000001C
+T2OUTPS0                          00000003
+T2OUTPS1                          00000004
+T2OUTPS2                          00000005
+T2OUTPS3                          00000006
+TMR0                              00000015
+TMR0CS                            00000005
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR0SE                            00000004
+TMR1                              00000016
+TMR1CS0                           00000006
+TMR1CS1                           00000007
+TMR1GE                            00000007
+TMR1GIE                           00000007
+TMR1GIF                           00000007
+TMR1H                             00000017
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             00000016
+TMR1ON                            00000000
+TMR2                              0000001A
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOSH                              00000FEF
+TOSL                              00000FEE
+TRIGSEL0                          00000004
+TRIGSEL1                          00000005
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 34
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TRIGSEL2                          00000006
+TRIGSEL3                          00000007
+TRISA                             0000008C
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISA6                            00000006
+TRISA7                            00000007
+TRISB                             0000008D
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             0000008E
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISE                             00000090
+TRISE3                            00000003
+TRMT                              00000001
+TSEN                              00000005
+TSRNG                             00000004
+TUN0                              00000000
+TUN1                              00000001
+TUN2                              00000002
+TUN3                              00000003
+TUN4                              00000004
+TUN5                              00000005
+TX1REG                            0000019A
+TX1STA                            0000019E
+TX9                               00000006
+TX9D                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             0000019A
+TXREG1                            0000019A
+TXSEL                             00000002
+TXSTA                             0000019E
+TXSTA1                            0000019E
+UA                                00000001
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 35
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+VREGCON                           00000197
+VREGPM                            00000001
+W                                 00000000
+WCOL                              00000007
+WDTCON                            00000097
+WDTPS0                            00000001
+WDTPS1                            00000002
+WDTPS2                            00000003
+WDTPS3                            00000004
+WDTPS4                            00000005
+WPUA                              0000020C
+WPUA0                             00000000
+WPUA1                             00000001
+WPUA2                             00000002
+WPUA3                             00000003
+WPUA4                             00000004
+WPUA5                             00000005
+WPUA6                             00000006
+WPUA7                             00000007
+WPUB                              0000020D
+WPUB0                             00000000
+WPUB1                             00000001
+WPUB2                             00000002
+WPUB3                             00000003
+WPUB4                             00000004
+WPUB5                             00000005
+WPUB6                             00000006
+WPUB7                             00000007
+WPUC                              0000020E
+WPUC0                             00000000
+WPUC1                             00000001
+WPUC2                             00000002
+WPUC3                             00000003
+WPUC4                             00000004
+WPUC5                             00000005
+WPUC6                             00000006
+WPUC7                             00000007
+WPUE                              00000210
+WPUE3                             00000003
+WR                                00000001
+WREG                              00000009
+WREG_SHAD                         00000FE5
+WREN                              00000002
+WRERR                             00000003
+WUE                               00000001
+Z                                 00000002
+Z_SHAD                            00000002
+_BOREN_NSLEEP                     00003DFF
+_BOREN_OFF                        000039FF
+_BOREN_ON                         00003FFF
+_BOREN_SBODEN                     00003BFF
+_BORV_HI                          00003BFF
+_BORV_LO                          00003FFF
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 36
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_CLKOUTEN_OFF                     00003FFF
+_CLKOUTEN_ON                      000037FF
+_CONFIG1                          00008007
+_CONFIG2                          00008008
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_OFF                           00003FFF
+_CP_ON                            00003F7F
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         00002FFF
+_DEVID1                           00008006
+_FCMEN_OFF                        00001FFF
+_FCMEN_ON                         00003FFF
+_FOSC_ECH                         00003FFF
+_FOSC_ECL                         00003FFD
+_FOSC_ECM                         00003FFE
+_FOSC_EXTRC                       00003FFB
+_FOSC_HS                          00003FFA
+_FOSC_INTOSC                      00003FFC
+_FOSC_LP                          00003FF8
+_FOSC_XT                          00003FF9
+_IDLOC0                           00008000
+_IDLOC1                           00008001
+_IDLOC2                           00008002
+_IDLOC3                           00008003
+_IESO_OFF                         00002FFF
+_IESO_ON                          00003FFF
+_LPBOR_OFF                        00003FFF
+_LPBOR_ON                         000037FF
+_LVP_OFF                          00001FFF
+_LVP_ON                           00003FFF
+_MCLRE_OFF                        00003FBF
+_MCLRE_ON                         00003FFF
+_PLLEN_OFF                        00003EFF
+_PLLEN_ON                         00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FDF
+_STVREN_OFF                       00003DFF
+_STVREN_ON                        00003FFF
+_VCAPEN_OFF                       00003FFF
+_VCAPEN_ON                        00003FDF
+_WDTE_NSLEEP                      00003FF7
+_WDTE_OFF                         00003FE7
+_WDTE_ON                          00003FFF
+_WDTE_SWDTEN                      00003FEF
+_WRT_ALL                          00003FFC
+_WRT_BOOT                         00003FFE
+_WRT_HALF                         00003FFD
+_WRT_OFF                          00003FFF
+__16F1788                         00000001
+__CODE_END                        00003FFF
+__CODE_START                      00000000
+__COMMON_RAM_END                  0000007F
+gpasm-1.4.0 #1107 (Apr  3 2018) .checkdevices   10-15-2019  15:44:38        PAGE 37
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+__COMMON_RAM_START                00000070
+__EEPROM_END                      0000F0FF
+__EEPROM_START                    0000F000
+__LINEAR_RAM_END                  000027EF
+__LINEAR_RAM_START                00002000
+__VECTOR_INT                      00000004
+__VECTOR_RESET                    00000000
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+

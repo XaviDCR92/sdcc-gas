@@ -1,0 +1,215 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-2">
+    <title>&#956;Csim: Invokation</title>
+  </head>
+  <body style=" background-color: white;">
+    <h1>Starting the simulator</h1>
+    There are separate programs to simulate different microcontroller families:
+    <p>MCS51 family is simulated by <b>s51</b> <br>
+      AVR family is simulated by <b>savr</b> <br>
+      Z80 processor is simulated by <b>sz80</b> <br>
+      XA family is simulated by <b>sxa</b> <br>
+      HC08 processor is simulated by <b>shc08</b> <br>
+      ST7 family is simulated by <b>sst7</b> <br>
+      STM8 family is simulated by <b>sstm8</b> <br>
+      TLCS90 family is simulated by <b>stlcs<br>
+      </b>Padauk family is simulated by <b>spdk</b></p>
+    <p>The simulator can be started in the following way: </p>
+    <p><tt><font color="blue">$</font> s51 [-hHVvPgGwb] [-p prompt] [-t CPU] [-X
+        freq[k|M]] [-C cfg_file] [-e command] [-c file] [-s file] [-S
+        optionlist] [-I if_optionlist] [-a nr] [-Z portnum] [-k portnum] [-o colorlist] [files...]</tt> </p>
+    <p>Specified files must be names of Intel hex files. Simulator loads them in
+      the specified order into the ROM of the simulated system. If the file is
+      specified without extension, the simulator will try to find intel hex file
+      (filename extended with .hex), omf file (with .omf) and cdb file (with
+      .cdb extension). Simulator can interpret content of these SDCC output
+      files and reads information from them.</p>
+    <p>Options: </p>
+    <dl>
+      <dt><tt><b>-t CPU</b></tt> </dt>
+      <dd>Type of CPU. Recognized types are different for different simulators,
+        for example MCS51 simulator recognizes 51, 8051, 8751, C51, 80C51,
+        87C51, 31, 8031, C31, 80C31, 52, 8052, 8752, C52, 80C52, 87C52, 32,
+        8032, C32, 80C32, 51R, 51RA, 51RB, 51RC, C51R, C51RA, C51RB, C51RC,
+        89C51R, 251, C251, DS390, DS390F. Note that recognition of a CPU type as
+        option does not mean that the simulator can simulate that kind of CPU.
+        Default type is C51. <br>
+        DS390 supports Dallas DS80C390 24 bit flat mode, dual-dptr operations,
+        etc. DS390F is the same as DS390, but it starts already in 24 bit flat
+        mode (ACON = 0xFA instead of 0xF8). DS390F is needed to run programs
+        compiled with sdcc -mds390.<br>
+        <span style="font-family: monospace;">-H</span> option can be used to
+        list all of recognized CPU types.<br>
+        See <a href="cpu_types.html">how to select CPU type</a>. </dd>
+      <dt><tt><b>-X freq[k|M]</b></tt> </dt>
+      <dd>XTAL frequency is <b>freq</b> Hertz. <b>k</b> or <b>M</b> can be
+        used to specify frequency in kHZ or MHz. Space is not allowed between
+        the number and the <b>k</b> or <b>M</b>. Default value is 11059200 Hz.
+        <a name="coption"></a></dd>
+      <dt><span style="font-family: monospace;"><b>-C cfg_file</b></span></dt>
+      <dd>Read and execute initial commands from specified file.</dd>
+      <dt><b><span style="font-family: monospace;">-e command</span></b></dt>
+      <dd>Execute command at program startup (before config file).</dd>
+      <dt><a name="coption"><tt><b>-c file</b></tt></a> </dt>
+      <dd>Open command console on <b>file</b>. Command consoles are on standard
+        input and output by default. Using this option the console can be opened
+        on any file for example on the serial interface of the computer. <a name="Zoption"></a></dd>
+      <dt><a name="Zoption"><tt><b>-Z portnum</b></tt></a> </dt>
+      <dd>Listen for incoming connections on port <b>portnum</b>. Using this
+        option <i>&#956;Csim</i> can serve multiple consoles. You can get a console
+        by simply telnet into machine running <i>&#956;Csim</i> to port <b>portnumber</b>.
+        This option is not available on platforms which doesn't support BSD
+        networking. <br>
+        See <a href="mulcons.html">how to use multiple consoles</a>. </dd>
+      <dt><tt><b>-k portnum</b></tt></dt>
+      <dd>Listen for incoming connections on port <b>portnum</b>. When this
+        port connected, the connection will be attached to simulated UART0.This
+        option is not useful for other UARTs, so it is better to use the more
+        general -S option. </dd>
+      <dt><tt><b>-s file</b></tt> </dt>
+      <dd>Connect serial interface (UART0) of the simulated microcontroller to
+        the <b>file</b>. Nothing is used by default which means that characters
+        transmitted by serial interface of the simulated microcontroller go to
+        nowhere and it will never receive anything. If you are going to
+        communicate with serial interface interactively the best idea is to
+        specify a terminal with -s option. </dd>
+      <dt><tt><b>-S uart=nr,in=file,out=file,port=nr,iport=nr,oport=nr</b></tt>
+      </dt>
+      <dd>Using this option you can specify different files for input and output
+        streams that <i>&#956;Csim</i> uses to simulate microprocessor's serial
+        interface. <br>
+        See <a href="serial.html">more about serial interface simulation</a>. </dd>
+      <dt><span style="font-family: monospace;"><b>-I
+            if=memory[address],in=file,out=file</b></span></dt>
+      <dd>Specify options (as comma separated list) for the simulator interface.
+        <b>if</b> option turns on the interface and specifies address space and
+        location for use by the interface. <b>in</b> and <b>out</b> can be
+        used to specify file names to use for file IO.
+	<br>See <a href="simif.html">more about simulator interface</a>.</dd>
+      <dt><tt><b>-p prompt</b></tt> </dt>
+      <dd>Using this option you can specify any string to be the prompt of
+        command interpreter, for example:
+        <pre><font color="blue">$</font> s51 -p "s51&gt; "
+<font color="green">ucsim 0.2.12, Copyright (C) 1997 Daniel Drotos, Talker Bt.
+ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
+0s51&gt; </font></pre>
+      </dd>
+      <dt><tt><b>-P</b></tt> </dt>
+      <dd>Prompt will be a null ('\0') character. This feature can be useful for
+        programs which controls simulator through a pipe. </dd>
+      <dt><span style="font-family: monospace;"><b>-o colorsetting,...<br>
+          </b></span></dt>
+      <dd>List of color settings in form: <span style="font-family: monospace;">what=colspec,...</span>
+        where <i>what</i> specifies object to be colored and <i>colspec</i> is
+        : separated list of color options e.g.: prompt=b:white:black (bold white
+        on black).<br>
+        <i>what</i> can be:<br>
+        <ul>
+          <li><span style="font-family: monospace;">prompt</span> prompt color,</li>
+          <li><span style="font-family: monospace;">prompt_console</span>
+            console number in front of the prompt,</li>
+          <li><span style="font-family: monospace;">command</span> color of
+            entered command,</li>
+          <li><span style="font-family: monospace;">answer</span> default color
+            for answers printed by commands,</li>
+          <li><span style="font-family: monospace;">result</span> color of
+            expression result,</li>
+          <li><span style="font-family: monospace;">dump_address</span> address
+            color in memory dump (1<sup>st</sup> column)</li>
+          <li><span style="font-family: monospace;">dump_number</span> color of
+            numerical part of the dump (2<sup>nd</sup> column)</li>
+          <li><span style="font-family: monospace;">dump_char</span> color of
+            textual part of the dump (3<sup>rd</sup> column)</li>
+          <li><span style="font-family: monospace;">error</span> color of error
+            messages</li>
+          <li><span style="font-family: monospace;">debug</span> color of debug
+            messages</li>
+          <li><span style="font-family: monospace;">ui_mkey</span> menu-key
+            color on UI display</li>
+          <li><span style="font-family: monospace;">ui_mitem</span> menu-item
+            color on UI display</li>
+          <li><span style="font-family: monospace;">ui_label</span> label color
+            on UI display</li>
+          <li><span style="font-family: monospace;">ui_time</span> color of
+            time-value on UI display</li>
+          <li><span style="font-family: monospace;">ui_title</span> title color
+            on UI display</li>
+          <li><span style="font-family: monospace;">ui_run</span> run-state
+            color on UI display</li>
+          <li><span style="font-family: monospace;">ui_stop</span> stop-state
+            color on UI display</li>
+        </ul>
+        <i>colspec</i> can be a rendering option, or a color name. First color
+        name is used for foreground color and the last one will be the color of
+        background. Rendering options are:<br>
+        <ul>
+          <li><span style="font-family: monospace;">b</span> bold</li>
+          <li><span style="font-family: monospace;">f</span> faint</li>
+          <li><span style="font-family: monospace;">i</span> italic</li>
+          <li><span style="font-family: monospace;">u</span> undelined</li>
+          <li><span style="font-family: monospace;">d</span> double underlined</li>
+          <li><span style="font-family: monospace;">c</span> crossed over</li>
+          <li><span style="font-family: monospace;">o</span> overlined</li>
+          <li><span style="font-family: monospace;">k</span> or <span style="font-family: monospace;">l</span>
+            blink</li>
+        </ul>
+        Color name can be a predefined name, or an RGB value. Known names are:<br>
+        <ul>
+          <li><span style="font-family: monospace;">black</span></li>
+          <li><span style="font-family: monospace;">bblack</span> (bright black,
+            this is grey on some terminals)</li>
+          <li><span style="font-family: monospace;">red</span></li>
+          <li><span style="font-family: monospace;">bred</span> (bright red)</li>
+          <li><span style="font-family: monospace;">green</span></li>
+          <li><span style="font-family: monospace;">bgreen</span> (bright green)</li>
+          <li><span style="font-family: monospace;">yellow</span></li>
+          <li><span style="font-family: monospace;">byellow</span> (bright
+            yellow)</li>
+          <li><span style="font-family: monospace;">blue</span></li>
+          <li><span style="font-family: monospace;">bblue</span> (bright blue)</li>
+          <li><span style="font-family: monospace;">magenta</span></li>
+          <li><span style="font-family: monospace;">bmagenta</span> (bright
+            magenta)</li>
+          <li><span style="font-family: monospace;">cyan</span></li>
+          <li><span style="font-family: monospace;">bcyan</span> (bright cyan)</li>
+          <li><span style="font-family: monospace;">white</span></li>
+          <li><span style="font-family: monospace;">bwhite</span> (bright white)</li>
+        </ul>
+        How the named colors appear on the screen depends on the terminal
+        emulator program.<br>
+        RGB values can be specified as <span style="font-family: monospace;">#RRGGBB</span>
+        where components are two character hexadecimal values of the red, green
+        and blue.<br>
+        Example (set prompt to blinking bold white on green, and set command to
+        underlined bright green on black):<br>
+        <span style="font-family: monospace;">-o
+          prompt=lb:white:green,command=u:bgreen:black</span></dd>
+      <dt><b><span style="font-family: monospace;">-b</span></b></dt>
+      <dd>Black &amp; white (non-color) console.</dd>
+      <dt><span style="font-family: monospace;"><b>-g</b></span></dt>
+      <dd>Go, start simulation when the program is loaded.</dd>
+      <dt><span style="font-family: monospace;"><b>-G</b></span></dt>
+      <dd>Start simulation when the program is loaded and terminate the
+        simulator when the simulation stops (maybe on breakpoint).</dd>
+      <dt><span style="font-family: monospace;"><b>-a nr</b></span></dt>
+      <dd>Set size of variable space. Default is 256.</dd>
+      <dt><span style="font-family: monospace;"><b>-w</b></span></dt>
+      <dd>Writable flash.</dd>
+      <dt><tt><b>-V</b></tt> </dt>
+      <dd>Verbose mode. The simulator notifies you about some kind of internal
+        actions for example interrupts. Messages are printed on command console.
+      </dd>
+      <dt><tt><b>-v</b></tt> </dt>
+      <dd>Print out version number and stop. </dd>
+      <dt><tt><b>-H</b></tt> </dt>
+      <dd>Print out types of known CPUs. Names printed out by this option can be
+        used to determine CPU type using <tt><b>-t</b></tt> option. </dd>
+      <dt><tt><b>-h</b></tt> </dt>
+      <dd>Print out a short help about the options and stop. </dd>
+    </dl>
+    <hr>
+  </body>
+</html>

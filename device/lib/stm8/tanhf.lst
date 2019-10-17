@@ -1,0 +1,296 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.9.3 #11345 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module tanhf
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _fabsf
+                                     12 	.globl _expf
+                                     13 	.globl _tanhf
+                                     14 ;--------------------------------------------------------
+                                     15 ; ram data
+                                     16 ;--------------------------------------------------------
+                                     17 	.area DATA
+                                     18 ;--------------------------------------------------------
+                                     19 ; ram data
+                                     20 ;--------------------------------------------------------
+                                     21 	.area INITIALIZED
+                                     22 ;--------------------------------------------------------
+                                     23 ; absolute external ram data
+                                     24 ;--------------------------------------------------------
+                                     25 	.area DABS (ABS)
+                                     26 
+                                     27 ; default segment ordering for linker
+                                     28 	.area HOME
+                                     29 	.area GSINIT
+                                     30 	.area GSFINAL
+                                     31 	.area CONST
+                                     32 	.area INITIALIZER
+                                     33 	.area CODE
+                                     34 
+                                     35 ;--------------------------------------------------------
+                                     36 ; global & static initialisations
+                                     37 ;--------------------------------------------------------
+                                     38 	.area HOME
+                                     39 	.area GSINIT
+                                     40 	.area GSFINAL
+                                     41 	.area GSINIT
+                                     42 ;--------------------------------------------------------
+                                     43 ; Home
+                                     44 ;--------------------------------------------------------
+                                     45 	.area HOME
+                                     46 	.area HOME
+                                     47 ;--------------------------------------------------------
+                                     48 ; code
+                                     49 ;--------------------------------------------------------
+                                     50 	.area CODE
+                                     51 ;	../tanhf.c: 50: float tanhf(float x) _FLOAT_FUNC_REENTRANT
+                                     52 ;	-----------------------------------------
+                                     53 ;	 function tanhf
+                                     54 ;	-----------------------------------------
+      000000                         55 _tanhf:
+      000000 52 0C            [ 2]   56 	sub	sp, #12
+                                     57 ;	../tanhf.c: 54: f=fabsf(x);
+      000002 1E 11            [ 2]   58 	ldw	x, (0x11, sp)
+      000004 89               [ 2]   59 	pushw	x
+      000005 1E 11            [ 2]   60 	ldw	x, (0x11, sp)
+      000007 89               [ 2]   61 	pushw	x
+      000008 CDr00r00         [ 4]   62 	call	_fabsf
+      00000B 5B 04            [ 2]   63 	addw	sp, #4
+      00000D 1F 03            [ 2]   64 	ldw	(0x03, sp), x
+      00000F 17 01            [ 2]   65 	ldw	(0x01, sp), y
+                                     66 ;	../tanhf.c: 55: if(f>SBIG) r=1.0;
+      000011 1E 03            [ 2]   67 	ldw	x, (0x03, sp)
+      000013 89               [ 2]   68 	pushw	x
+      000014 1E 03            [ 2]   69 	ldw	x, (0x03, sp)
+      000016 89               [ 2]   70 	pushw	x
+      000017 4B B0            [ 1]   71 	push	#0xb0
+      000019 4B 2C            [ 1]   72 	push	#0x2c
+      00001B 4B 10            [ 1]   73 	push	#0x10
+      00001D 4B 41            [ 1]   74 	push	#0x41
+      00001F CDr00r00         [ 4]   75 	call	___fslt
+      000022 5B 08            [ 2]   76 	addw	sp, #8
+      000024 6B 0C            [ 1]   77 	ld	(0x0c, sp), a
+      000026 27 0B            [ 1]   78 	jreq	00108$
+      000028 5F               [ 1]   79 	clrw	x
+      000029 1F 0B            [ 2]   80 	ldw	(0x0b, sp), x
+      00002B AE 3F 80         [ 2]   81 	ldw	x, #0x3f80
+      00002E 1F 09            [ 2]   82 	ldw	(0x09, sp), x
+      000030 CCr01r6B         [ 2]   83 	jp	00109$
+      000033                         84 00108$:
+                                     85 ;	../tanhf.c: 56: else if(f>K1)
+      000033 1E 03            [ 2]   86 	ldw	x, (0x03, sp)
+      000035 89               [ 2]   87 	pushw	x
+      000036 1E 03            [ 2]   88 	ldw	x, (0x03, sp)
+      000038 89               [ 2]   89 	pushw	x
+      000039 4B 54            [ 1]   90 	push	#0x54
+      00003B 4B 9F            [ 1]   91 	push	#0x9f
+      00003D 4B 0C            [ 1]   92 	push	#0x0c
+      00003F 4B 3F            [ 1]   93 	push	#0x3f
+      000041 CDr00r00         [ 4]   94 	call	___fslt
+      000044 5B 08            [ 2]   95 	addw	sp, #8
+      000046 4D               [ 1]   96 	tnz	a
+      000047 27 74            [ 1]   97 	jreq	00105$
+                                     98 ;	../tanhf.c: 58: r=0.5-1.0/(expf(f+f)+1.0);
+      000049 1E 03            [ 2]   99 	ldw	x, (0x03, sp)
+      00004B 89               [ 2]  100 	pushw	x
+      00004C 1E 03            [ 2]  101 	ldw	x, (0x03, sp)
+      00004E 89               [ 2]  102 	pushw	x
+      00004F 1E 07            [ 2]  103 	ldw	x, (0x07, sp)
+      000051 89               [ 2]  104 	pushw	x
+      000052 1E 07            [ 2]  105 	ldw	x, (0x07, sp)
+      000054 89               [ 2]  106 	pushw	x
+      000055 CDr00r00         [ 4]  107 	call	___fsadd
+      000058 5B 08            [ 2]  108 	addw	sp, #8
+      00005A 1F 0B            [ 2]  109 	ldw	(0x0b, sp), x
+      00005C 17 09            [ 2]  110 	ldw	(0x09, sp), y
+      00005E 1E 0B            [ 2]  111 	ldw	x, (0x0b, sp)
+      000060 89               [ 2]  112 	pushw	x
+      000061 1E 0B            [ 2]  113 	ldw	x, (0x0b, sp)
+      000063 89               [ 2]  114 	pushw	x
+      000064 CDr00r00         [ 4]  115 	call	_expf
+      000067 5B 04            [ 2]  116 	addw	sp, #4
+      000069 1F 0B            [ 2]  117 	ldw	(0x0b, sp), x
+      00006B 17 09            [ 2]  118 	ldw	(0x09, sp), y
+      00006D 5F               [ 1]  119 	clrw	x
+      00006E 89               [ 2]  120 	pushw	x
+      00006F 4B 80            [ 1]  121 	push	#0x80
+      000071 4B 3F            [ 1]  122 	push	#0x3f
+      000073 1E 0F            [ 2]  123 	ldw	x, (0x0f, sp)
+      000075 89               [ 2]  124 	pushw	x
+      000076 1E 0F            [ 2]  125 	ldw	x, (0x0f, sp)
+      000078 89               [ 2]  126 	pushw	x
+      000079 CDr00r00         [ 4]  127 	call	___fsadd
+      00007C 5B 08            [ 2]  128 	addw	sp, #8
+      00007E 1F 0B            [ 2]  129 	ldw	(0x0b, sp), x
+      000080 17 09            [ 2]  130 	ldw	(0x09, sp), y
+      000082 1E 0B            [ 2]  131 	ldw	x, (0x0b, sp)
+      000084 89               [ 2]  132 	pushw	x
+      000085 1E 0B            [ 2]  133 	ldw	x, (0x0b, sp)
+      000087 89               [ 2]  134 	pushw	x
+      000088 5F               [ 1]  135 	clrw	x
+      000089 89               [ 2]  136 	pushw	x
+      00008A 4B 80            [ 1]  137 	push	#0x80
+      00008C 4B 3F            [ 1]  138 	push	#0x3f
+      00008E CDr00r00         [ 4]  139 	call	___fsdiv
+      000091 5B 08            [ 2]  140 	addw	sp, #8
+      000093 89               [ 2]  141 	pushw	x
+      000094 90 89            [ 2]  142 	pushw	y
+      000096 5F               [ 1]  143 	clrw	x
+      000097 89               [ 2]  144 	pushw	x
+      000098 4B 00            [ 1]  145 	push	#0x00
+      00009A 4B 3F            [ 1]  146 	push	#0x3f
+      00009C CDr00r00         [ 4]  147 	call	___fssub
+      00009F 5B 08            [ 2]  148 	addw	sp, #8
+      0000A1 1F 0B            [ 2]  149 	ldw	(0x0b, sp), x
+      0000A3 17 09            [ 2]  150 	ldw	(0x09, sp), y
+                                    151 ;	../tanhf.c: 59: r+=r;
+      0000A5 1E 0B            [ 2]  152 	ldw	x, (0x0b, sp)
+      0000A7 89               [ 2]  153 	pushw	x
+      0000A8 1E 0B            [ 2]  154 	ldw	x, (0x0b, sp)
+      0000AA 89               [ 2]  155 	pushw	x
+      0000AB 1E 0F            [ 2]  156 	ldw	x, (0x0f, sp)
+      0000AD 89               [ 2]  157 	pushw	x
+      0000AE 1E 0F            [ 2]  158 	ldw	x, (0x0f, sp)
+      0000B0 89               [ 2]  159 	pushw	x
+      0000B1 CDr00r00         [ 4]  160 	call	___fsadd
+      0000B4 5B 08            [ 2]  161 	addw	sp, #8
+      0000B6 1F 0B            [ 2]  162 	ldw	(0x0b, sp), x
+      0000B8 17 09            [ 2]  163 	ldw	(0x09, sp), y
+      0000BA CCr01r6B         [ 2]  164 	jp	00109$
+      0000BD                        165 00105$:
+                                    166 ;	../tanhf.c: 61: else if(f<EPS) r=f;
+      0000BD 5F               [ 1]  167 	clrw	x
+      0000BE 89               [ 2]  168 	pushw	x
+      0000BF 4B 80            [ 1]  169 	push	#0x80
+      0000C1 4B 39            [ 1]  170 	push	#0x39
+      0000C3 1E 07            [ 2]  171 	ldw	x, (0x07, sp)
+      0000C5 89               [ 2]  172 	pushw	x
+      0000C6 1E 07            [ 2]  173 	ldw	x, (0x07, sp)
+      0000C8 89               [ 2]  174 	pushw	x
+      0000C9 CDr00r00         [ 4]  175 	call	___fslt
+      0000CC 5B 08            [ 2]  176 	addw	sp, #8
+      0000CE 4D               [ 1]  177 	tnz	a
+      0000CF 27 0B            [ 1]  178 	jreq	00102$
+      0000D1 16 03            [ 2]  179 	ldw	y, (0x03, sp)
+      0000D3 17 0B            [ 2]  180 	ldw	(0x0b, sp), y
+      0000D5 16 01            [ 2]  181 	ldw	y, (0x01, sp)
+      0000D7 17 09            [ 2]  182 	ldw	(0x09, sp), y
+      0000D9 CCr01r6B         [ 2]  183 	jp	00109$
+      0000DC                        184 00102$:
+                                    185 ;	../tanhf.c: 64: g=f*f;
+      0000DC 1E 03            [ 2]  186 	ldw	x, (0x03, sp)
+      0000DE 89               [ 2]  187 	pushw	x
+      0000DF 1E 03            [ 2]  188 	ldw	x, (0x03, sp)
+      0000E1 89               [ 2]  189 	pushw	x
+      0000E2 1E 07            [ 2]  190 	ldw	x, (0x07, sp)
+      0000E4 89               [ 2]  191 	pushw	x
+      0000E5 1E 07            [ 2]  192 	ldw	x, (0x07, sp)
+      0000E7 89               [ 2]  193 	pushw	x
+      0000E8 CDr00r00         [ 4]  194 	call	___fsmul
+      0000EB 5B 08            [ 2]  195 	addw	sp, #8
+      0000ED 1F 07            [ 2]  196 	ldw	(0x07, sp), x
+      0000EF 17 05            [ 2]  197 	ldw	(0x05, sp), y
+                                    198 ;	../tanhf.c: 65: r=f+f*(P(g)/Q(g));
+      0000F1 1E 07            [ 2]  199 	ldw	x, (0x07, sp)
+      0000F3 89               [ 2]  200 	pushw	x
+      0000F4 1E 07            [ 2]  201 	ldw	x, (0x07, sp)
+      0000F6 89               [ 2]  202 	pushw	x
+      0000F7 4B B2            [ 1]  203 	push	#0xb2
+      0000F9 4B 11            [ 1]  204 	push	#0x11
+      0000FB 4B 7B            [ 1]  205 	push	#0x7b
+      0000FD 4B BB            [ 1]  206 	push	#0xbb
+      0000FF CDr00r00         [ 4]  207 	call	___fsmul
+      000102 5B 08            [ 2]  208 	addw	sp, #8
+      000104 4B C6            [ 1]  209 	push	#0xc6
+      000106 4B E2            [ 1]  210 	push	#0xe2
+      000108 4B 52            [ 1]  211 	push	#0x52
+      00010A 4B BF            [ 1]  212 	push	#0xbf
+      00010C 89               [ 2]  213 	pushw	x
+      00010D 90 89            [ 2]  214 	pushw	y
+      00010F CDr00r00         [ 4]  215 	call	___fsadd
+      000112 5B 08            [ 2]  216 	addw	sp, #8
+      000114 1F 0B            [ 2]  217 	ldw	(0x0b, sp), x
+      000116 1E 07            [ 2]  218 	ldw	x, (0x07, sp)
+      000118 89               [ 2]  219 	pushw	x
+      000119 1E 07            [ 2]  220 	ldw	x, (0x07, sp)
+      00011B 89               [ 2]  221 	pushw	x
+      00011C 1E 0F            [ 2]  222 	ldw	x, (0x0f, sp)
+      00011E 89               [ 2]  223 	pushw	x
+      00011F 90 89            [ 2]  224 	pushw	y
+      000121 CDr00r00         [ 4]  225 	call	___fsmul
+      000124 5B 08            [ 2]  226 	addw	sp, #8
+      000126 1F 0B            [ 2]  227 	ldw	(0x0b, sp), x
+      000128 17 09            [ 2]  228 	ldw	(0x09, sp), y
+      00012A 4B 1A            [ 1]  229 	push	#0x1a
+      00012C 4B 2A            [ 1]  230 	push	#0x2a
+      00012E 4B 1E            [ 1]  231 	push	#0x1e
+      000130 4B 40            [ 1]  232 	push	#0x40
+      000132 1E 0B            [ 2]  233 	ldw	x, (0x0b, sp)
+      000134 89               [ 2]  234 	pushw	x
+      000135 1E 0B            [ 2]  235 	ldw	x, (0x0b, sp)
+      000137 89               [ 2]  236 	pushw	x
+      000138 CDr00r00         [ 4]  237 	call	___fsadd
+      00013B 5B 08            [ 2]  238 	addw	sp, #8
+      00013D 89               [ 2]  239 	pushw	x
+      00013E 90 89            [ 2]  240 	pushw	y
+      000140 1E 0F            [ 2]  241 	ldw	x, (0x0f, sp)
+      000142 89               [ 2]  242 	pushw	x
+      000143 1E 0F            [ 2]  243 	ldw	x, (0x0f, sp)
+      000145 89               [ 2]  244 	pushw	x
+      000146 CDr00r00         [ 4]  245 	call	___fsdiv
+      000149 5B 08            [ 2]  246 	addw	sp, #8
+      00014B 89               [ 2]  247 	pushw	x
+      00014C 90 89            [ 2]  248 	pushw	y
+      00014E 1E 07            [ 2]  249 	ldw	x, (0x07, sp)
+      000150 89               [ 2]  250 	pushw	x
+      000151 1E 07            [ 2]  251 	ldw	x, (0x07, sp)
+      000153 89               [ 2]  252 	pushw	x
+      000154 CDr00r00         [ 4]  253 	call	___fsmul
+      000157 5B 08            [ 2]  254 	addw	sp, #8
+      000159 89               [ 2]  255 	pushw	x
+      00015A 90 89            [ 2]  256 	pushw	y
+      00015C 1E 07            [ 2]  257 	ldw	x, (0x07, sp)
+      00015E 89               [ 2]  258 	pushw	x
+      00015F 1E 07            [ 2]  259 	ldw	x, (0x07, sp)
+      000161 89               [ 2]  260 	pushw	x
+      000162 CDr00r00         [ 4]  261 	call	___fsadd
+      000165 5B 08            [ 2]  262 	addw	sp, #8
+      000167 1F 0B            [ 2]  263 	ldw	(0x0b, sp), x
+      000169 17 09            [ 2]  264 	ldw	(0x09, sp), y
+      00016B                        265 00109$:
+                                    266 ;	../tanhf.c: 67: if(x<0.0) r=-r;
+      00016B 5F               [ 1]  267 	clrw	x
+      00016C 89               [ 2]  268 	pushw	x
+      00016D 5F               [ 1]  269 	clrw	x
+      00016E 89               [ 2]  270 	pushw	x
+      00016F 1E 15            [ 2]  271 	ldw	x, (0x15, sp)
+      000171 89               [ 2]  272 	pushw	x
+      000172 1E 15            [ 2]  273 	ldw	x, (0x15, sp)
+      000174 89               [ 2]  274 	pushw	x
+      000175 CDr00r00         [ 4]  275 	call	___fslt
+      000178 5B 08            [ 2]  276 	addw	sp, #8
+      00017A 4D               [ 1]  277 	tnz	a
+      00017B 27 0B            [ 1]  278 	jreq	00111$
+      00017D 16 0B            [ 2]  279 	ldw	y, (0x0b, sp)
+      00017F 1E 09            [ 2]  280 	ldw	x, (0x09, sp)
+      000181 58               [ 2]  281 	sllw	x
+      000182 8C               [ 1]  282 	ccf
+      000183 56               [ 2]  283 	rrcw	x
+      000184 17 0B            [ 2]  284 	ldw	(0x0b, sp), y
+      000186 1F 09            [ 2]  285 	ldw	(0x09, sp), x
+      000188                        286 00111$:
+                                    287 ;	../tanhf.c: 68: return r;
+      000188 1E 0B            [ 2]  288 	ldw	x, (0x0b, sp)
+      00018A 16 09            [ 2]  289 	ldw	y, (0x09, sp)
+                                    290 ;	../tanhf.c: 69: }
+      00018C 5B 0C            [ 2]  291 	addw	sp, #12
+      00018E 81               [ 4]  292 	ret
+                                    293 	.area CODE
+                                    294 	.area CONST
+                                    295 	.area INITIALIZER
+                                    296 	.area CABS (ABS)

@@ -1,0 +1,18 @@
+tinibios.rel: tinibios.c ../../include/tinibios.h \
+ ../../include/ds80c390.h ../../include/time.h ../../include/stdio.h \
+ ../../include/stdarg.h ../../include/sdcc-lib.h \
+ ../../include/asm/mcs51/features.h
+memcpyx.rel: memcpyx.c ../../include/string.h
+lcd390.rel: lcd390.c ../../include/tinibios.h ../../include/ds80c390.h \
+ ../../include/time.h ../../include/stdio.h ../../include/stdarg.h \
+ ../../include/sdcc-lib.h ../../include/asm/mcs51/features.h
+i2c390.rel: i2c390.c ../../include/tinibios.h ../../include/ds80c390.h \
+ ../../include/time.h
+rtc390.rel: rtc390.c ../../include/tinibios.h ../../include/ds80c390.h \
+ ../../include/time.h ../../include/stdio.h ../../include/stdarg.h \
+ ../../include/sdcc-lib.h ../../include/asm/mcs51/features.h \
+ ../../include/ctype.h
+putchar.rel: putchar.c ../../include/tinibios.h ../../include/ds80c390.h \
+ ../../include/time.h ../../include/stdio.h ../../include/stdarg.h \
+ ../../include/sdcc-lib.h ../../include/asm/mcs51/features.h
+gptr_cmp.rel: gptr_cmp.c

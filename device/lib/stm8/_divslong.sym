@@ -1,0 +1,19 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 1.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+    .__.$$$.=  002710 L   |     .__.ABS.=  000000 G   |     .__.CPU.=  000000 L
+    .__.H$L.=  000001 L   |   1 __divslo   000000 GR  |   1 __divslo   000009 R
+  1 __divslo   00000C R   |   1 __divslo   000015 R   |   1 __divslo   000018 R
+  1 __divslo   00001D R   |   1 __divslo   000026 R   |     __divulo   ****** GX
+    __fast_l   ****** GX
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
+Hexadecimal [24-Bits]
+
+Area Table
+
+   0 _CODE      size      0   flags    0
+   1 CODE       size     27   flags    0
+

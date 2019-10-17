@@ -1,0 +1,45 @@
+XH3
+H B areas 2 global symbols
+M _fsneq
+O -mstm8
+S .__.ABS. Def000000
+A _CODE size 0 flags 0 addr 0
+A DATA size 0 flags 0 addr 0
+A INITIALIZED size 0 flags 0 addr 0
+A DABS size 0 flags 8 addr 0
+A HOME size 0 flags 0 addr 0
+A GSINIT size 0 flags 0 addr 0
+A GSFINAL size 0 flags 0 addr 0
+A CONST size 0 flags 0 addr 0
+A INITIALIZER size 0 flags 0 addr 0
+A CODE size 5B flags 0 addr 0
+S ___fsneq Def000000
+A CABS size 0 flags 8 addr 0
+T 00 00 00
+R 00 00 00 09
+T 00 00 00 52 10 16 16 17 03 16 14 17 01 16 1A 17
+R 00 00 00 09
+T 00 00 0D 07 16 18 17 05 16 03 17 0B 16 01 17 09
+R 00 00 00 09
+T 00 00 1A 16 07 17 0F 16 05 1E 0B 13 0F 26 08 93
+R 00 00 00 09
+T 00 00 27 13 09 26 03 4F 20 2A
+R 00 00 00 09
+T 00 00 2E
+R 00 00 00 09
+T 00 00 2E 16 03 17 0F 16 01 17 0D 1E 07 16 05 9F
+R 00 00 00 09
+T 00 00 3B 1A 10 02 1A 0F 95 90 9F 1A 0E 90 02 1A
+R 00 00 00 09
+T 00 00 48 0D A4 7F 90 95 5D 26 06 90 5D 26 02 4F
+R 00 00 00 09
+T 00 00 55 C5
+R 00 00 00 09
+T 00 00 56
+R 00 00 00 09
+T 00 00 56 A6 01
+R 00 00 00 09
+T 00 00 58
+R 00 00 00 09
+T 00 00 58 5B 10 87
+R 00 00 00 09

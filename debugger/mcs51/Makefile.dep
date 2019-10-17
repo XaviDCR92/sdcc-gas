@@ -1,0 +1,22 @@
+sdcdb.o: sdcdb.c sdcdb.h config.h ../../src/SDCCset.h \
+ ../../src/SDCChasht.h ../../src/SDCCbitv.h symtab.h simi.h break.h cmd.h \
+ ../../support/util/newalloc.h
+symtab.o: symtab.c sdcdb.h config.h ../../src/SDCCset.h \
+ ../../src/SDCChasht.h ../../src/SDCCbitv.h symtab.h \
+ ../../support/util/newalloc.h
+simi.o: simi.c sdcdb.h config.h ../../src/SDCCset.h ../../src/SDCChasht.h \
+ ../../src/SDCCbitv.h simi.h ../../support/util/newalloc.h
+break.o: break.c sdcdb.h config.h ../../src/SDCCset.h \
+ ../../src/SDCChasht.h ../../src/SDCCbitv.h symtab.h break.h simi.h cmd.h \
+ ../../support/util/newalloc.h
+cmd.o: cmd.c sdcdb.h config.h ../../src/SDCCset.h ../../src/SDCChasht.h \
+ ../../src/SDCCbitv.h symtab.h simi.h break.h cmd.h \
+ ../../support/util/newalloc.h
+NewAlloc.o: ../../support/util/NewAlloc.c ../../support/util/newalloc.h
+SDCCset.o: ../../src/SDCCset.c ../../support/util/newalloc.h \
+ ../../src/SDCCerr.h ../../src/SDCCset.h
+SDCChasht.o: ../../src/SDCChasht.c ../../src/SDCCerr.h \
+ ../../src/SDCCglobl.h ../../src/SDCCset.h config.h ../../src/SDCChasht.h \
+ ../../support/util/newalloc.h
+SDCCerr.o: ../../src/SDCCerr.c ../../src/SDCCglobl.h ../../src/SDCCset.h \
+ config.h ../../src/SDCCerr.h

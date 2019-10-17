@@ -1,0 +1,13 @@
+rec.o: rec.cc reccl.h ../ddconfig.h ../pobjcl.h ../ddconfig.h ../pobjt.h \
+ ../eventcl.h ../charscl.h
+gui.o: gui.cc guicl.h ../ddconfig.h ../pobjcl.h ../ddconfig.h ../pobjt.h \
+ ../eventcl.h ../charscl.h ../sim.src/simcl.h ../cmd.src/newcmdcl.h \
+ ../optioncl.h ../pobjcl.h ../stypes.h ../cmd.src/commandcl.h \
+ ../cmd.src/newcmdcl.h guicl.h ../sim.src/uccl.h ../stypes.h ../pobjt.h \
+ ../sim.src/hwcl.h ../sim.src/guiobjcl.h ../cmd.src/newcmdposixcl.h \
+ ../fiocl.h ../cmd.src/cmdutil.h ../sim.src/memcl.h ../eventcl.h \
+ ../errorcl.h ../sim.src/brkcl.h ../sim.src/stackcl.h ../sim.src/varcl.h \
+ ../sim.src/uccl_instructions.h ../sim.src/argcl.h ifcl.h \
+ ../sim.src/guiobjcl.h
+if.o: if.cc ifcl.h ../ddconfig.h ../pobjcl.h ../ddconfig.h ../pobjt.h \
+ ../eventcl.h ../charscl.h ../sim.src/guiobjcl.h

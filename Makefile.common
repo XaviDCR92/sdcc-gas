@@ -1,0 +1,96 @@
+#
+#
+#
+
+# Version
+PACKAGE         = sdcc
+VERSION         = 3.9.3
+VERSIONHI       = 3
+VERSIONLO       = 9
+VERSIONP        = 3
+
+# Programs
+SHELL           = /bin/sh
+CC              = ccache gcc
+CPP             = ccache gcc -E
+CXX             = ccache g++
+AR              = ar
+RANLIB          = ranlib
+INSTALL         = /usr/bin/install -c
+YACC            = bison -y
+PYTHON          = python3.6
+LEX             = flex
+AWK             = gawk
+STRIP           = strip
+MAKEDEP         = g++ -MM
+prefix          = /usr/local
+exec_prefix     = ${prefix}
+bindir          = ${exec_prefix}/bin
+libdir          = ${exec_prefix}/lib
+datadir         = ${datarootdir}
+datarootdir     = ${prefix}/share
+includedir      = ${prefix}/include
+mandir          = ${datarootdir}/man
+man1dir         = $(mandir)/man1
+man2dir         = $(mandir)/man2
+infodir         = ${datarootdir}/info
+docdir          = ${datarootdir}/doc/${PACKAGE}
+DESTDIR         =
+
+include_dir_suffix = sdcc/include
+lib_dir_suffix     = sdcc/lib
+
+# Modules to enable/disable
+OPT_DISABLE_AVR         = 1
+OPT_DISABLE_DS390       = 1
+OPT_DISABLE_DS400       = 1
+OPT_DISABLE_HC08        = 1
+OPT_DISABLE_S08         = 1
+OPT_DISABLE_MCS51       = 1
+OPT_DISABLE_PIC14       = 1
+OPT_DISABLE_PIC16       = 1
+OPT_DISABLE_XA51        = @OPT_DISABLE_XA51@
+OPT_DISABLE_Z80         = 1
+OPT_DISABLE_Z180        = 1
+OPT_DISABLE_R2K         = 1
+OPT_DISABLE_R3KA        = 1
+OPT_DISABLE_TLCS90      = 1
+OPT_DISABLE_GBZ80       = 1
+OPT_DISABLE_STM8        = 0
+OPT_DISABLE_PDK13       = 1
+OPT_DISABLE_PDK14       = 1
+OPT_DISABLE_PDK15       = 1
+OPT_DISABLE_PDK16       = 1
+
+OPT_ENABLE_DOC          = 0
+
+OPT_DISABLE_DEVICE_LIB  = 1
+OPT_DISABLE_PACKIHX     = 1
+OPT_DISABLE_SDBINUTILS  = 0
+OPT_DISABLE_SDCPP       = 0
+OPT_DISABLE_UCSIM       = 1
+OPT_DISABLE_NON_FREE    = 0
+
+SLIB                    = $(top_builddir)/support/util
+
+EXEEXT          = 
+transform       = s,x,x,
+
+# Flags
+
+DEFS           += $(subs -DHAVE_CONFIG_H,,-DHAVE_CONFIG_H)
+CPPFLAGS       +=  $(INCLUDEFLAGS) -I. -I$(top_builddir) -I$(srcdir)/$(SLIB) -I$(srcdir)
+CFLAGS         +=  -pipe -ggdb -g -O2 -Wall -Wno-parentheses
+CXXFLAGS       += -pipe -ggdb -g -O2
+LDFLAGS        += 
+
+EXTRALIBS      += 
+
+# Shared settings between all the sub Makefiles
+# Done here so that we don't have to start a Make from the top levelport
+# directory.
+
+# Library compilation options
+CLEANSPEC = *.lst *.asm *.sym *~ *.cdb *.dep *.rul
+
+OBJ = $(SOURCES:.c=.o) $(CXXSOURCES:.cc=.o)

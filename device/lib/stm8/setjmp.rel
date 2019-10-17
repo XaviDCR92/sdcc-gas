@@ -1,0 +1,21 @@
+XH3
+H 2 areas 3 global symbols
+S .__.ABS. Def000000
+A _CODE size 0 flags 0 addr 0
+A CODE size 21 flags 0 addr 0
+S _longjmp Def00000C
+S ___setjmp Def000000
+T 00 00 00
+R 00 00 00 01
+T 00 00 00 16 03 1E 01 90 FF 96 90 EF 02 5F 81
+R 00 00 00 01
+T 00 00 0C
+R 00 00 00 01
+T 00 00 0C 1E 03 16 05 89 EE 02 EF 01 90 85 94 85
+R 00 00 00 01
+T 00 00 19 5D 26 01 5C
+R 00 00 00 01
+T 00 00 1D
+R 00 00 00 01
+T 00 00 1D 90 FE 90 FC
+R 00 00 00 01

@@ -1,0 +1,122 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.9.3 #11345 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module _divschar
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl __divschar
+                                     12 	.globl __divuschar
+                                     13 	.globl __divsuchar
+                                     14 ;--------------------------------------------------------
+                                     15 ; ram data
+                                     16 ;--------------------------------------------------------
+                                     17 	.area DATA
+                                     18 ;--------------------------------------------------------
+                                     19 ; ram data
+                                     20 ;--------------------------------------------------------
+                                     21 	.area INITIALIZED
+                                     22 ;--------------------------------------------------------
+                                     23 ; absolute external ram data
+                                     24 ;--------------------------------------------------------
+                                     25 	.area DABS (ABS)
+                                     26 
+                                     27 ; default segment ordering for linker
+                                     28 	.area HOME
+                                     29 	.area GSINIT
+                                     30 	.area GSFINAL
+                                     31 	.area CONST
+                                     32 	.area INITIALIZER
+                                     33 	.area CODE
+                                     34 
+                                     35 ;--------------------------------------------------------
+                                     36 ; global & static initialisations
+                                     37 ;--------------------------------------------------------
+                                     38 	.area HOME
+                                     39 	.area GSINIT
+                                     40 	.area GSFINAL
+                                     41 	.area GSINIT
+                                     42 ;--------------------------------------------------------
+                                     43 ; Home
+                                     44 ;--------------------------------------------------------
+                                     45 	.area HOME
+                                     46 	.area HOME
+                                     47 ;--------------------------------------------------------
+                                     48 ; code
+                                     49 ;--------------------------------------------------------
+                                     50 	.area CODE
+                                     51 ;	../_divschar.c: 31: _divschar (signed char x, signed char y)
+                                     52 ;	-----------------------------------------
+                                     53 ;	 function _divschar
+                                     54 ;	-----------------------------------------
+      000000                         55 __divschar:
+                                     56 ;	../_divschar.c: 33: return ((int)x / (int)y);
+      000000 7B 03            [ 1]   57 	ld	a, (0x03, sp)
+      000002 97               [ 1]   58 	ld	xl, a
+      000003 49               [ 1]   59 	rlc	a
+      000004 4F               [ 1]   60 	clr	a
+      000005 A2 00            [ 1]   61 	sbc	a, #0x00
+      000007 95               [ 1]   62 	ld	xh, a
+      000008 7B 04            [ 1]   63 	ld	a, (0x04, sp)
+      00000A 90 97            [ 1]   64 	ld	yl, a
+      00000C 49               [ 1]   65 	rlc	a
+      00000D 4F               [ 1]   66 	clr	a
+      00000E A2 00            [ 1]   67 	sbc	a, #0x00
+      000010 90 95            [ 1]   68 	ld	yh, a
+      000012 90 89            [ 2]   69 	pushw	y
+      000014 89               [ 2]   70 	pushw	x
+      000015 CDr00r00         [ 4]   71 	call	__divsint
+      000018 5B 04            [ 2]   72 	addw	sp, #4
+                                     73 ;	../_divschar.c: 34: }
+      00001A 81               [ 4]   74 	ret
+                                     75 ;	../_divschar.c: 37: _divuschar (unsigned char x, unsigned char y)
+                                     76 ;	-----------------------------------------
+                                     77 ;	 function _divuschar
+                                     78 ;	-----------------------------------------
+      00001B                         79 __divuschar:
+      00001B 52 02            [ 2]   80 	sub	sp, #2
+                                     81 ;	../_divschar.c: 39: return ((int)((signed char)x) / (int)y);
+      00001D 7B 05            [ 1]   82 	ld	a, (0x05, sp)
+      00001F 97               [ 1]   83 	ld	xl, a
+      000020 49               [ 1]   84 	rlc	a
+      000021 4F               [ 1]   85 	clr	a
+      000022 A2 00            [ 1]   86 	sbc	a, #0x00
+      000024 95               [ 1]   87 	ld	xh, a
+      000025 7B 06            [ 1]   88 	ld	a, (0x06, sp)
+      000027 6B 02            [ 1]   89 	ld	(0x02, sp), a
+      000029 0F 01            [ 1]   90 	clr	(0x01, sp)
+      00002B 16 01            [ 2]   91 	ldw	y, (0x01, sp)
+      00002D 90 89            [ 2]   92 	pushw	y
+      00002F 89               [ 2]   93 	pushw	x
+      000030 CDr00r00         [ 4]   94 	call	__divsint
+                                     95 ;	../_divschar.c: 40: }
+      000033 5B 06            [ 2]   96 	addw	sp, #6
+      000035 81               [ 4]   97 	ret
+                                     98 ;	../_divschar.c: 43: _divsuchar (signed char x, signed char y)
+                                     99 ;	-----------------------------------------
+                                    100 ;	 function _divsuchar
+                                    101 ;	-----------------------------------------
+      000036                        102 __divsuchar:
+                                    103 ;	../_divschar.c: 45: return ((int)((unsigned char)x) / (int)y);
+      000036 7B 03            [ 1]  104 	ld	a, (0x03, sp)
+      000038 90 5F            [ 1]  105 	clrw	y
+      00003A 90 97            [ 1]  106 	ld	yl, a
+      00003C 7B 04            [ 1]  107 	ld	a, (0x04, sp)
+      00003E 97               [ 1]  108 	ld	xl, a
+      00003F 49               [ 1]  109 	rlc	a
+      000040 4F               [ 1]  110 	clr	a
+      000041 A2 00            [ 1]  111 	sbc	a, #0x00
+      000043 95               [ 1]  112 	ld	xh, a
+      000044 89               [ 2]  113 	pushw	x
+      000045 90 89            [ 2]  114 	pushw	y
+      000047 CDr00r00         [ 4]  115 	call	__divsint
+      00004A 5B 04            [ 2]  116 	addw	sp, #4
+                                    117 ;	../_divschar.c: 46: }
+      00004C 81               [ 4]  118 	ret
+                                    119 	.area CODE
+                                    120 	.area CONST
+                                    121 	.area INITIALIZER
+                                    122 	.area CABS (ABS)

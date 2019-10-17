@@ -1,0 +1,313 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.9.3 #11345 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module realloc
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl ___memcpy
+                                     12 	.globl _memmove
+                                     13 	.globl _free
+                                     14 	.globl _malloc
+                                     15 	.globl _realloc
+                                     16 ;--------------------------------------------------------
+                                     17 ; ram data
+                                     18 ;--------------------------------------------------------
+                                     19 	.area DATA
+                                     20 ;--------------------------------------------------------
+                                     21 ; ram data
+                                     22 ;--------------------------------------------------------
+                                     23 	.area INITIALIZED
+                                     24 ;--------------------------------------------------------
+                                     25 ; absolute external ram data
+                                     26 ;--------------------------------------------------------
+                                     27 	.area DABS (ABS)
+                                     28 
+                                     29 ; default segment ordering for linker
+                                     30 	.area HOME
+                                     31 	.area GSINIT
+                                     32 	.area GSFINAL
+                                     33 	.area CONST
+                                     34 	.area INITIALIZER
+                                     35 	.area CODE
+                                     36 
+                                     37 ;--------------------------------------------------------
+                                     38 ; global & static initialisations
+                                     39 ;--------------------------------------------------------
+                                     40 	.area HOME
+                                     41 	.area GSINIT
+                                     42 	.area GSFINAL
+                                     43 	.area GSINIT
+                                     44 ;--------------------------------------------------------
+                                     45 ; Home
+                                     46 ;--------------------------------------------------------
+                                     47 	.area HOME
+                                     48 	.area HOME
+                                     49 ;--------------------------------------------------------
+                                     50 ; code
+                                     51 ;--------------------------------------------------------
+                                     52 	.area CODE
+                                     53 ;	../realloc.c: 56: void *realloc(void *ptr, size_t size)
+                                     54 ;	-----------------------------------------
+                                     55 ;	 function realloc
+                                     56 ;	-----------------------------------------
+      000000                         57 _realloc:
+      000000 52 14            [ 2]   58 	sub	sp, #20
+                                     59 ;	../realloc.c: 69: if(!ptr)
+      000002 1E 18            [ 2]   60 	ldw	x, (0x18, sp)
+      000004 26 0D            [ 1]   61 	jrne	00102$
+                                     62 ;	../realloc.c: 70: return(malloc(size));
+      000006 1E 1A            [ 2]   63 	ldw	x, (0x1a, sp)
+      000008 89               [ 2]   64 	pushw	x
+      000009 8Ds00r00r00      [ 5]   65 	callf	_malloc
+      00000D 5B 02            [ 2]   66 	addw	sp, #2
+      00000F ACs00r01r6F      [ 2]   67 	jpf	00132$
+      000013                         68 00102$:
+                                     69 ;	../realloc.c: 72: if(!size)
+      000013 1E 1A            [ 2]   70 	ldw	x, (0x1a, sp)
+      000015 26 0E            [ 1]   71 	jrne	00104$
+                                     72 ;	../realloc.c: 74: free(ptr);
+      000017 1E 18            [ 2]   73 	ldw	x, (0x18, sp)
+      000019 89               [ 2]   74 	pushw	x
+      00001A 8Ds00r00r00      [ 5]   75 	callf	_free
+      00001E 5B 02            [ 2]   76 	addw	sp, #2
+                                     77 ;	../realloc.c: 75: return(0);
+      000020 5F               [ 1]   78 	clrw	x
+      000021 ACs00r01r6F      [ 2]   79 	jpf	00132$
+      000025                         80 00104$:
+                                     81 ;	../realloc.c: 78: prev_free = 0, pf = 0;
+      000025 5F               [ 1]   82 	clrw	x
+      000026 1F 01            [ 2]   83 	ldw	(0x01, sp), x
+      000028 5F               [ 1]   84 	clrw	x
+      000029 1F 03            [ 2]   85 	ldw	(0x03, sp), x
+                                     86 ;	../realloc.c: 79: for(h = __sdcc_heap_free, f = &__sdcc_heap_free; h && h < ptr; prev_free = h, pf = f, f = &(h->next_free), h = h->next_free); // Find adjacent blocks in free list
+      00002B CEu00u00         [ 2]   87 	ldw	x, ___sdcc_heap_free+0
+      00002E 1F 13            [ 2]   88 	ldw	(0x13, sp), x
+      000030 AEr00r00         [ 2]   89 	ldw	x, #(___sdcc_heap_free + 0)
+      000033 1F 05            [ 2]   90 	ldw	(0x05, sp), x
+      000035                         91 00130$:
+      000035 1E 13            [ 2]   92 	ldw	x, (0x13, sp)
+      000037 27 1D            [ 1]   93 	jreq	00105$
+      000039 16 18            [ 2]   94 	ldw	y, (0x18, sp)
+      00003B 17 11            [ 2]   95 	ldw	(0x11, sp), y
+      00003D 1E 13            [ 2]   96 	ldw	x, (0x13, sp)
+      00003F 13 11            [ 2]   97 	cpw	x, (0x11, sp)
+      000041 24 13            [ 1]   98 	jrnc	00105$
+      000043 16 13            [ 2]   99 	ldw	y, (0x13, sp)
+      000045 17 01            [ 2]  100 	ldw	(0x01, sp), y
+      000047 16 05            [ 2]  101 	ldw	y, (0x05, sp)
+      000049 17 03            [ 2]  102 	ldw	(0x03, sp), y
+      00004B 1E 13            [ 2]  103 	ldw	x, (0x13, sp)
+      00004D 5C               [ 1]  104 	incw	x
+      00004E 5C               [ 1]  105 	incw	x
+      00004F 1F 05            [ 2]  106 	ldw	(0x05, sp), x
+      000051 FE               [ 2]  107 	ldw	x, (x)
+      000052 1F 13            [ 2]  108 	ldw	(0x13, sp), x
+      000054 20 DF            [ 2]  109 	jra	00130$
+      000056                        110 00105$:
+                                    111 ;	../realloc.c: 80: next_free = h;
+      000056 16 13            [ 2]  112 	ldw	y, (0x13, sp)
+      000058 17 07            [ 2]  113 	ldw	(0x07, sp), y
+                                    114 ;	../realloc.c: 82: if(!size || size + offsetof(struct header, next_free) < size)
+      00005A 1E 1A            [ 2]  115 	ldw	x, (0x1a, sp)
+      00005C 27 06            [ 1]  116 	jreq	00106$
+      00005E 5C               [ 1]  117 	incw	x
+      00005F 5C               [ 1]  118 	incw	x
+      000060 13 1A            [ 2]  119 	cpw	x, (0x1a, sp)
+      000062 24 05            [ 1]  120 	jrnc	00107$
+      000064                        121 00106$:
+                                    122 ;	../realloc.c: 83: return(0);
+      000064 5F               [ 1]  123 	clrw	x
+      000065 ACs00r01r6F      [ 2]  124 	jpf	00132$
+      000069                        125 00107$:
+                                    126 ;	../realloc.c: 84: blocksize = size + offsetof(struct header, next_free);
+                                    127 ;	../realloc.c: 85: if(blocksize < sizeof(struct header)) // Requiring a minimum size makes it easier to implement free(), and avoid memory leaks.
+      000069 1F 09            [ 2]  128 	ldw	(0x09, sp), x
+      00006B A3 00 04         [ 2]  129 	cpw	x, #0x0004
+      00006E 24 05            [ 1]  130 	jrnc	00110$
+                                    131 ;	../realloc.c: 86: blocksize = sizeof(struct header);
+      000070 AE 00 04         [ 2]  132 	ldw	x, #0x0004
+      000073 1F 09            [ 2]  133 	ldw	(0x09, sp), x
+      000075                        134 00110$:
+                                    135 ;	../realloc.c: 88: h = (void HEAPSPACE *)((char HEAPSPACE *)(ptr) - offsetof(struct header, next_free));
+      000075 1E 18            [ 2]  136 	ldw	x, (0x18, sp)
+      000077 5A               [ 2]  137 	decw	x
+      000078 5A               [ 2]  138 	decw	x
+                                    139 ;	../realloc.c: 89: oldblocksize = (char HEAPSPACE *)(h->next) - (char HEAPSPACE *)h;
+      000079 1F 0B            [ 2]  140 	ldw	(0x0b, sp), x
+      00007B FE               [ 2]  141 	ldw	x, (x)
+      00007C 1F 0D            [ 2]  142 	ldw	(0x0d, sp), x
+      00007E 16 0B            [ 2]  143 	ldw	y, (0x0b, sp)
+      000080 17 0F            [ 2]  144 	ldw	(0x0f, sp), y
+      000082 72 F0 0F         [ 2]  145 	subw	x, (0x0f, sp)
+                                    146 ;	../realloc.c: 91: maxblocksize = oldblocksize;
+      000085 1F 11            [ 2]  147 	ldw	(0x11, sp), x
+      000087 1F 13            [ 2]  148 	ldw	(0x13, sp), x
+                                    149 ;	../realloc.c: 92: if(prev_free && prev_free->next == h) // Can merge with previous block
+      000089 1E 01            [ 2]  150 	ldw	x, (0x01, sp)
+      00008B 27 10            [ 1]  151 	jreq	00112$
+      00008D FE               [ 2]  152 	ldw	x, (x)
+      00008E 13 0B            [ 2]  153 	cpw	x, (0x0b, sp)
+      000090 26 0B            [ 1]  154 	jrne	00112$
+                                    155 ;	../realloc.c: 93: maxblocksize += (char HEAPSPACE *)h - (char HEAPSPACE *)prev_free;
+      000092 1E 01            [ 2]  156 	ldw	x, (0x01, sp)
+      000094 50               [ 2]  157 	negw	x
+      000095 72 FB 0F         [ 2]  158 	addw	x, (0x0f, sp)
+      000098 72 FB 11         [ 2]  159 	addw	x, (0x11, sp)
+      00009B 1F 13            [ 2]  160 	ldw	(0x13, sp), x
+      00009D                        161 00112$:
+                                    162 ;	../realloc.c: 94: if(next_free == h->next) // Can merge with next block
+      00009D 1E 07            [ 2]  163 	ldw	x, (0x07, sp)
+      00009F 13 0D            [ 2]  164 	cpw	x, (0x0d, sp)
+      0000A1 26 0F            [ 1]  165 	jrne	00115$
+                                    166 ;	../realloc.c: 95: maxblocksize += (char HEAPSPACE *)(next_free->next) - (char HEAPSPACE *)next_free;
+      0000A3 1E 07            [ 2]  167 	ldw	x, (0x07, sp)
+      0000A5 FE               [ 2]  168 	ldw	x, (x)
+      0000A6 16 07            [ 2]  169 	ldw	y, (0x07, sp)
+      0000A8 17 0F            [ 2]  170 	ldw	(0x0f, sp), y
+      0000AA 72 F0 0F         [ 2]  171 	subw	x, (0x0f, sp)
+      0000AD 72 FB 13         [ 2]  172 	addw	x, (0x13, sp)
+      0000B0 1F 13            [ 2]  173 	ldw	(0x13, sp), x
+      0000B2                        174 00115$:
+                                    175 ;	../realloc.c: 97: if(blocksize <= maxblocksize) // Can resize in place.
+      0000B2 1E 09            [ 2]  176 	ldw	x, (0x09, sp)
+      0000B4 13 13            [ 2]  177 	cpw	x, (0x13, sp)
+      0000B6 23 04            [ 2]  178 	jrule	00247$
+      0000B8 ACs00r01r3D      [ 2]  179 	jpf	00125$
+      0000BC                        180 00247$:
+                                    181 ;	../realloc.c: 99: if(prev_free && prev_free->next == h) // Always move into previous block to defragment
+      0000BC 1E 01            [ 2]  182 	ldw	x, (0x01, sp)
+      0000BE 27 2F            [ 1]  183 	jreq	00117$
+      0000C0 FE               [ 2]  184 	ldw	x, (x)
+      0000C1 13 0B            [ 2]  185 	cpw	x, (0x0b, sp)
+      0000C3 26 2A            [ 1]  186 	jrne	00117$
+                                    187 ;	../realloc.c: 101: memmove(prev_free, h, blocksize <= oldblocksize ? blocksize : oldblocksize);
+      0000C5 1E 09            [ 2]  188 	ldw	x, (0x09, sp)
+      0000C7 13 11            [ 2]  189 	cpw	x, (0x11, sp)
+      0000C9 22 04            [ 1]  190 	jrugt	00134$
+      0000CB 16 09            [ 2]  191 	ldw	y, (0x09, sp)
+      0000CD 17 11            [ 2]  192 	ldw	(0x11, sp), y
+      0000CF                        193 00134$:
+      0000CF 16 0B            [ 2]  194 	ldw	y, (0x0b, sp)
+      0000D1 1E 01            [ 2]  195 	ldw	x, (0x01, sp)
+      0000D3 7B 12            [ 1]  196 	ld	a, (0x12, sp)
+      0000D5 88               [ 1]  197 	push	a
+      0000D6 7B 12            [ 1]  198 	ld	a, (0x12, sp)
+      0000D8 88               [ 1]  199 	push	a
+      0000D9 90 89            [ 2]  200 	pushw	y
+      0000DB 89               [ 2]  201 	pushw	x
+      0000DC 8Ds00r00r00      [ 5]  202 	callf	_memmove
+      0000E0 5B 06            [ 2]  203 	addw	sp, #6
+                                    204 ;	../realloc.c: 102: h = prev_free;
+      0000E2 16 01            [ 2]  205 	ldw	y, (0x01, sp)
+      0000E4 17 0B            [ 2]  206 	ldw	(0x0b, sp), y
+                                    207 ;	../realloc.c: 103: *pf = next_free;
+      0000E6 1E 03            [ 2]  208 	ldw	x, (0x03, sp)
+      0000E8 16 07            [ 2]  209 	ldw	y, (0x07, sp)
+      0000EA FF               [ 2]  210 	ldw	(x), y
+                                    211 ;	../realloc.c: 104: f = pf;
+      0000EB 16 03            [ 2]  212 	ldw	y, (0x03, sp)
+      0000ED 17 05            [ 2]  213 	ldw	(0x05, sp), y
+      0000EF                        214 00117$:
+                                    215 ;	../realloc.c: 107: if(next_free && next_free == h->next) // Merge with following block
+      0000EF 1E 07            [ 2]  216 	ldw	x, (0x07, sp)
+      0000F1 27 16            [ 1]  217 	jreq	00120$
+      0000F3 1E 0B            [ 2]  218 	ldw	x, (0x0b, sp)
+      0000F5 FE               [ 2]  219 	ldw	x, (x)
+      0000F6 13 07            [ 2]  220 	cpw	x, (0x07, sp)
+      0000F8 26 0F            [ 1]  221 	jrne	00120$
+                                    222 ;	../realloc.c: 109: h->next = next_free->next;
+      0000FA 1E 07            [ 2]  223 	ldw	x, (0x07, sp)
+      0000FC FE               [ 2]  224 	ldw	x, (x)
+      0000FD 16 0B            [ 2]  225 	ldw	y, (0x0b, sp)
+      0000FF 90 FF            [ 2]  226 	ldw	(y), x
+                                    227 ;	../realloc.c: 110: *f = next_free->next_free;
+      000101 1E 07            [ 2]  228 	ldw	x, (0x07, sp)
+      000103 EE 02            [ 2]  229 	ldw	x, (0x2, x)
+      000105 16 05            [ 2]  230 	ldw	y, (0x05, sp)
+      000107 90 FF            [ 2]  231 	ldw	(y), x
+      000109                        232 00120$:
+                                    233 ;	../realloc.c: 113: if(maxblocksize >= blocksize + sizeof(struct header)) // Create new block from free space
+      000109 1E 09            [ 2]  234 	ldw	x, (0x09, sp)
+      00010B 1C 00 04         [ 2]  235 	addw	x, #0x0004
+      00010E 1F 11            [ 2]  236 	ldw	(0x11, sp), x
+      000110 1E 13            [ 2]  237 	ldw	x, (0x13, sp)
+      000112 13 11            [ 2]  238 	cpw	x, (0x11, sp)
+      000114 25 21            [ 1]  239 	jrc	00123$
+                                    240 ;	../realloc.c: 115: header_t *const newheader = (header_t *const)((char HEAPSPACE *)h + blocksize);
+      000116 1E 0B            [ 2]  241 	ldw	x, (0x0b, sp)
+      000118 72 FB 09         [ 2]  242 	addw	x, (0x09, sp)
+      00011B 1F 13            [ 2]  243 	ldw	(0x13, sp), x
+                                    244 ;	../realloc.c: 116: newheader->next = h->next;
+      00011D 1E 0B            [ 2]  245 	ldw	x, (0x0b, sp)
+      00011F FE               [ 2]  246 	ldw	x, (x)
+      000120 16 13            [ 2]  247 	ldw	y, (0x13, sp)
+      000122 90 FF            [ 2]  248 	ldw	(y), x
+                                    249 ;	../realloc.c: 117: newheader->next_free = *f;
+      000124 1E 13            [ 2]  250 	ldw	x, (0x13, sp)
+      000126 5C               [ 1]  251 	incw	x
+      000127 5C               [ 1]  252 	incw	x
+      000128 16 05            [ 2]  253 	ldw	y, (0x05, sp)
+      00012A 90 FE            [ 2]  254 	ldw	y, (y)
+      00012C FF               [ 2]  255 	ldw	(x), y
+                                    256 ;	../realloc.c: 118: *f = newheader;
+      00012D 1E 05            [ 2]  257 	ldw	x, (0x05, sp)
+      00012F 16 13            [ 2]  258 	ldw	y, (0x13, sp)
+      000131 FF               [ 2]  259 	ldw	(x), y
+                                    260 ;	../realloc.c: 119: h->next = newheader;
+      000132 1E 0B            [ 2]  261 	ldw	x, (0x0b, sp)
+      000134 16 13            [ 2]  262 	ldw	y, (0x13, sp)
+      000136 FF               [ 2]  263 	ldw	(x), y
+      000137                        264 00123$:
+                                    265 ;	../realloc.c: 122: return(&(h->next_free));
+      000137 1E 0B            [ 2]  266 	ldw	x, (0x0b, sp)
+      000139 5C               [ 1]  267 	incw	x
+      00013A 5C               [ 1]  268 	incw	x
+      00013B 20 32            [ 2]  269 	jra	00132$
+      00013D                        270 00125$:
+                                    271 ;	../realloc.c: 125: if(ret = malloc(size))
+      00013D 1E 1A            [ 2]  272 	ldw	x, (0x1a, sp)
+      00013F 89               [ 2]  273 	pushw	x
+      000140 8Ds00r00r00      [ 5]  274 	callf	_malloc
+      000144 5B 02            [ 2]  275 	addw	sp, #2
+      000146 1F 13            [ 2]  276 	ldw	(0x13, sp), x
+      000148 5D               [ 2]  277 	tnzw	x
+      000149 27 23            [ 1]  278 	jreq	00127$
+                                    279 ;	../realloc.c: 127: size_t oldsize = oldblocksize - offsetof(struct header, next_free);
+      00014B 1E 11            [ 2]  280 	ldw	x, (0x11, sp)
+      00014D 5A               [ 2]  281 	decw	x
+      00014E 5A               [ 2]  282 	decw	x
+                                    283 ;	../realloc.c: 128: memcpy(ret, ptr, size <= oldsize ? size : oldsize);
+      00014F 13 1A            [ 2]  284 	cpw	x, (0x1a, sp)
+      000151 25 02            [ 1]  285 	jrc	00136$
+      000153 1E 1A            [ 2]  286 	ldw	x, (0x1a, sp)
+      000155                        287 00136$:
+      000155 89               [ 2]  288 	pushw	x
+      000156 1E 1A            [ 2]  289 	ldw	x, (0x1a, sp)
+      000158 89               [ 2]  290 	pushw	x
+      000159 1E 17            [ 2]  291 	ldw	x, (0x17, sp)
+      00015B 89               [ 2]  292 	pushw	x
+      00015C 8Ds00r00r00      [ 5]  293 	callf	___memcpy
+      000160 5B 06            [ 2]  294 	addw	sp, #6
+                                    295 ;	../realloc.c: 129: free(ptr);
+      000162 1E 18            [ 2]  296 	ldw	x, (0x18, sp)
+      000164 89               [ 2]  297 	pushw	x
+      000165 8Ds00r00r00      [ 5]  298 	callf	_free
+      000169 5B 02            [ 2]  299 	addw	sp, #2
+                                    300 ;	../realloc.c: 130: return(ret);
+      00016B 1E 13            [ 2]  301 	ldw	x, (0x13, sp)
+                                    302 ;	../realloc.c: 133: return(0);
+      00016D 21                     303 	.byte 0x21
+      00016E                        304 00127$:
+      00016E 5F               [ 1]  305 	clrw	x
+      00016F                        306 00132$:
+                                    307 ;	../realloc.c: 134: }
+      00016F 5B 14            [ 2]  308 	addw	sp, #20
+      000171 87               [ 5]  309 	retf
+                                    310 	.area CODE
+                                    311 	.area CONST
+                                    312 	.area INITIALIZER
+                                    313 	.area CABS (ABS)

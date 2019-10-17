@@ -1,0 +1,33 @@
+XH3
+H B areas 2 global symbols
+M isdigit
+O -mstm8
+S .__.ABS. Def000000
+A _CODE size 0 flags 0 addr 0
+A DATA size 0 flags 0 addr 0
+A INITIALIZED size 0 flags 0 addr 0
+A DABS size 0 flags 8 addr 0
+A HOME size 0 flags 0 addr 0
+A GSINIT size 0 flags 0 addr 0
+A GSFINAL size 0 flags 0 addr 0
+A CONST size 0 flags 0 addr 0
+A INITIALIZER size 0 flags 0 addr 0
+A CODE size 11 flags 0 addr 0
+S _isdigit Def000000
+A CABS size 0 flags 8 addr 0
+T 00 00 00
+R 00 00 00 09
+T 00 00 00 7B 05 A1 30 25 04 A1 39 23 02
+R 00 00 00 09
+T 00 00 0A
+R 00 00 00 09
+T 00 00 0A 4F C5
+R 00 00 00 09
+T 00 00 0C
+R 00 00 00 09
+T 00 00 0C A6 01
+R 00 00 00 09
+T 00 00 0E
+R 00 00 00 09
+T 00 00 0E 5F 97 87
+R 00 00 00 09

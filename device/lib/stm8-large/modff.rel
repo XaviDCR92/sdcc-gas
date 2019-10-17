@@ -1,0 +1,32 @@
+XH3
+H B areas 5 global symbols
+M modff
+O -mstm8
+S ___fssub Ref000000
+S ___slong2fs Ref000000
+S ___fs2slong Ref000000
+S .__.ABS. Def000000
+A _CODE size 0 flags 0 addr 0
+A DATA size 0 flags 0 addr 0
+A INITIALIZED size 0 flags 0 addr 0
+A DABS size 0 flags 8 addr 0
+A HOME size 0 flags 0 addr 0
+A GSINIT size 0 flags 0 addr 0
+A GSFINAL size 0 flags 0 addr 0
+A CONST size 0 flags 0 addr 0
+A INITIALIZER size 0 flags 0 addr 0
+A CODE size 3A flags 0 addr 0
+S _modff Def000000
+A CABS size 0 flags 8 addr 0
+T 00 00 00
+R 00 00 00 09
+T 00 00 00 52 06 16 0E 17 01 1E 0C 89 1E 0C 89 8D
+R 00 00 00 09
+T 00 00 0D 00 00 00 5B 04 89 90 89 8D
+R 00 00 00 09 82 03 00 02
+T 00 00 16 00 00 00 5B 04 1F 05 1E 01 7B 06 E7 03
+R 00 00 00 09 82 03 00 01
+T 00 00 23 7B 05 E7 02 FF 1E 05 89 90 89 1E 10 89
+R 00 00 00 09
+T 00 00 30 1E 10 89 8D 00 00 00 5B 0E 87
+R 00 00 00 09 82 07 00 00

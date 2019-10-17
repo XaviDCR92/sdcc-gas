@@ -1,0 +1,47 @@
+pobj.o: pobj.cc ddconfig.h pstr.h pobjcl.h pobjt.h eventcl.h charscl.h
+globals.o: globals.cc ddconfig.h stypes.h
+utils.o: utils.cc ddconfig.h i_string.h stypes.h pobjcl.h pobjt.h \
+ eventcl.h charscl.h utils.h fiocl.h
+error.o: error.cc i_string.h ddconfig.h errorcl.h pobjcl.h pobjt.h \
+ eventcl.h charscl.h stypes.h globals.h appcl.h optioncl.h \
+ sim.src/argcl.h pobjcl.h stypes.h sim.src/simcl.h cmd.src/newcmdcl.h \
+ ddconfig.h optioncl.h cmd.src/commandcl.h cmd.src/newcmdcl.h \
+ gui.src/guicl.h gui.src/ifcl.h sim.src/guiobjcl.h sim.src/uccl.h pobjt.h \
+ sim.src/hwcl.h sim.src/guiobjcl.h cmd.src/newcmdposixcl.h fiocl.h \
+ charscl.h pobjcl.h cmd.src/cmdutil.h sim.src/memcl.h eventcl.h errorcl.h \
+ sim.src/brkcl.h sim.src/stackcl.h sim.src/varcl.h \
+ sim.src/uccl_instructions.h sim.src/argcl.h utils.h fiocl.h
+app.o: app.cc ddconfig.h i_string.h utils.h stypes.h charscl.h fiocl.h \
+ pobjcl.h pobjt.h eventcl.h appcl.h optioncl.h sim.src/argcl.h pobjcl.h \
+ stypes.h sim.src/simcl.h cmd.src/newcmdcl.h ddconfig.h optioncl.h \
+ cmd.src/commandcl.h cmd.src/newcmdcl.h gui.src/guicl.h gui.src/ifcl.h \
+ sim.src/guiobjcl.h sim.src/uccl.h pobjt.h sim.src/hwcl.h \
+ sim.src/guiobjcl.h cmd.src/newcmdposixcl.h fiocl.h cmd.src/cmdutil.h \
+ sim.src/memcl.h eventcl.h errorcl.h pobjcl.h stypes.h sim.src/brkcl.h \
+ sim.src/stackcl.h sim.src/varcl.h sim.src/uccl_instructions.h \
+ sim.src/argcl.h globals.h cmd.src/cmd_execcl.h cmd.src/cmdutil.h \
+ cmd.src/cmd_confcl.h cmd.src/cmd_showcl.h cmd.src/cmd_getcl.h \
+ cmd.src/cmd_setcl.h cmd.src/cmdlexcl.h
+option.o: option.cc ddconfig.h i_string.h stypes.h optioncl.h pobjcl.h \
+ pobjt.h eventcl.h charscl.h globals.h appcl.h sim.src/argcl.h pobjcl.h \
+ stypes.h sim.src/simcl.h cmd.src/newcmdcl.h ddconfig.h optioncl.h \
+ cmd.src/commandcl.h cmd.src/newcmdcl.h gui.src/guicl.h gui.src/ifcl.h \
+ sim.src/guiobjcl.h sim.src/uccl.h pobjt.h sim.src/hwcl.h \
+ sim.src/guiobjcl.h cmd.src/newcmdposixcl.h fiocl.h charscl.h pobjcl.h \
+ cmd.src/cmdutil.h sim.src/memcl.h eventcl.h errorcl.h stypes.h \
+ sim.src/brkcl.h sim.src/stackcl.h sim.src/varcl.h \
+ sim.src/uccl_instructions.h sim.src/argcl.h utils.h fiocl.h
+chars.o: chars.cc charscl.h
+fio.o: fio.cc ddconfig.h fiocl.h charscl.h pobjcl.h pobjt.h eventcl.h \
+ utils.h stypes.h
+fuio.o: fuio.cc ddconfig.h utils.h stypes.h charscl.h fiocl.h pobjcl.h \
+ pobjt.h eventcl.h fuiocl.h
+ucsim.o: ucsim.cc globals.h ddconfig.h stypes.h appcl.h pobjcl.h pobjt.h \
+ eventcl.h charscl.h optioncl.h sim.src/argcl.h pobjcl.h stypes.h \
+ sim.src/simcl.h cmd.src/newcmdcl.h ddconfig.h optioncl.h \
+ cmd.src/commandcl.h cmd.src/newcmdcl.h gui.src/guicl.h gui.src/ifcl.h \
+ sim.src/guiobjcl.h sim.src/uccl.h pobjt.h sim.src/hwcl.h \
+ sim.src/guiobjcl.h cmd.src/newcmdposixcl.h fiocl.h charscl.h pobjcl.h \
+ cmd.src/cmdutil.h sim.src/memcl.h eventcl.h errorcl.h stypes.h \
+ sim.src/brkcl.h sim.src/stackcl.h sim.src/varcl.h \
+ sim.src/uccl_instructions.h sim.src/argcl.h

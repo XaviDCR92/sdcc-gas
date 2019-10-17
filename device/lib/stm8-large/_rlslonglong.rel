@@ -1,0 +1,39 @@
+XH3
+H B areas 2 global symbols
+M _rlslonglong
+O -mstm8
+S .__.ABS. Def000000
+A _CODE size 0 flags 0 addr 0
+A DATA size 0 flags 0 addr 0
+A INITIALIZED size 0 flags 0 addr 0
+A DABS size 0 flags 8 addr 0
+A HOME size 0 flags 0 addr 0
+A GSINIT size 0 flags 0 addr 0
+A GSFINAL size 0 flags 0 addr 0
+A CONST size 0 flags 0 addr 0
+A INITIALIZER size 0 flags 0 addr 0
+A CODE size 4E flags 0 addr 0
+S __rlslonglong Def000000
+A CABS size 0 flags 8 addr 0
+T 00 00 00
+R 00 00 00 09
+T 00 00 00 52 11 16 1D 17 07 16 1B 17 05 16 19 17
+R 00 00 00 09
+T 00 00 0D 03 16 17 17 01 7B 1F 6B 11 16 05 17 0E
+R 00 00 00 09
+T 00 00 1A 16 03 17 0C 16 01 17 0A 1E 07 7B 11 27
+R 00 00 00 09
+T 00 00 27 10
+R 00 00 00 09
+T 00 00 28
+R 00 00 00 09
+T 00 00 28 58 09 0F 09 0E 09 0D 09 0C 09 0B 09 0A
+R 00 00 00 09
+T 00 00 35 4A 26 F0
+R 00 00 00 09
+T 00 00 38
+R 00 00 00 09
+T 00 00 38 1F 10 1E 15 16 10 EF 06 16 0E EF 04 16
+R 00 00 00 09
+T 00 00 45 0C EF 02 16 0A FF 5B 11 87
+R 00 00 00 09

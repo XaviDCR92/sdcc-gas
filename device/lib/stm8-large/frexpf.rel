@@ -1,0 +1,39 @@
+XH3
+H B areas 2 global symbols
+M frexpf
+O -mstm8
+S .__.ABS. Def000000
+A _CODE size 0 flags 0 addr 0
+A DATA size 0 flags 0 addr 0
+A INITIALIZED size 0 flags 0 addr 0
+A DABS size 0 flags 8 addr 0
+A HOME size 0 flags 0 addr 0
+A GSINIT size 0 flags 0 addr 0
+A GSFINAL size 0 flags 0 addr 0
+A CONST size 0 flags 0 addr 0
+A INITIALIZER size 0 flags 0 addr 0
+A CODE size 67 flags 0 addr 0
+S _frexpf Def000000
+A CABS size 0 flags 8 addr 0
+T 00 00 00
+R 00 00 00 09
+T 00 00 00 52 08 16 0E 17 03 16 0C 17 01 16 03 1E
+R 00 00 00 09
+T 00 00 0D 01 4F 5D 2A 01 4A
+R 00 00 00 09
+T 00 00 13
+R 00 00 00 09
+T 00 00 13 88 01 90 01 7B 01 01 90 01 7B 01 01 90
+R 00 00 00 09
+T 00 00 20 01 48 90 59 59 84 4F 5F 90 95 72 A2
+R 00 00 00 09
+T 00 00 2C 00 7E 9F A2 00 02 A2 00 17 07 41 6B 06
+R 00 00 00 09
+T 00 00 39 41 6B 05 1E 10 16 07 FF 16 03 1E 01 9F
+R 00 00 00 09
+T 00 00 46 A4 7F 02 A4 80 95 17 03 1F 01 7B 04 7B
+R 00 00 00 09
+T 00 00 53 03 7B 02 7B 01 9E AA 3F 95 17 03 1F 01
+R 00 00 00 09
+T 00 00 60 1E 03 16 01 5B 08 87
+R 00 00 00 09

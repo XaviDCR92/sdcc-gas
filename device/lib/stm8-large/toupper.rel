@@ -1,0 +1,27 @@
+XH3
+H B areas 2 global symbols
+M toupper
+O -mstm8
+S .__.ABS. Def000000
+A _CODE size 0 flags 0 addr 0
+A DATA size 0 flags 0 addr 0
+A INITIALIZED size 0 flags 0 addr 0
+A DABS size 0 flags 8 addr 0
+A HOME size 0 flags 0 addr 0
+A GSINIT size 0 flags 0 addr 0
+A GSFINAL size 0 flags 0 addr 0
+A CONST size 0 flags 0 addr 0
+A INITIALIZER size 0 flags 0 addr 0
+A CODE size F flags 0 addr 0
+S _toupper Def000000
+A CABS size 0 flags 8 addr 0
+T 00 00 00
+R 00 00 00 09
+T 00 00 00 1E 04 9F A1 61 25 07 A1 7A 22 03 1C
+R 00 00 00 09
+T 00 00 0C FF E0
+R 00 00 00 09
+T 00 00 0E
+R 00 00 00 09
+T 00 00 0E 87
+R 00 00 00 09

@@ -1,0 +1,229 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.9.3 #11345 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module sqrtf
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _ldexpf
+                                     12 	.globl _frexpf
+                                     13 	.globl _sqrtf
+                                     14 ;--------------------------------------------------------
+                                     15 ; ram data
+                                     16 ;--------------------------------------------------------
+                                     17 	.area DATA
+                                     18 ;--------------------------------------------------------
+                                     19 ; ram data
+                                     20 ;--------------------------------------------------------
+                                     21 	.area INITIALIZED
+                                     22 ;--------------------------------------------------------
+                                     23 ; absolute external ram data
+                                     24 ;--------------------------------------------------------
+                                     25 	.area DABS (ABS)
+                                     26 
+                                     27 ; default segment ordering for linker
+                                     28 	.area HOME
+                                     29 	.area GSINIT
+                                     30 	.area GSFINAL
+                                     31 	.area CONST
+                                     32 	.area INITIALIZER
+                                     33 	.area CODE
+                                     34 
+                                     35 ;--------------------------------------------------------
+                                     36 ; global & static initialisations
+                                     37 ;--------------------------------------------------------
+                                     38 	.area HOME
+                                     39 	.area GSINIT
+                                     40 	.area GSFINAL
+                                     41 	.area GSINIT
+                                     42 ;--------------------------------------------------------
+                                     43 ; Home
+                                     44 ;--------------------------------------------------------
+                                     45 	.area HOME
+                                     46 	.area HOME
+                                     47 ;--------------------------------------------------------
+                                     48 ; code
+                                     49 ;--------------------------------------------------------
+                                     50 	.area CODE
+                                     51 ;	../sqrtf.c: 37: float sqrtf(float x) _FLOAT_FUNC_REENTRANT
+                                     52 ;	-----------------------------------------
+                                     53 ;	 function sqrtf
+                                     54 ;	-----------------------------------------
+      000000                         55 _sqrtf:
+      000000 52 0A            [ 2]   56 	sub	sp, #10
+                                     57 ;	../sqrtf.c: 42: if (x==0.0) return x;
+      000002 1E 10            [ 2]   58 	ldw	x, (0x10, sp)
+      000004 26 0D            [ 1]   59 	jrne	00107$
+      000006 1E 0E            [ 2]   60 	ldw	x, (0x0e, sp)
+      000008 58               [ 2]   61 	sllw	x
+      000009 26 08            [ 1]   62 	jrne	00107$
+      00000B 1E 10            [ 2]   63 	ldw	x, (0x10, sp)
+      00000D 16 0E            [ 2]   64 	ldw	y, (0x0e, sp)
+      00000F ACs00r01r21      [ 2]   65 	jpf	00111$
+      000013                         66 00107$:
+                                     67 ;	../sqrtf.c: 43: else if (x==1.0) return 1.0;
+      000013 5F               [ 1]   68 	clrw	x
+      000014 89               [ 2]   69 	pushw	x
+      000015 4B 80            [ 1]   70 	push	#0x80
+      000017 4B 3F            [ 1]   71 	push	#0x3f
+      000019 1E 14            [ 2]   72 	ldw	x, (0x14, sp)
+      00001B 89               [ 2]   73 	pushw	x
+      00001C 1E 14            [ 2]   74 	ldw	x, (0x14, sp)
+      00001E 89               [ 2]   75 	pushw	x
+      00001F 8Ds00r00r00      [ 5]   76 	callf	___fseq
+      000023 5B 08            [ 2]   77 	addw	sp, #8
+      000025 4D               [ 1]   78 	tnz	a
+      000026 27 09            [ 1]   79 	jreq	00104$
+      000028 5F               [ 1]   80 	clrw	x
+      000029 90 AE 3F 80      [ 2]   81 	ldw	y, #0x3f80
+      00002D ACs00r01r21      [ 2]   82 	jpf	00111$
+      000031                         83 00104$:
+                                     84 ;	../sqrtf.c: 44: else if (x<0.0)
+      000031 5F               [ 1]   85 	clrw	x
+      000032 89               [ 2]   86 	pushw	x
+      000033 5F               [ 1]   87 	clrw	x
+      000034 89               [ 2]   88 	pushw	x
+      000035 1E 14            [ 2]   89 	ldw	x, (0x14, sp)
+      000037 89               [ 2]   90 	pushw	x
+      000038 1E 14            [ 2]   91 	ldw	x, (0x14, sp)
+      00003A 89               [ 2]   92 	pushw	x
+      00003B 8Ds00r00r00      [ 5]   93 	callf	___fslt
+      00003F 5B 08            [ 2]   94 	addw	sp, #8
+      000041 4D               [ 1]   95 	tnz	a
+      000042 27 0D            [ 1]   96 	jreq	00108$
+                                     97 ;	../sqrtf.c: 46: errno=EDOM;
+      000044 AE 00 21         [ 2]   98 	ldw	x, #0x0021
+      000047 CFu00u00         [ 2]   99 	ldw	_errno+0, x
+                                    100 ;	../sqrtf.c: 47: return 0.0;
+      00004A 5F               [ 1]  101 	clrw	x
+      00004B 90 5F            [ 1]  102 	clrw	y
+      00004D ACs00r01r21      [ 2]  103 	jpf	00111$
+      000051                        104 00108$:
+                                    105 ;	../sqrtf.c: 49: f=frexpf(x, &n);
+      000051 96               [ 1]  106 	ldw	x, sp
+      000052 5C               [ 1]  107 	incw	x
+      000053 89               [ 2]  108 	pushw	x
+      000054 1E 12            [ 2]  109 	ldw	x, (0x12, sp)
+      000056 89               [ 2]  110 	pushw	x
+      000057 1E 12            [ 2]  111 	ldw	x, (0x12, sp)
+      000059 89               [ 2]  112 	pushw	x
+      00005A 8Ds00r00r00      [ 5]  113 	callf	_frexpf
+      00005E 5B 06            [ 2]  114 	addw	sp, #6
+      000060 1F 05            [ 2]  115 	ldw	(0x05, sp), x
+      000062 17 03            [ 2]  116 	ldw	(0x03, sp), y
+                                    117 ;	../sqrtf.c: 50: y=0.41731+0.59016*f; /*Educated guess*/
+      000064 1E 05            [ 2]  118 	ldw	x, (0x05, sp)
+      000066 89               [ 2]  119 	pushw	x
+      000067 1E 05            [ 2]  120 	ldw	x, (0x05, sp)
+      000069 89               [ 2]  121 	pushw	x
+      00006A 4B BA            [ 1]  122 	push	#0xba
+      00006C 4B 14            [ 1]  123 	push	#0x14
+      00006E 4B 17            [ 1]  124 	push	#0x17
+      000070 4B 3F            [ 1]  125 	push	#0x3f
+      000072 8Ds00r00r00      [ 5]  126 	callf	___fsmul
+      000076 5B 08            [ 2]  127 	addw	sp, #8
+      000078 4B A8            [ 1]  128 	push	#0xa8
+      00007A 4B A9            [ 1]  129 	push	#0xa9
+      00007C 4B D5            [ 1]  130 	push	#0xd5
+      00007E 4B 3E            [ 1]  131 	push	#0x3e
+      000080 89               [ 2]  132 	pushw	x
+      000081 90 89            [ 2]  133 	pushw	y
+      000083 8Ds00r00r00      [ 5]  134 	callf	___fsadd
+      000087 5B 08            [ 2]  135 	addw	sp, #8
+      000089 1F 09            [ 2]  136 	ldw	(0x09, sp), x
+      00008B 17 07            [ 2]  137 	ldw	(0x07, sp), y
+                                    138 ;	../sqrtf.c: 52: y+=f/y;
+      00008D 1E 09            [ 2]  139 	ldw	x, (0x09, sp)
+      00008F 89               [ 2]  140 	pushw	x
+      000090 1E 09            [ 2]  141 	ldw	x, (0x09, sp)
+      000092 89               [ 2]  142 	pushw	x
+      000093 1E 09            [ 2]  143 	ldw	x, (0x09, sp)
+      000095 89               [ 2]  144 	pushw	x
+      000096 1E 09            [ 2]  145 	ldw	x, (0x09, sp)
+      000098 89               [ 2]  146 	pushw	x
+      000099 8Ds00r00r00      [ 5]  147 	callf	___fsdiv
+      00009D 5B 08            [ 2]  148 	addw	sp, #8
+      00009F 89               [ 2]  149 	pushw	x
+      0000A0 90 89            [ 2]  150 	pushw	y
+      0000A2 1E 0D            [ 2]  151 	ldw	x, (0x0d, sp)
+      0000A4 89               [ 2]  152 	pushw	x
+      0000A5 1E 0D            [ 2]  153 	ldw	x, (0x0d, sp)
+      0000A7 89               [ 2]  154 	pushw	x
+      0000A8 8Ds00r00r00      [ 5]  155 	callf	___fsadd
+      0000AC 5B 08            [ 2]  156 	addw	sp, #8
+                                    157 ;	../sqrtf.c: 53: y=ldexpf(y, -2) + f/y; /*Faster version of 0.25 * y + f/y*/
+      0000AE 89               [ 2]  158 	pushw	x
+      0000AF 90 89            [ 2]  159 	pushw	y
+      0000B1 4B FE            [ 1]  160 	push	#0xfe
+      0000B3 4B FF            [ 1]  161 	push	#0xff
+      0000B5 89               [ 2]  162 	pushw	x
+      0000B6 90 89            [ 2]  163 	pushw	y
+      0000B8 8Ds00r00r00      [ 5]  164 	callf	_ldexpf
+      0000BC 5B 06            [ 2]  165 	addw	sp, #6
+      0000BE 1F 0D            [ 2]  166 	ldw	(0x0d, sp), x
+      0000C0 17 0B            [ 2]  167 	ldw	(0x0b, sp), y
+      0000C2 90 85            [ 2]  168 	popw	y
+      0000C4 90 89            [ 2]  169 	pushw	y
+      0000C6 1E 09            [ 2]  170 	ldw	x, (0x09, sp)
+      0000C8 89               [ 2]  171 	pushw	x
+      0000C9 1E 09            [ 2]  172 	ldw	x, (0x09, sp)
+      0000CB 89               [ 2]  173 	pushw	x
+      0000CC 8Ds00r00r00      [ 5]  174 	callf	___fsdiv
+      0000D0 5B 08            [ 2]  175 	addw	sp, #8
+      0000D2 89               [ 2]  176 	pushw	x
+      0000D3 90 89            [ 2]  177 	pushw	y
+      0000D5 1E 0D            [ 2]  178 	ldw	x, (0x0d, sp)
+      0000D7 89               [ 2]  179 	pushw	x
+      0000D8 1E 0D            [ 2]  180 	ldw	x, (0x0d, sp)
+      0000DA 89               [ 2]  181 	pushw	x
+      0000DB 8Ds00r00r00      [ 5]  182 	callf	___fsadd
+      0000DF 5B 08            [ 2]  183 	addw	sp, #8
+      0000E1 1F 09            [ 2]  184 	ldw	(0x09, sp), x
+      0000E3 17 07            [ 2]  185 	ldw	(0x07, sp), y
+                                    186 ;	../sqrtf.c: 55: if (n&1)
+      0000E5 7B 02            [ 1]  187 	ld	a, (0x02, sp)
+      0000E7 44               [ 1]  188 	srl	a
+      0000E8 24 1D            [ 1]  189 	jrnc	00110$
+                                    190 ;	../sqrtf.c: 57: y*=0.7071067812;
+      0000EA 1E 09            [ 2]  191 	ldw	x, (0x09, sp)
+      0000EC 89               [ 2]  192 	pushw	x
+      0000ED 1E 09            [ 2]  193 	ldw	x, (0x09, sp)
+      0000EF 89               [ 2]  194 	pushw	x
+      0000F0 4B F3            [ 1]  195 	push	#0xf3
+      0000F2 4B 04            [ 1]  196 	push	#0x04
+      0000F4 4B 35            [ 1]  197 	push	#0x35
+      0000F6 4B 3F            [ 1]  198 	push	#0x3f
+      0000F8 8Ds00r00r00      [ 5]  199 	callf	___fsmul
+      0000FC 5B 08            [ 2]  200 	addw	sp, #8
+      0000FE 1F 09            [ 2]  201 	ldw	(0x09, sp), x
+      000100 17 07            [ 2]  202 	ldw	(0x07, sp), y
+                                    203 ;	../sqrtf.c: 58: ++n;
+      000102 1E 01            [ 2]  204 	ldw	x, (0x01, sp)
+      000104 5C               [ 1]  205 	incw	x
+      000105 1F 01            [ 2]  206 	ldw	(0x01, sp), x
+      000107                        207 00110$:
+                                    208 ;	../sqrtf.c: 60: return ldexpf(y, n/2);
+      000107 4B 02            [ 1]  209 	push	#0x02
+      000109 4B 00            [ 1]  210 	push	#0x00
+      00010B 1E 03            [ 2]  211 	ldw	x, (0x03, sp)
+      00010D 89               [ 2]  212 	pushw	x
+      00010E 8Ds00r00r00      [ 5]  213 	callf	__divsint
+      000112 5B 04            [ 2]  214 	addw	sp, #4
+      000114 89               [ 2]  215 	pushw	x
+      000115 1E 0B            [ 2]  216 	ldw	x, (0x0b, sp)
+      000117 89               [ 2]  217 	pushw	x
+      000118 1E 0B            [ 2]  218 	ldw	x, (0x0b, sp)
+      00011A 89               [ 2]  219 	pushw	x
+      00011B 8Ds00r00r00      [ 5]  220 	callf	_ldexpf
+      00011F 5B 06            [ 2]  221 	addw	sp, #6
+      000121                        222 00111$:
+                                    223 ;	../sqrtf.c: 61: }
+      000121 5B 0A            [ 2]  224 	addw	sp, #10
+      000123 87               [ 5]  225 	retf
+                                    226 	.area CODE
+                                    227 	.area CONST
+                                    228 	.area INITIALIZER
+                                    229 	.area CABS (ABS)

@@ -1,0 +1,402 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.9.3 #11345 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module strtoul
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _strncmp
+                                     12 	.globl _strtoul
+                                     13 ;--------------------------------------------------------
+                                     14 ; ram data
+                                     15 ;--------------------------------------------------------
+                                     16 	.area DATA
+                                     17 ;--------------------------------------------------------
+                                     18 ; ram data
+                                     19 ;--------------------------------------------------------
+                                     20 	.area INITIALIZED
+                                     21 ;--------------------------------------------------------
+                                     22 ; absolute external ram data
+                                     23 ;--------------------------------------------------------
+                                     24 	.area DABS (ABS)
+                                     25 
+                                     26 ; default segment ordering for linker
+                                     27 	.area HOME
+                                     28 	.area GSINIT
+                                     29 	.area GSFINAL
+                                     30 	.area CONST
+                                     31 	.area INITIALIZER
+                                     32 	.area CODE
+                                     33 
+                                     34 ;--------------------------------------------------------
+                                     35 ; global & static initialisations
+                                     36 ;--------------------------------------------------------
+                                     37 	.area HOME
+                                     38 	.area GSINIT
+                                     39 	.area GSFINAL
+                                     40 	.area GSINIT
+                                     41 ;--------------------------------------------------------
+                                     42 ; Home
+                                     43 ;--------------------------------------------------------
+                                     44 	.area HOME
+                                     45 	.area HOME
+                                     46 ;--------------------------------------------------------
+                                     47 ; code
+                                     48 ;--------------------------------------------------------
+                                     49 	.area CODE
+                                     50 ;	../strtoul.c: 37: static signed char _isdigit(const char c, unsigned char base)
+                                     51 ;	-----------------------------------------
+                                     52 ;	 function _isdigit
+                                     53 ;	-----------------------------------------
+      000000                         54 __isdigit:
+                                     55 ;	../strtoul.c: 42: v = c - '0';
+                                     56 ;	../strtoul.c: 41: if (c >= '0' && c <= '9')
+      000000 7B 03            [ 1]   57 	ld	a, (0x03, sp)
+      000002 97               [ 1]   58 	ld	xl, a
+      000003 A1 30            [ 1]   59 	cp	a, #0x30
+      000005 25 0B            [ 1]   60 	jrc	00110$
+      000007 7B 03            [ 1]   61 	ld	a, (0x03, sp)
+      000009 A1 39            [ 1]   62 	cp	a, #0x39
+      00000B 22 05            [ 1]   63 	jrugt	00110$
+                                     64 ;	../strtoul.c: 42: v = c - '0';
+      00000D 9F               [ 1]   65 	ld	a, xl
+      00000E A0 30            [ 1]   66 	sub	a, #0x30
+      000010 20 21            [ 2]   67 	jra	00111$
+      000012                         68 00110$:
+                                     69 ;	../strtoul.c: 43: else if (c >= 'a' && c <='z')
+      000012 7B 03            [ 1]   70 	ld	a, (0x03, sp)
+      000014 A1 61            [ 1]   71 	cp	a, #0x61
+      000016 25 09            [ 1]   72 	jrc	00106$
+      000018 A1 7A            [ 1]   73 	cp	a, #0x7a
+      00001A 22 05            [ 1]   74 	jrugt	00106$
+                                     75 ;	../strtoul.c: 44: v = c - 'a' + 10;
+      00001C 9F               [ 1]   76 	ld	a, xl
+      00001D AB A9            [ 1]   77 	add	a, #0xa9
+      00001F 20 12            [ 2]   78 	jra	00111$
+      000021                         79 00106$:
+                                     80 ;	../strtoul.c: 45: else if (c >= 'A' && c <='Z')
+      000021 7B 03            [ 1]   81 	ld	a, (0x03, sp)
+      000023 A1 41            [ 1]   82 	cp	a, #0x41
+      000025 25 09            [ 1]   83 	jrc	00102$
+      000027 A1 5A            [ 1]   84 	cp	a, #0x5a
+      000029 22 05            [ 1]   85 	jrugt	00102$
+                                     86 ;	../strtoul.c: 46: v = c - 'A' + 10;
+      00002B 9F               [ 1]   87 	ld	a, xl
+      00002C AB C9            [ 1]   88 	add	a, #0xc9
+      00002E 20 03            [ 2]   89 	jra	00111$
+      000030                         90 00102$:
+                                     91 ;	../strtoul.c: 48: return (-1);
+      000030 A6 FF            [ 1]   92 	ld	a, #0xff
+      000032 81               [ 4]   93 	ret
+      000033                         94 00111$:
+                                     95 ;	../strtoul.c: 50: if (v >= base)
+      000033 11 04            [ 1]   96 	cp	a, (0x04, sp)
+      000035 24 01            [ 1]   97 	jrnc	00158$
+      000037 81               [ 4]   98 	ret
+      000038                         99 00158$:
+                                    100 ;	../strtoul.c: 51: return (-1);
+      000038 A6 FF            [ 1]  101 	ld	a, #0xff
+                                    102 ;	../strtoul.c: 53: return (v);
+                                    103 ;	../strtoul.c: 54: }
+      00003A 81               [ 4]  104 	ret
+                                    105 ;	../strtoul.c: 56: unsigned long int strtoul(const char *nptr, char **endptr, int base)
+                                    106 ;	-----------------------------------------
+                                    107 ;	 function strtoul
+                                    108 ;	-----------------------------------------
+      00003B                        109 _strtoul:
+      00003B 52 14            [ 2]  110 	sub	sp, #20
+                                    111 ;	../strtoul.c: 58: const char *ptr = nptr;
+      00003D 16 17            [ 2]  112 	ldw	y, (0x17, sp)
+                                    113 ;	../strtoul.c: 60: bool range_error = false;
+      00003F 0F 05            [ 1]  114 	clr	(0x05, sp)
+                                    115 ;	../strtoul.c: 61: bool neg = false;
+      000041 0F 06            [ 1]  116 	clr	(0x06, sp)
+                                    117 ;	../strtoul.c: 63: while (isblank (*ptr))
+      000043                        118 00101$:
+      000043 90 F6            [ 1]  119 	ld	a, (y)
+      000045 97               [ 1]  120 	ld	xl, a
+                                    121 ;	./../../include/ctype.h: 53: return ((unsigned char)c == ' ' || (unsigned char)c == '\t');
+      000046 A1 20            [ 1]  122 	cp	a, #0x20
+      000048 27 04            [ 1]  123 	jreq	00140$
+      00004A A1 09            [ 1]  124 	cp	a, #0x09
+      00004C 26 04            [ 1]  125 	jrne	00163$
+      00004E                        126 00140$:
+                                    127 ;	../strtoul.c: 64: ptr++;
+      00004E 90 5C            [ 1]  128 	incw	y
+      000050 20 F1            [ 2]  129 	jra	00101$
+      000052                        130 00163$:
+      000052 17 13            [ 2]  131 	ldw	(0x13, sp), y
+                                    132 ;	../strtoul.c: 67: switch(*ptr)
+      000054 9F               [ 1]  133 	ld	a, xl
+      000055 A1 2B            [ 1]  134 	cp	a, #0x2b
+      000057 27 08            [ 1]  135 	jreq	00105$
+      000059 9F               [ 1]  136 	ld	a, xl
+                                    137 ;	../strtoul.c: 70: neg = true;
+      00005A A0 2D            [ 1]  138 	sub	a, #0x2d
+      00005C 26 08            [ 1]  139 	jrne	00106$
+      00005E 4C               [ 1]  140 	inc	a
+      00005F 6B 06            [ 1]  141 	ld	(0x06, sp), a
+                                    142 ;	../strtoul.c: 71: case '+':
+      000061                        143 00105$:
+                                    144 ;	../strtoul.c: 72: ptr++;
+      000061 1E 13            [ 2]  145 	ldw	x, (0x13, sp)
+      000063 5C               [ 1]  146 	incw	x
+      000064 1F 13            [ 2]  147 	ldw	(0x13, sp), x
+                                    148 ;	../strtoul.c: 73: }
+      000066                        149 00106$:
+                                    150 ;	../strtoul.c: 81: ptr += 2;
+      000066 1E 13            [ 2]  151 	ldw	x, (0x13, sp)
+      000068 5C               [ 1]  152 	incw	x
+      000069 5C               [ 1]  153 	incw	x
+      00006A 1F 11            [ 2]  154 	ldw	(0x11, sp), x
+                                    155 ;	../strtoul.c: 76: if (!base)
+      00006C 1E 1B            [ 2]  156 	ldw	x, (0x1b, sp)
+      00006E 26 4B            [ 1]  157 	jrne	00119$
+                                    158 ;	../strtoul.c: 78: if (!strncmp (ptr, "0x", 2) || !strncmp (ptr, "0X", 2))
+      000070 4B 02            [ 1]  159 	push	#0x02
+      000072 4B 00            [ 1]  160 	push	#0x00
+      000074 4Br00            [ 1]  161 	push	#<(___str_0 + 0)
+      000076 4Bs00            [ 1]  162 	push	#((___str_0 + 0) >> 8)
+      000078 1E 17            [ 2]  163 	ldw	x, (0x17, sp)
+      00007A 89               [ 2]  164 	pushw	x
+      00007B CDr00r00         [ 4]  165 	call	_strncmp
+      00007E 5B 06            [ 2]  166 	addw	sp, #6
+      000080 5D               [ 2]  167 	tnzw	x
+      000081 27 13            [ 1]  168 	jreq	00110$
+      000083 4B 02            [ 1]  169 	push	#0x02
+      000085 4B 00            [ 1]  170 	push	#0x00
+      000087 4Br03            [ 1]  171 	push	#<(___str_1 + 0)
+      000089 4Bs00            [ 1]  172 	push	#((___str_1 + 0) >> 8)
+      00008B 1E 17            [ 2]  173 	ldw	x, (0x17, sp)
+      00008D 89               [ 2]  174 	pushw	x
+      00008E CDr00r00         [ 4]  175 	call	_strncmp
+      000091 5B 06            [ 2]  176 	addw	sp, #6
+      000093 5D               [ 2]  177 	tnzw	x
+      000094 26 0B            [ 1]  178 	jrne	00111$
+      000096                        179 00110$:
+                                    180 ;	../strtoul.c: 80: base = 16;
+      000096 AE 00 10         [ 2]  181 	ldw	x, #0x0010
+      000099 1F 1B            [ 2]  182 	ldw	(0x1b, sp), x
+                                    183 ;	../strtoul.c: 81: ptr += 2;
+      00009B 16 11            [ 2]  184 	ldw	y, (0x11, sp)
+      00009D 17 13            [ 2]  185 	ldw	(0x13, sp), y
+      00009F 20 4B            [ 2]  186 	jra	00120$
+      0000A1                        187 00111$:
+                                    188 ;	../strtoul.c: 83: else if (*ptr == '0')
+      0000A1 1E 13            [ 2]  189 	ldw	x, (0x13, sp)
+      0000A3 F6               [ 1]  190 	ld	a, (x)
+      0000A4 A1 30            [ 1]  191 	cp	a, #0x30
+      0000A6 26 0C            [ 1]  192 	jrne	00108$
+                                    193 ;	../strtoul.c: 85: base = 8;
+      0000A8 AE 00 08         [ 2]  194 	ldw	x, #0x0008
+      0000AB 1F 1B            [ 2]  195 	ldw	(0x1b, sp), x
+                                    196 ;	../strtoul.c: 86: ptr++;
+      0000AD 1E 13            [ 2]  197 	ldw	x, (0x13, sp)
+      0000AF 5C               [ 1]  198 	incw	x
+      0000B0 1F 13            [ 2]  199 	ldw	(0x13, sp), x
+      0000B2 20 38            [ 2]  200 	jra	00120$
+      0000B4                        201 00108$:
+                                    202 ;	../strtoul.c: 89: base = 10;
+      0000B4 AE 00 0A         [ 2]  203 	ldw	x, #0x000a
+      0000B7 1F 1B            [ 2]  204 	ldw	(0x1b, sp), x
+      0000B9 20 31            [ 2]  205 	jra	00120$
+      0000BB                        206 00119$:
+                                    207 ;	../strtoul.c: 92: else if (base == 16 && (!strncmp (ptr, "0x", 2) || !strncmp (ptr, "0X", 2)))
+      0000BB 1E 1B            [ 2]  208 	ldw	x, (0x1b, sp)
+      0000BD A3 00 10         [ 2]  209 	cpw	x, #0x0010
+      0000C0 26 2A            [ 1]  210 	jrne	00120$
+      0000C2 4B 02            [ 1]  211 	push	#0x02
+      0000C4 4B 00            [ 1]  212 	push	#0x00
+      0000C6 4Br00            [ 1]  213 	push	#<(___str_0 + 0)
+      0000C8 4Bs00            [ 1]  214 	push	#((___str_0 + 0) >> 8)
+      0000CA 1E 17            [ 2]  215 	ldw	x, (0x17, sp)
+      0000CC 89               [ 2]  216 	pushw	x
+      0000CD CDr00r00         [ 4]  217 	call	_strncmp
+      0000D0 5B 06            [ 2]  218 	addw	sp, #6
+      0000D2 5D               [ 2]  219 	tnzw	x
+      0000D3 27 13            [ 1]  220 	jreq	00114$
+      0000D5 4B 02            [ 1]  221 	push	#0x02
+      0000D7 4B 00            [ 1]  222 	push	#0x00
+      0000D9 4Br03            [ 1]  223 	push	#<(___str_1 + 0)
+      0000DB 4Bs00            [ 1]  224 	push	#((___str_1 + 0) >> 8)
+      0000DD 1E 17            [ 2]  225 	ldw	x, (0x17, sp)
+      0000DF 89               [ 2]  226 	pushw	x
+      0000E0 CDr00r00         [ 4]  227 	call	_strncmp
+      0000E3 5B 06            [ 2]  228 	addw	sp, #6
+      0000E5 5D               [ 2]  229 	tnzw	x
+      0000E6 26 04            [ 1]  230 	jrne	00120$
+      0000E8                        231 00114$:
+                                    232 ;	../strtoul.c: 93: ptr += 2;
+      0000E8 16 11            [ 2]  233 	ldw	y, (0x11, sp)
+      0000EA 17 13            [ 2]  234 	ldw	(0x13, sp), y
+      0000EC                        235 00120$:
+                                    236 ;	../strtoul.c: 97: if (_isdigit (*ptr, base) < 0)
+      0000EC 7B 1C            [ 1]  237 	ld	a, (0x1c, sp)
+      0000EE 6B 07            [ 1]  238 	ld	(0x07, sp), a
+      0000F0 1E 13            [ 2]  239 	ldw	x, (0x13, sp)
+      0000F2 F6               [ 1]  240 	ld	a, (x)
+      0000F3 97               [ 1]  241 	ld	xl, a
+      0000F4 7B 07            [ 1]  242 	ld	a, (0x07, sp)
+      0000F6 88               [ 1]  243 	push	a
+      0000F7 9F               [ 1]  244 	ld	a, xl
+      0000F8 88               [ 1]  245 	push	a
+      0000F9 CDr00r00         [ 4]  246 	call	__isdigit
+      0000FC 5B 02            [ 2]  247 	addw	sp, #2
+                                    248 ;	../strtoul.c: 100: *endptr = (char*)nptr;
+      0000FE 16 19            [ 2]  249 	ldw	y, (0x19, sp)
+      000100 17 08            [ 2]  250 	ldw	(0x08, sp), y
+                                    251 ;	../strtoul.c: 97: if (_isdigit (*ptr, base) < 0)
+      000102 4D               [ 1]  252 	tnz	a
+      000103 2A 0F            [ 1]  253 	jrpl	00124$
+                                    254 ;	../strtoul.c: 99: if (endptr)
+      000105 1E 19            [ 2]  255 	ldw	x, (0x19, sp)
+      000107 27 05            [ 1]  256 	jreq	00122$
+                                    257 ;	../strtoul.c: 100: *endptr = (char*)nptr;
+      000109 1E 08            [ 2]  258 	ldw	x, (0x08, sp)
+      00010B 16 17            [ 2]  259 	ldw	y, (0x17, sp)
+      00010D FF               [ 2]  260 	ldw	(x), y
+      00010E                        261 00122$:
+                                    262 ;	../strtoul.c: 101: return (0);
+      00010E 5F               [ 1]  263 	clrw	x
+      00010F 90 5F            [ 1]  264 	clrw	y
+      000111 CCr01rC4         [ 2]  265 	jp	00137$
+      000114                        266 00124$:
+                                    267 ;	../strtoul.c: 104: for (ret = 0;; ptr++)
+      000114 5F               [ 1]  268 	clrw	x
+      000115 1F 11            [ 2]  269 	ldw	(0x11, sp), x
+      000117 1F 0F            [ 2]  270 	ldw	(0x0f, sp), x
+      000119                        271 00135$:
+                                    272 ;	../strtoul.c: 107: signed char digit = _isdigit (*ptr, base);
+      000119 1E 13            [ 2]  273 	ldw	x, (0x13, sp)
+      00011B F6               [ 1]  274 	ld	a, (x)
+      00011C 97               [ 1]  275 	ld	xl, a
+      00011D 7B 07            [ 1]  276 	ld	a, (0x07, sp)
+      00011F 88               [ 1]  277 	push	a
+      000120 9F               [ 1]  278 	ld	a, xl
+      000121 88               [ 1]  279 	push	a
+      000122 CDr00r00         [ 4]  280 	call	__isdigit
+      000125 5B 02            [ 2]  281 	addw	sp, #2
+                                    282 ;	../strtoul.c: 109: if (digit < 0)
+      000127 6B 0A            [ 1]  283 	ld	(0x0a, sp), a
+      000129 2B 60            [ 1]  284 	jrmi	00129$
+                                    285 ;	../strtoul.c: 112: oldret = ret;
+      00012B 16 11            [ 2]  286 	ldw	y, (0x11, sp)
+      00012D 17 0D            [ 2]  287 	ldw	(0x0d, sp), y
+      00012F 16 0F            [ 2]  288 	ldw	y, (0x0f, sp)
+      000131 17 0B            [ 2]  289 	ldw	(0x0b, sp), y
+                                    290 ;	../strtoul.c: 113: ret *= base;
+      000133 16 1B            [ 2]  291 	ldw	y, (0x1b, sp)
+      000135 5F               [ 1]  292 	clrw	x
+      000136 90 5D            [ 2]  293 	tnzw	y
+      000138 2A 01            [ 1]  294 	jrpl	00261$
+      00013A 5A               [ 2]  295 	decw	x
+      00013B                        296 00261$:
+      00013B 90 89            [ 2]  297 	pushw	y
+      00013D 89               [ 2]  298 	pushw	x
+      00013E 1E 15            [ 2]  299 	ldw	x, (0x15, sp)
+      000140 89               [ 2]  300 	pushw	x
+      000141 1E 15            [ 2]  301 	ldw	x, (0x15, sp)
+      000143 89               [ 2]  302 	pushw	x
+      000144 CDr00r00         [ 4]  303 	call	__mullong
+      000147 5B 08            [ 2]  304 	addw	sp, #8
+      000149 1F 11            [ 2]  305 	ldw	(0x11, sp), x
+      00014B 17 0F            [ 2]  306 	ldw	(0x0f, sp), y
+                                    307 ;	../strtoul.c: 114: if (ret < oldret)
+      00014D 1E 11            [ 2]  308 	ldw	x, (0x11, sp)
+      00014F 13 0D            [ 2]  309 	cpw	x, (0x0d, sp)
+      000151 7B 10            [ 1]  310 	ld	a, (0x10, sp)
+      000153 12 0C            [ 1]  311 	sbc	a, (0x0c, sp)
+      000155 7B 0F            [ 1]  312 	ld	a, (0x0f, sp)
+      000157 12 0B            [ 1]  313 	sbc	a, (0x0b, sp)
+      000159 24 04            [ 1]  314 	jrnc	00128$
+                                    315 ;	../strtoul.c: 115: range_error = true;
+      00015B A6 01            [ 1]  316 	ld	a, #0x01
+      00015D 6B 05            [ 1]  317 	ld	(0x05, sp), a
+      00015F                        318 00128$:
+                                    319 ;	../strtoul.c: 117: ret += (unsigned char)digit;
+      00015F 7B 0A            [ 1]  320 	ld	a, (0x0a, sp)
+      000161 6B 04            [ 1]  321 	ld	(0x04, sp), a
+      000163 0F 03            [ 1]  322 	clr	(0x03, sp)
+      000165 0F 02            [ 1]  323 	clr	(0x02, sp)
+      000167 0F 01            [ 1]  324 	clr	(0x01, sp)
+      000169 1E 11            [ 2]  325 	ldw	x, (0x11, sp)
+      00016B 72 FB 03         [ 2]  326 	addw	x, (0x03, sp)
+      00016E 1F 0C            [ 2]  327 	ldw	(0x0c, sp), x
+      000170 7B 10            [ 1]  328 	ld	a, (0x10, sp)
+      000172 19 02            [ 1]  329 	adc	a, (0x02, sp)
+      000174 6B 0B            [ 1]  330 	ld	(0x0b, sp), a
+      000176 7B 0F            [ 1]  331 	ld	a, (0x0f, sp)
+      000178 19 01            [ 1]  332 	adc	a, (0x01, sp)
+      00017A 6B 0A            [ 1]  333 	ld	(0x0a, sp), a
+      00017C 16 0C            [ 2]  334 	ldw	y, (0x0c, sp)
+      00017E 17 11            [ 2]  335 	ldw	(0x11, sp), y
+      000180 16 0A            [ 2]  336 	ldw	y, (0x0a, sp)
+      000182 17 0F            [ 2]  337 	ldw	(0x0f, sp), y
+                                    338 ;	../strtoul.c: 104: for (ret = 0;; ptr++)
+      000184 1E 13            [ 2]  339 	ldw	x, (0x13, sp)
+      000186 5C               [ 1]  340 	incw	x
+      000187 1F 13            [ 2]  341 	ldw	(0x13, sp), x
+      000189 20 8E            [ 2]  342 	jra	00135$
+      00018B                        343 00129$:
+                                    344 ;	../strtoul.c: 120: if (endptr)
+      00018B 1E 19            [ 2]  345 	ldw	x, (0x19, sp)
+      00018D 27 05            [ 1]  346 	jreq	00131$
+                                    347 ;	../strtoul.c: 121: *endptr = (char*)ptr;
+      00018F 1E 08            [ 2]  348 	ldw	x, (0x08, sp)
+      000191 16 13            [ 2]  349 	ldw	y, (0x13, sp)
+      000193 FF               [ 2]  350 	ldw	(x), y
+      000194                        351 00131$:
+                                    352 ;	../strtoul.c: 123: if (range_error)
+      000194 0D 05            [ 1]  353 	tnz	(0x05, sp)
+      000196 27 0C            [ 1]  354 	jreq	00133$
+                                    355 ;	../strtoul.c: 125: errno = ERANGE;
+      000198 AE 00 22         [ 2]  356 	ldw	x, #0x0022
+      00019B CFu00u00         [ 2]  357 	ldw	_errno+0, x
+                                    358 ;	../strtoul.c: 126: return (ULONG_MAX);
+      00019E 5F               [ 1]  359 	clrw	x
+      00019F 5A               [ 2]  360 	decw	x
+      0001A0 90 93            [ 1]  361 	ldw	y, x
+      0001A2 20 20            [ 2]  362 	jra	00137$
+      0001A4                        363 00133$:
+                                    364 ;	../strtoul.c: 129: return (neg ? -ret : ret);
+      0001A4 0D 06            [ 1]  365 	tnz	(0x06, sp)
+      0001A6 27 10            [ 1]  366 	jreq	00142$
+      0001A8 16 11            [ 2]  367 	ldw	y, (0x11, sp)
+      0001AA 90 50            [ 2]  368 	negw	y
+      0001AC 1E 0F            [ 2]  369 	ldw	x, (0x0f, sp)
+      0001AE 24 01            [ 1]  370 	jrnc	00267$
+      0001B0 5C               [ 1]  371 	incw	x
+      0001B1                        372 00267$:
+      0001B1 50               [ 2]  373 	negw	x
+      0001B2 17 0C            [ 2]  374 	ldw	(0x0c, sp), y
+      0001B4 1F 0A            [ 2]  375 	ldw	(0x0a, sp), x
+      0001B6 20 08            [ 2]  376 	jra	00143$
+      0001B8                        377 00142$:
+      0001B8 16 11            [ 2]  378 	ldw	y, (0x11, sp)
+      0001BA 17 0C            [ 2]  379 	ldw	(0x0c, sp), y
+      0001BC 16 0F            [ 2]  380 	ldw	y, (0x0f, sp)
+      0001BE 17 0A            [ 2]  381 	ldw	(0x0a, sp), y
+      0001C0                        382 00143$:
+      0001C0 1E 0C            [ 2]  383 	ldw	x, (0x0c, sp)
+      0001C2 16 0A            [ 2]  384 	ldw	y, (0x0a, sp)
+      0001C4                        385 00137$:
+                                    386 ;	../strtoul.c: 130: }
+      0001C4 5B 14            [ 2]  387 	addw	sp, #20
+      0001C6 81               [ 4]  388 	ret
+                                    389 	.area CODE
+                                    390 	.area CONST
+                                    391 	.area CONST
+      000000                        392 ___str_0:
+      000000 30 78                  393 	.ascii "0x"
+      000002 00                     394 	.db 0x00
+                                    395 	.area CODE
+                                    396 	.area CONST
+      000003                        397 ___str_1:
+      000003 30 58                  398 	.ascii "0X"
+      000005 00                     399 	.db 0x00
+                                    400 	.area CODE
+                                    401 	.area INITIALIZER
+                                    402 	.area CABS (ABS)

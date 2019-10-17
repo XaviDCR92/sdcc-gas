@@ -1,0 +1,42 @@
+XH3
+H B areas 3 global symbols
+M _strpbrk
+O -mstm8
+S .__.ABS. Def000000
+S _strchr Ref000000
+A _CODE size 0 flags 0 addr 0
+A DATA size 0 flags 0 addr 0
+A INITIALIZED size 0 flags 0 addr 0
+A DABS size 0 flags 8 addr 0
+A HOME size 0 flags 0 addr 0
+A GSINIT size 0 flags 0 addr 0
+A GSFINAL size 0 flags 0 addr 0
+A CONST size 0 flags 0 addr 0
+A INITIALIZER size 0 flags 0 addr 0
+A CODE size 35 flags 0 addr 0
+S _strpbrk Def000000
+A CABS size 0 flags 8 addr 0
+T 00 00 00
+R 00 00 00 09
+T 00 00 00 52 04 5F 1F 01 16 0A 17 03
+R 00 00 00 09
+T 00 00 09
+R 00 00 00 09
+T 00 00 09 1E 03 F6 97 4D 27 20 4F 95 89 1E 0A 89
+R 00 00 00 09
+T 00 00 16 8D 00 00 00 5B 04 5D 27 0A 16 01 27 04
+R 00 00 00 09 82 04 00 01
+T 00 00 23 13 01 24 02
+R 00 00 00 09
+T 00 00 27
+R 00 00 00 09
+T 00 00 27 1F 01
+R 00 00 00 09
+T 00 00 29
+R 00 00 00 09
+T 00 00 29 1E 03 5C 1F 03 20 D9
+R 00 00 00 09
+T 00 00 30
+R 00 00 00 09
+T 00 00 30 1E 01 5B 04 87
+R 00 00 00 09

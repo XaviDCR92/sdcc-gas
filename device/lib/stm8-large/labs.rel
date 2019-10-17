@@ -1,0 +1,33 @@
+XH3
+H B areas 2 global symbols
+M labs
+O -mstm8
+S .__.ABS. Def000000
+A _CODE size 0 flags 0 addr 0
+A DATA size 0 flags 0 addr 0
+A INITIALIZED size 0 flags 0 addr 0
+A DABS size 0 flags 8 addr 0
+A HOME size 0 flags 0 addr 0
+A GSINIT size 0 flags 0 addr 0
+A GSFINAL size 0 flags 0 addr 0
+A CONST size 0 flags 0 addr 0
+A INITIALIZER size 0 flags 0 addr 0
+A CODE size 16 flags 0 addr 0
+S _labs Def000000
+A CABS size 0 flags 8 addr 0
+T 00 00 00
+R 00 00 00 09
+T 00 00 00 0D 04 2A 0D 1E 06 50 16 04 24 02 90 5C
+R 00 00 00 09
+T 00 00 0D
+R 00 00 00 09
+T 00 00 0D 90 50 20 04
+R 00 00 00 09
+T 00 00 11
+R 00 00 00 09
+T 00 00 11 1E 06 16 04
+R 00 00 00 09
+T 00 00 15
+R 00 00 00 09
+T 00 00 15 87
+R 00 00 00 09

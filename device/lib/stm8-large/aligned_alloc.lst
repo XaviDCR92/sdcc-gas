@@ -1,0 +1,65 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.9.3 #11345 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module aligned_alloc
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _malloc
+                                     12 	.globl _aligned_alloc
+                                     13 ;--------------------------------------------------------
+                                     14 ; ram data
+                                     15 ;--------------------------------------------------------
+                                     16 	.area DATA
+                                     17 ;--------------------------------------------------------
+                                     18 ; ram data
+                                     19 ;--------------------------------------------------------
+                                     20 	.area INITIALIZED
+                                     21 ;--------------------------------------------------------
+                                     22 ; absolute external ram data
+                                     23 ;--------------------------------------------------------
+                                     24 	.area DABS (ABS)
+                                     25 
+                                     26 ; default segment ordering for linker
+                                     27 	.area HOME
+                                     28 	.area GSINIT
+                                     29 	.area GSFINAL
+                                     30 	.area CONST
+                                     31 	.area INITIALIZER
+                                     32 	.area CODE
+                                     33 
+                                     34 ;--------------------------------------------------------
+                                     35 ; global & static initialisations
+                                     36 ;--------------------------------------------------------
+                                     37 	.area HOME
+                                     38 	.area GSINIT
+                                     39 	.area GSFINAL
+                                     40 	.area GSINIT
+                                     41 ;--------------------------------------------------------
+                                     42 ; Home
+                                     43 ;--------------------------------------------------------
+                                     44 	.area HOME
+                                     45 	.area HOME
+                                     46 ;--------------------------------------------------------
+                                     47 ; code
+                                     48 ;--------------------------------------------------------
+                                     49 	.area CODE
+                                     50 ;	./../../include/stdlib.h: 86: inline void *aligned_alloc(size_t alignment, size_t size)
+                                     51 ;	-----------------------------------------
+                                     52 ;	 function aligned_alloc
+                                     53 ;	-----------------------------------------
+      000000                         54 _aligned_alloc:
+                                     55 ;	./../../include/stdlib.h: 89: return malloc(size);
+      000000 1E 06            [ 2]   56 	ldw	x, (0x06, sp)
+      000002 89               [ 2]   57 	pushw	x
+      000003 8Ds00r00r00      [ 5]   58 	callf	_malloc
+      000007 5B 02            [ 2]   59 	addw	sp, #2
+                                     60 ;	./../../include/stdlib.h: 90: }
+      000009 87               [ 5]   61 	retf
+                                     62 	.area CODE
+                                     63 	.area CONST
+                                     64 	.area INITIALIZER
+                                     65 	.area CABS (ABS)

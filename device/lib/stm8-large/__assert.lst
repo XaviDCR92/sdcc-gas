@@ -1,0 +1,88 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.9.3 #11345 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module __assert
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl ___assert
+                                     12 	.globl _printf
+                                     13 ;--------------------------------------------------------
+                                     14 ; ram data
+                                     15 ;--------------------------------------------------------
+                                     16 	.area DATA
+                                     17 ;--------------------------------------------------------
+                                     18 ; ram data
+                                     19 ;--------------------------------------------------------
+                                     20 	.area INITIALIZED
+                                     21 ;--------------------------------------------------------
+                                     22 ; absolute external ram data
+                                     23 ;--------------------------------------------------------
+                                     24 	.area DABS (ABS)
+                                     25 
+                                     26 ; default segment ordering for linker
+                                     27 	.area HOME
+                                     28 	.area GSINIT
+                                     29 	.area GSFINAL
+                                     30 	.area CONST
+                                     31 	.area INITIALIZER
+                                     32 	.area CODE
+                                     33 
+                                     34 ;--------------------------------------------------------
+                                     35 ; global & static initialisations
+                                     36 ;--------------------------------------------------------
+                                     37 	.area HOME
+                                     38 	.area GSINIT
+                                     39 	.area GSFINAL
+                                     40 	.area GSINIT
+                                     41 ;--------------------------------------------------------
+                                     42 ; Home
+                                     43 ;--------------------------------------------------------
+                                     44 	.area HOME
+                                     45 	.area HOME
+                                     46 ;--------------------------------------------------------
+                                     47 ; code
+                                     48 ;--------------------------------------------------------
+                                     49 	.area CODE
+                                     50 ;	../__assert.c: 32: void __assert(const char *expression, const char *functionname, const char *filename, unsigned int linenumber)
+                                     51 ;	-----------------------------------------
+                                     52 ;	 function __assert
+                                     53 ;	-----------------------------------------
+      000000                         54 ___assert:
+                                     55 ;	../__assert.c: 34: printf("Assert(%s) failed in function %s at line %u in file %s.\n",
+      000000 1E 08            [ 2]   56 	ldw	x, (0x08, sp)
+      000002 89               [ 2]   57 	pushw	x
+      000003 1E 0C            [ 2]   58 	ldw	x, (0x0c, sp)
+      000005 89               [ 2]   59 	pushw	x
+      000006 1E 0A            [ 2]   60 	ldw	x, (0x0a, sp)
+      000008 89               [ 2]   61 	pushw	x
+      000009 1E 0A            [ 2]   62 	ldw	x, (0x0a, sp)
+      00000B 89               [ 2]   63 	pushw	x
+      00000C 4Br00            [ 1]   64 	push	#<(___str_0 + 0)
+      00000E 4Bs00            [ 1]   65 	push	#((___str_0 + 0) >> 8)
+      000010 8Ds00r00r00      [ 5]   66 	callf	_printf
+      000014 5B 0A            [ 2]   67 	addw	sp, #10
+      000016                         68 00103$:
+      000016 20 FE            [ 2]   69 	jra	00103$
+                                     70 ;	../__assert.c: 37: }
+      000018 87               [ 5]   71 	retf
+                                     72 	.area CODE
+                                     73 	.area CONST
+                                     74 	.area CONST
+      000000                         75 ___str_0:
+      000000 41 73 73 65 72 74 28    76 	.ascii "Assert(%s) failed in function %s at line %u in file %s."
+             25 73 29 20 66 61 69
+             6C 65 64 20 69 6E 20
+             66 75 6E 63 74 69 6F
+             6E 20 25 73 20 61 74
+             20 6C 69 6E 65 20 25
+             75 20 69 6E 20 66 69
+             6C 65 20 25 73 2E
+      000037 0A                      77 	.db 0x0a
+      000038 00                      78 	.db 0x00
+                                     79 	.area CODE
+                                     80 	.area INITIALIZER
+                                     81 	.area CABS (ABS)

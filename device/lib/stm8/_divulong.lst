@@ -1,0 +1,96 @@
+                                      1 ;--------------------------------------------------------------------------
+                                      2 ;  _divulong.s
+                                      3 ;
+                                      4 ;  Copyright (C) 2014, Ben Shi
+                                      5 ;
+                                      6 ;  This library is free software; you can redistribute it and/or modify it
+                                      7 ;  under the terms of the GNU General Public License as published by the
+                                      8 ;  Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;  later version.
+                                     10 ;
+                                     11 ;  This library is distributed in the hope that it will be useful,
+                                     12 ;  but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+                                     14 ;  GNU General Public License for more details.
+                                     15 ;
+                                     16 ;  You should have received a copy of the GNU General Public License 
+                                     17 ;  along with this library; see the file COPYING. If not, write to the
+                                     18 ;  Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;  As a special exception, if you link this library with other files,
+                                     22 ;  some of which are compiled with SDCC, to produce an executable,
+                                     23 ;  this library does not by itself cause the resulting executable to
+                                     24 ;  be covered by the GNU General Public License. This exception does
+                                     25 ;  not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;--------------------------------------------------------------------------
+                                     28 
+                                     29 	.globl __divulong
+                                     30 
+                                     31 	.area CODE
+      000000                         32 __divulong:
+      000000 52 06            [ 2]   33 	sub	sp, #6
+                                     34 ;	device/lib/_divulong.c: 333: unsigned long reste = 0L;
+      000002 5F               [ 1]   35 	clrw	x
+      000003 1F 05            [ 2]   36 	ldw	(0x05, sp), x
+      000005 1F 03            [ 2]   37 	ldw	(0x03, sp), x
+                                     38 ;	device/lib/_divulong.c: 334: unsigned char count = 32;
+      000007 A6 20            [ 1]   39 	ld	a, #0x20
+      000009 6B 02            [ 1]   40 	ld	(0x02, sp), a
+                                     41 ;	device/lib/_divulong.c: 337: do
+      00000B                         42 __divulong_00105:
+                                     43 ;	device/lib/_divulong.c: 340: c = MSB_SET(x);
+      00000B 7B 09            [ 1]   44 	ld	a, (0x09, sp)
+      00000D 48               [ 1]   45 	sll	a
+      00000E 4F               [ 1]   46 	clr	a
+      00000F 49               [ 1]   47 	rlc	a
+      000010 6B 01            [ 1]   48 	ld	(0x01, sp), a
+                                     49 ;	device/lib/_divulong.c: 341: x <<= 1;
+      000012 16 0B            [ 2]   50 	ldw	y, (0x0b, sp)
+      000014 1E 09            [ 2]   51 	ldw	x, (0x09, sp)
+      000016 90 58            [ 2]   52 	sllw	y
+      000018 59               [ 2]   53 	rlcw	x
+      000019 17 0B            [ 2]   54 	ldw	(0x0b, sp), y
+      00001B 1F 09            [ 2]   55 	ldw	(0x09, sp), x
+                                     56 ;	device/lib/_divulong.c: 342: reste <<= 1;
+      00001D 16 05            [ 2]   57 	ldw	y, (0x05, sp)
+      00001F 1E 03            [ 2]   58 	ldw	x, (0x03, sp)
+      000021 90 58            [ 2]   59 	sllw	y
+      000023 59               [ 2]   60 	rlcw	x
+      000024 17 05            [ 2]   61 	ldw	(0x05, sp), y
+      000026 1F 03            [ 2]   62 	ldw	(0x03, sp), x
+                                     63 ;	device/lib/_divulong.c: 343: if (c)
+      000028 0D 01            [ 1]   64 	tnz	(0x01, sp)
+      00002A 27 06            [ 1]   65 	jreq	__divulong_00102
+                                     66 ;	device/lib/_divulong.c: 344: reste |= 1L;
+      00002C 7B 06            [ 1]   67 	ld	a, (0x06, sp)
+      00002E AA 01            [ 1]   68 	or	a, #0x01
+      000030 6B 06            [ 1]   69 	ld	(0x06, sp), a
+      000032                         70 __divulong_00102:
+                                     71 ;	device/lib/_divulong.c: 346: if (reste >= y)
+      000032 1E 05            [ 2]   72 	ldw	x, (0x05, sp)
+      000034 72 F0 0F         [ 2]   73 	subw	x, (0x0f, sp)
+      000037 7B 04            [ 1]   74 	ld	a, (0x04, sp)
+      000039 12 0E            [ 1]   75 	sbc	a, (0x0e, sp)
+      00003B 90 97            [ 1]   76 	ld	yl, a
+      00003D 7B 03            [ 1]   77 	ld	a, (0x03, sp)
+      00003F 12 0D            [ 1]   78 	sbc	a, (0x0d, sp)
+      000041 25 0C            [ 1]   79 	jrc	__divulong_00106
+                                     80 ;	device/lib/_divulong.c: 348: reste -= y;
+      000043 1F 05            [ 2]   81 	ldw	(0x05, sp), x
+      000045 90 95            [ 1]   82 	ld	yh, a
+      000047 17 03            [ 2]   83 	ldw	(0x03, sp), y
+                                     84 ;	device/lib/_divulong.c: 350: x |= 1L;
+      000049 7B 0C            [ 1]   85 	ld	a, (0x0c, sp)
+      00004B AA 01            [ 1]   86 	or	a, #0x01
+      00004D 6B 0C            [ 1]   87 	ld	(0x0c, sp), a
+      00004F                         88 __divulong_00106:
+                                     89 ;	device/lib/_divulong.c: 353: while (--count);
+      00004F 0A 02            [ 1]   90 	dec	(0x02, sp)
+      000051 26 B8            [ 1]   91 	jrne	__divulong_00105
+                                     92 ;	device/lib/_divulong.c: 354: return x;
+      000053 1E 0B            [ 2]   93 	ldw	x, (0x0b, sp)
+      000055 16 09            [ 2]   94 	ldw	y, (0x09, sp)
+      000057 5B 06            [ 2]   95 	addw	sp, #6
+      000059 81               [ 4]   96 	ret

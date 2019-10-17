@@ -1,0 +1,118 @@
+                                      1 ;--------------------------------------------------------------------------
+                                      2 ;  _mullong.s
+                                      3 ;
+                                      4 ;  Copyright (C) 2014, Ben Shi
+                                      5 ;
+                                      6 ;  This library is free software; you can redistribute it and/or modify it
+                                      7 ;  under the terms of the GNU General Public License as published by the
+                                      8 ;  Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;  later version.
+                                     10 ;
+                                     11 ;  This library is distributed in the hope that it will be useful,
+                                     12 ;  but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+                                     14 ;  GNU General Public License for more details.
+                                     15 ;
+                                     16 ;  You should have received a copy of the GNU General Public License 
+                                     17 ;  along with this library; see the file COPYING. If not, write to the
+                                     18 ;  Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;  As a special exception, if you link this library with other files,
+                                     22 ;  some of which are compiled with SDCC, to produce an executable,
+                                     23 ;  this library does not by itself cause the resulting executable to
+                                     24 ;  be covered by the GNU General Public License. This exception does
+                                     25 ;  not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;--------------------------------------------------------------------------
+                                     28 
+                                     29 	.globl __mullong
+                                     30 
+                                     31 	.area CODE
+      000000                         32 __mullong:
+      000000 5F               [ 1]   33 	clrw	x
+      000001 89               [ 2]   34 	pushw	x
+      000002 89               [ 2]   35 	pushw	x
+      000003                         36 __mullong_0:
+      000003 7B 0A            [ 1]   37 	ld	a, (#10, sp)
+      000005 97               [ 1]   38 	ld	xl, a
+      000006 7B 0E            [ 1]   39 	ld	a, (#14, sp)
+      000008 42               [ 4]   40 	mul	x, a
+      000009 1F 03            [ 2]   41 	ldw	(#3, sp), x
+      00000B                         42 __mullong_1:
+      00000B 7B 09            [ 1]   43 	ld	a, (#9, sp)
+      00000D 97               [ 1]   44 	ld	xl, a
+      00000E 7B 0E            [ 1]   45 	ld	a, (#14, sp)
+      000010 42               [ 4]   46 	mul	x, a
+      000011 72 FB 02         [ 2]   47 	addw	x, (#2, sp)
+      000014 1F 02            [ 2]   48 	ldw	(#2, sp), x
+      000016 4F               [ 1]   49 	clr	a
+      000017 A9 00            [ 1]   50 	adc	a, #0
+      000019 6B 01            [ 1]   51 	ld	(#1, sp), a
+                                     52 
+      00001B 7B 0A            [ 1]   53 	ld	a, (#10, sp)
+      00001D 97               [ 1]   54 	ld	xl, a
+      00001E 7B 0D            [ 1]   55 	ld	a, (#13, sp)
+      000020 42               [ 4]   56 	mul	x, a
+      000021 72 FB 02         [ 2]   57 	addw	x, (#2, sp)
+      000024 1F 02            [ 2]   58 	ldw	(#2, sp), x
+      000026 4F               [ 1]   59 	clr	a
+      000027 19 01            [ 1]   60 	adc	a, (#1, sp)
+      000029 6B 01            [ 1]   61 	ld	(#1, sp), a
+      00002B                         62 __mullong_2:
+      00002B 7B 0A            [ 1]   63 	ld	a, (#10, sp)
+      00002D 97               [ 1]   64 	ld	xl, a
+      00002E 7B 0C            [ 1]   65 	ld	a, (#12, sp)
+      000030 42               [ 4]   66 	mul	x, a
+      000031 72 FB 01         [ 2]   67 	addw	x, (#1, sp)
+      000034 1F 01            [ 2]   68 	ldw	(#1, sp), x
+                                     69 
+      000036 7B 09            [ 1]   70 	ld	a, (#9, sp)
+      000038 97               [ 1]   71 	ld	xl, a
+      000039 7B 0D            [ 1]   72 	ld	a, (#13, sp)
+      00003B 42               [ 4]   73 	mul	x, a
+      00003C 72 FB 01         [ 2]   74 	addw	x, (#1, sp)
+      00003F 1F 01            [ 2]   75 	ldw	(#1, sp), x
+                                     76 
+      000041 7B 08            [ 1]   77 	ld	a, (#8, sp)
+      000043 97               [ 1]   78 	ld	xl, a
+      000044 7B 0E            [ 1]   79 	ld	a, (#14, sp)
+      000046 42               [ 4]   80 	mul	x, a
+      000047 72 FB 01         [ 2]   81 	addw	x, (#1, sp)
+      00004A 1F 01            [ 2]   82 	ldw	(#1, sp), x
+      00004C                         83 __mullong_3:
+      00004C 7B 07            [ 1]   84 	ld	a, (#7, sp)
+      00004E 97               [ 1]   85 	ld	xl, a
+      00004F 7B 0E            [ 1]   86 	ld	a, (#14, sp)
+      000051 42               [ 4]   87 	mul	x, a
+      000052 9F               [ 1]   88 	ld	a, xl
+      000053 1B 01            [ 1]   89 	add	a, (#1, sp)
+      000055 6B 01            [ 1]   90 	ld	(#1, sp), a
+                                     91 
+      000057 7B 0A            [ 1]   92 	ld	a, (#10, sp)
+      000059 97               [ 1]   93 	ld	xl, a
+      00005A 7B 0B            [ 1]   94 	ld	a, (#11, sp)
+      00005C 42               [ 4]   95 	mul	x, a
+      00005D 9F               [ 1]   96 	ld	a, xl
+      00005E 1B 01            [ 1]   97 	add	a, (#1, sp)
+      000060 6B 01            [ 1]   98 	ld	(#1, sp), a
+                                     99 
+      000062 7B 09            [ 1]  100 	ld	a, (#9, sp)
+      000064 97               [ 1]  101 	ld	xl, a
+      000065 7B 0C            [ 1]  102 	ld	a, (#12, sp)
+      000067 42               [ 4]  103 	mul	x, a
+      000068 9F               [ 1]  104 	ld	a, xl
+      000069 1B 01            [ 1]  105 	add	a, (#1, sp)
+      00006B 6B 01            [ 1]  106 	ld	(#1, sp), a
+                                    107 
+      00006D 7B 08            [ 1]  108 	ld	a, (#8, sp)
+      00006F 97               [ 1]  109 	ld	xl, a
+      000070 7B 0D            [ 1]  110 	ld	a, (#13, sp)
+      000072 42               [ 4]  111 	mul	x, a
+      000073 9F               [ 1]  112 	ld	a, xl
+      000074 1B 01            [ 1]  113 	add	a, (#1, sp)
+      000076 6B 01            [ 1]  114 	ld	(#1, sp), a
+      000078                        115 __mullong_4:
+      000078 90 85            [ 2]  116 	popw	y
+      00007A 85               [ 2]  117 	popw	x
+      00007B 81               [ 4]  118 	ret

@@ -1,0 +1,231 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.9.3 #11345 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module mbrtoc16
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _mbrtowc
+                                     12 	.globl _mbrtoc16
+                                     13 ;--------------------------------------------------------
+                                     14 ; ram data
+                                     15 ;--------------------------------------------------------
+                                     16 	.area DATA
+      000000                         17 _mbrtoc16_sps_65536_16:
+      000000                         18 	.ds 3
+                                     19 ;--------------------------------------------------------
+                                     20 ; ram data
+                                     21 ;--------------------------------------------------------
+                                     22 	.area INITIALIZED
+                                     23 ;--------------------------------------------------------
+                                     24 ; absolute external ram data
+                                     25 ;--------------------------------------------------------
+                                     26 	.area DABS (ABS)
+                                     27 
+                                     28 ; default segment ordering for linker
+                                     29 	.area HOME
+                                     30 	.area GSINIT
+                                     31 	.area GSFINAL
+                                     32 	.area CONST
+                                     33 	.area INITIALIZER
+                                     34 	.area CODE
+                                     35 
+                                     36 ;--------------------------------------------------------
+                                     37 ; global & static initialisations
+                                     38 ;--------------------------------------------------------
+                                     39 	.area HOME
+                                     40 	.area GSINIT
+                                     41 	.area GSFINAL
+                                     42 	.area GSINIT
+                                     43 ;--------------------------------------------------------
+                                     44 ; Home
+                                     45 ;--------------------------------------------------------
+                                     46 	.area HOME
+                                     47 	.area HOME
+                                     48 ;--------------------------------------------------------
+                                     49 ; code
+                                     50 ;--------------------------------------------------------
+                                     51 	.area CODE
+                                     52 ;	../mbrtoc16.c: 34: size_t mbrtoc16(char16_t *restrict pc16, const char *restrict s, size_t n, mbstate_t *restrict ps)
+                                     53 ;	-----------------------------------------
+                                     54 ;	 function mbrtoc16
+                                     55 ;	-----------------------------------------
+      000000                         56 _mbrtoc16:
+      000000 52 0E            [ 2]   57 	sub	sp, #14
+                                     58 ;	../mbrtoc16.c: 41: if(!s)
+      000002 1E 13            [ 2]   59 	ldw	x, (0x13, sp)
+      000004 26 14            [ 1]   60 	jrne	00102$
+                                     61 ;	../mbrtoc16.c: 42: return(mbrtoc16(0, "", 1, ps));
+      000006 1E 17            [ 2]   62 	ldw	x, (0x17, sp)
+      000008 89               [ 2]   63 	pushw	x
+      000009 4B 01            [ 1]   64 	push	#0x01
+      00000B 4B 00            [ 1]   65 	push	#0x00
+      00000D 4Br00            [ 1]   66 	push	#<(___str_0 + 0)
+      00000F 4Bs00            [ 1]   67 	push	#((___str_0 + 0) >> 8)
+      000011 5F               [ 1]   68 	clrw	x
+      000012 89               [ 2]   69 	pushw	x
+      000013 AD EB            [ 4]   70 	callr	_mbrtoc16
+      000015 5B 08            [ 2]   71 	addw	sp, #8
+      000017 CCr00rE0         [ 2]   72 	jp	00119$
+      00001A                         73 00102$:
+                                     74 ;	../mbrtoc16.c: 44: if(!ps)
+      00001A 1E 17            [ 2]   75 	ldw	x, (0x17, sp)
+      00001C 26 05            [ 1]   76 	jrne	00104$
+                                     77 ;	../mbrtoc16.c: 45: ps = &sps;
+      00001E AEr00r00         [ 2]   78 	ldw	x, #(_mbrtoc16_sps_65536_16 + 0)
+      000021 1F 17            [ 2]   79 	ldw	(0x17, sp), x
+      000023                         80 00104$:
+                                     81 ;	../mbrtoc16.c: 47: if(!ps->c[0] && (ps->c[1] || ps->c[2]))
+      000023 16 17            [ 2]   82 	ldw	y, (0x17, sp)
+      000025 17 07            [ 2]   83 	ldw	(0x07, sp), y
+      000027 93               [ 1]   84 	ldw	x, y
+      000028 F6               [ 1]   85 	ld	a, (x)
+                                     86 ;	../mbrtoc16.c: 50: *pc16 = ps->c[1] + (ps->c[2] << 8);
+      000029 16 11            [ 2]   87 	ldw	y, (0x11, sp)
+      00002B 17 05            [ 2]   88 	ldw	(0x05, sp), y
+                                     89 ;	../mbrtoc16.c: 47: if(!ps->c[0] && (ps->c[1] || ps->c[2]))
+      00002D 1E 07            [ 2]   90 	ldw	x, (0x07, sp)
+      00002F 5C               [ 1]   91 	incw	x
+      000030 1F 09            [ 2]   92 	ldw	(0x09, sp), x
+      000032 1E 07            [ 2]   93 	ldw	x, (0x07, sp)
+      000034 5C               [ 1]   94 	incw	x
+      000035 5C               [ 1]   95 	incw	x
+      000036 1F 0B            [ 2]   96 	ldw	(0x0b, sp), x
+      000038 4D               [ 1]   97 	tnz	a
+      000039 26 3C            [ 1]   98 	jrne	00108$
+      00003B 1E 09            [ 2]   99 	ldw	x, (0x09, sp)
+      00003D F6               [ 1]  100 	ld	a, (x)
+      00003E 26 05            [ 1]  101 	jrne	00107$
+      000040 1E 0B            [ 2]  102 	ldw	x, (0x0b, sp)
+      000042 F6               [ 1]  103 	ld	a, (x)
+      000043 27 32            [ 1]  104 	jreq	00108$
+      000045                        105 00107$:
+                                    106 ;	../mbrtoc16.c: 50: *pc16 = ps->c[1] + (ps->c[2] << 8);
+      000045 16 17            [ 2]  107 	ldw	y, (0x17, sp)
+      000047 93               [ 1]  108 	ldw	x, y
+      000048 5C               [ 1]  109 	incw	x
+      000049 1F 07            [ 2]  110 	ldw	(0x07, sp), x
+      00004B 93               [ 1]  111 	ldw	x, y
+      00004C 5C               [ 1]  112 	incw	x
+      00004D 5C               [ 1]  113 	incw	x
+      00004E 1F 09            [ 2]  114 	ldw	(0x09, sp), x
+                                    115 ;	../mbrtoc16.c: 49: if(pc16)
+      000050 1E 11            [ 2]  116 	ldw	x, (0x11, sp)
+      000052 27 18            [ 1]  117 	jreq	00106$
+                                    118 ;	../mbrtoc16.c: 50: *pc16 = ps->c[1] + (ps->c[2] << 8);
+      000054 1E 07            [ 2]  119 	ldw	x, (0x07, sp)
+      000056 F6               [ 1]  120 	ld	a, (x)
+      000057 6B 0C            [ 1]  121 	ld	(0x0c, sp), a
+      000059 0F 0B            [ 1]  122 	clr	(0x0b, sp)
+      00005B 16 09            [ 2]  123 	ldw	y, (0x09, sp)
+      00005D 90 F6            [ 1]  124 	ld	a, (y)
+      00005F 95               [ 1]  125 	ld	xh, a
+      000060 0F 0E            [ 1]  126 	clr	(0x0e, sp)
+      000062 7B 0E            [ 1]  127 	ld	a, (0x0e, sp)
+      000064 97               [ 1]  128 	ld	xl, a
+      000065 72 FB 0B         [ 2]  129 	addw	x, (0x0b, sp)
+      000068 16 05            [ 2]  130 	ldw	y, (0x05, sp)
+      00006A 90 FF            [ 2]  131 	ldw	(y), x
+      00006C                        132 00106$:
+                                    133 ;	../mbrtoc16.c: 51: ps->c[1] = ps->c[2] = 0;
+      00006C 1E 09            [ 2]  134 	ldw	x, (0x09, sp)
+      00006E 7F               [ 1]  135 	clr	(x)
+      00006F 1E 07            [ 2]  136 	ldw	x, (0x07, sp)
+      000071 7F               [ 1]  137 	clr	(x)
+                                    138 ;	../mbrtoc16.c: 52: return(-3);
+      000072 AE FF FD         [ 2]  139 	ldw	x, #0xfffd
+      000075 20 69            [ 2]  140 	jra	00119$
+      000077                        141 00108$:
+                                    142 ;	../mbrtoc16.c: 55: ret = mbrtowc(&codepoint, s, n, ps);
+      000077 96               [ 1]  143 	ldw	x, sp
+      000078 5C               [ 1]  144 	incw	x
+      000079 51               [ 1]  145 	exgw	x, y
+      00007A 1E 17            [ 2]  146 	ldw	x, (0x17, sp)
+      00007C 89               [ 2]  147 	pushw	x
+      00007D 1E 17            [ 2]  148 	ldw	x, (0x17, sp)
+      00007F 89               [ 2]  149 	pushw	x
+      000080 1E 17            [ 2]  150 	ldw	x, (0x17, sp)
+      000082 89               [ 2]  151 	pushw	x
+      000083 90 89            [ 2]  152 	pushw	y
+      000085 CDr00r00         [ 4]  153 	call	_mbrtowc
+      000088 5B 08            [ 2]  154 	addw	sp, #8
+                                    155 ;	../mbrtoc16.c: 57: if(ret > MB_LEN_MAX)
+      00008A 1F 0D            [ 2]  156 	ldw	(0x0d, sp), x
+      00008C A3 00 04         [ 2]  157 	cpw	x, #0x0004
+      00008F 23 04            [ 2]  158 	jrule	00112$
+                                    159 ;	../mbrtoc16.c: 58: return(ret);
+      000091 1E 0D            [ 2]  160 	ldw	x, (0x0d, sp)
+      000093 20 4B            [ 2]  161 	jra	00119$
+      000095                        162 00112$:
+                                    163 ;	../mbrtoc16.c: 60: if (codepoint <= 0xffff) // Basic multilingual plane
+      000095 1E 01            [ 2]  164 	ldw	x, (0x01, sp)
+      000097 26 0D            [ 1]  165 	jrne	00116$
+                                    166 ;	../mbrtoc16.c: 62: if(pc16)
+      000099 1E 11            [ 2]  167 	ldw	x, (0x11, sp)
+      00009B 27 05            [ 1]  168 	jreq	00114$
+                                    169 ;	../mbrtoc16.c: 63: *pc16 = codepoint;
+      00009D 16 03            [ 2]  170 	ldw	y, (0x03, sp)
+      00009F 1E 05            [ 2]  171 	ldw	x, (0x05, sp)
+      0000A1 FF               [ 2]  172 	ldw	(x), y
+      0000A2                        173 00114$:
+                                    174 ;	../mbrtoc16.c: 64: return(ret);
+      0000A2 1E 0D            [ 2]  175 	ldw	x, (0x0d, sp)
+      0000A4 20 3A            [ 2]  176 	jra	00119$
+      0000A6                        177 00116$:
+                                    178 ;	../mbrtoc16.c: 67: codepoint -= 0x100000;
+      0000A6 16 03            [ 2]  179 	ldw	y, (0x03, sp)
+      0000A8 1E 01            [ 2]  180 	ldw	x, (0x01, sp)
+      0000AA 1D 00 10         [ 2]  181 	subw	x, #0x0010
+      0000AD 17 03            [ 2]  182 	ldw	(0x03, sp), y
+      0000AF 1F 01            [ 2]  183 	ldw	(0x01, sp), x
+                                    184 ;	../mbrtoc16.c: 68: if(pc16)
+      0000B1 1E 11            [ 2]  185 	ldw	x, (0x11, sp)
+      0000B3 27 13            [ 1]  186 	jreq	00118$
+                                    187 ;	../mbrtoc16.c: 69: *pc16 = ((codepoint >> 10) & 0x3ff) + 0xd800;
+      0000B5 1E 02            [ 2]  188 	ldw	x, (0x02, sp)
+      0000B7 7B 01            [ 1]  189 	ld	a, (0x01, sp)
+      0000B9 44               [ 1]  190 	srl	a
+      0000BA 56               [ 2]  191 	rrcw	x
+      0000BB 44               [ 1]  192 	srl	a
+      0000BC 56               [ 2]  193 	rrcw	x
+      0000BD 9E               [ 1]  194 	ld	a, xh
+      0000BE A4 03            [ 1]  195 	and	a, #0x03
+      0000C0 95               [ 1]  196 	ld	xh, a
+      0000C1 1C D8 00         [ 2]  197 	addw	x, #0xd800
+      0000C4 16 05            [ 2]  198 	ldw	y, (0x05, sp)
+      0000C6 90 FF            [ 2]  199 	ldw	(y), x
+      0000C8                        200 00118$:
+                                    201 ;	../mbrtoc16.c: 70: low_surrogate = (codepoint & 0x3ff) + 0xdc00;
+      0000C8 1E 03            [ 2]  202 	ldw	x, (0x03, sp)
+      0000CA 9E               [ 1]  203 	ld	a, xh
+      0000CB A4 03            [ 1]  204 	and	a, #0x03
+      0000CD 95               [ 1]  205 	ld	xh, a
+      0000CE 1C DC 00         [ 2]  206 	addw	x, #0xdc00
+                                    207 ;	../mbrtoc16.c: 71: ps->c[0] = 0;
+      0000D1 16 07            [ 2]  208 	ldw	y, (0x07, sp)
+      0000D3 90 7F            [ 1]  209 	clr	(y)
+                                    210 ;	../mbrtoc16.c: 72: ps->c[1] = low_surrogate & 0xff;
+      0000D5 9F               [ 1]  211 	ld	a, xl
+      0000D6 16 09            [ 2]  212 	ldw	y, (0x09, sp)
+      0000D8 90 F7            [ 1]  213 	ld	(y), a
+                                    214 ;	../mbrtoc16.c: 73: ps->c[2] = low_surrogate >> 8;
+      0000DA 9E               [ 1]  215 	ld	a, xh
+      0000DB 1E 0B            [ 2]  216 	ldw	x, (0x0b, sp)
+      0000DD F7               [ 1]  217 	ld	(x), a
+                                    218 ;	../mbrtoc16.c: 75: return(ret);
+      0000DE 1E 0D            [ 2]  219 	ldw	x, (0x0d, sp)
+      0000E0                        220 00119$:
+                                    221 ;	../mbrtoc16.c: 76: }
+      0000E0 5B 0E            [ 2]  222 	addw	sp, #14
+      0000E2 81               [ 4]  223 	ret
+                                    224 	.area CODE
+                                    225 	.area CONST
+                                    226 	.area CONST
+      000000                        227 ___str_0:
+      000000 00                     228 	.db 0x00
+                                    229 	.area CODE
+                                    230 	.area INITIALIZER
+                                    231 	.area CABS (ABS)
