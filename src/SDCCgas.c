@@ -20,15 +20,25 @@
 
 #include "SDCCgas.h"
 #include "SDCCglobl.h"
+#include "SDCCmem.h"
+#include "SDCCsymt.h"
+#include "SDCCicode.h"
+#include "port.h"
 #include "newalloc.h"
+#include "dbuf_string.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 
 static char *set_dst(void);
-static FILE *create_file(const char *const path);
-static void emit_file_name(FILE *const f, const char *const dst);
-static const char *get_filename(const char *const dst);
+static FILE *create_file(const char *path);
+static void emit_file_name(FILE *f, const char *dst);
+static void emit_rodata(FILE *f);
+static void print_section(FILE *f, const char *section);
+static const char *get_filename(const char *dst);
+
+extern const char *iComments1;
+extern const char *iComments2;
 
 void gas_glue(void)
 {
@@ -52,7 +62,13 @@ void gas_glue(void)
 
   FILE *const f = create_file(dst);
 
+  fprintf(f, "%s%s", iComments1, iComments2);
+
+  /* Print input file name without extension. */
   emit_file_name(f, fullSrcFileName);
+
+  /* Print read only local variables. */
+  emit_rodata(f);
 
   if (clean_dst)
     /* dst must not be modified by gas_glue(), but memory
@@ -80,8 +96,10 @@ static char *set_dst(void)
     ;
 
     {
-      /* No output file name has been designated. Use default extension. */
-      const char extension[] = ".s";
+      /* No output file name has been designated.
+       * Use port default extension, if available. */
+      const char *const extension = port->assembler.file_ext ?
+                                    port->assembler.file_ext : ".asm";
       const size_t total_len = len + strlen(extension) + 1;
 
       dst = Safe_calloc(total_len, sizeof *fullDstFileName);
@@ -114,6 +132,75 @@ static void emit_file_name(FILE *const f, const char *const dst)
   printf("%s\n", filename);
 
   fprintf(f, "\t.file\t\"%s\"\n", filename);
+}
+
+static void emit_rodata(FILE *const f)
+{
+  if (!statsg)
+    return;
+
+  if (!statsg->syms)
+    return;
+
+  print_section(f, "rodata");
+
+  {
+    struct set *p;
+
+    for (p = statsg->syms; p; p = p->next)
+      {
+        symbol *const sym = p->item;
+        struct sym_link *const etype = sym->etype;
+
+        if (IS_EXTERN(etype) || !sym->ival)
+          continue;
+
+        if (SPEC_CONST(etype))
+          {
+            const char *const name = sym->name;
+
+            /* Declare object. */
+            if (SPEC_STAT(etype))
+              fprintf(f, "\t.local %s\n", name);
+            else
+              fprintf(f, "\t.global %s\n", name);
+
+            fprintf(f, "\t.type %s, @object\n", name);
+
+            if (SPEC_STRUCT(etype))
+              {
+                /* Point to first struct element. */
+                struct symbol *field;
+
+                /* Print sizeof struct. */
+                fprintf(f, "\t.size %s, %d\n", name, etype->select.s.v_struct->size);
+                /* Print instance name as a label. */
+                fprintf(f, "%s:\n", name);
+
+                for (field = etype->select.s.v_struct->fields; field; field = field->next)
+                  {
+                    struct sym_link *ft = field->etype;
+
+                    printf("%s.%s\n", name, field->name);
+
+                    if (SPEC_LONG(ft))
+                      {
+                        fprintf(f, "\t.long %d\n", ft->select.s.const_val.v_long);
+                      }
+                    else if (SPEC_SHORT(ft))
+                      {
+                        fprintf(f, "\t.hword %d\n", ft->select.s.const_val.v_int);
+                      }
+                  }
+              }
+          }
+      }
+  }
+}
+
+static void print_section(FILE *const f, const char *const section)
+{
+  fprintf(f, "\t.section .%s\n", section);
 }
 
 static const char *get_filename(const char *const dst)
