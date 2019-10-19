@@ -400,6 +400,57 @@ err_no_line:
   return dbuf_detach_c_str (&line);
 }
 
+static const ASM_MAPPING _gas_mapping[] = {
+  {"labeldef", "%s::"},
+  {"slabeldef", "%s:"},
+  {"tlabeldef", "%05d$:"},
+  {"tlabel", "%05d$"},
+  {"immed", "#"},
+  {"zero", "#0x00"},
+  {"one", "#0x01"},
+  {"area", ".section %s"},
+  {"areacode", ".section .text"},
+  {"areadata", ".section .bss"},
+  {"areahome", ".section %s"},
+  {"ascii", ".ascii \"%s\""},
+  {"ds", ".comm %d"},
+  {"db", ".byte"},
+  {"dbs", ".byte %s"},
+  {"dw", ".word"},
+  {"dws", ".word %s"},
+  {"constbyte", "0x%02x"},
+  {"constword", "0x%04x"},
+  {"immedword", "0x%04x"},
+  {"immedbyte", "0x%02x"},
+  {"hashedstr", "#%s"},
+  {"lsbimmeds", "#<(%s)"},
+  {"msbimmeds", "#>(%s)"},
+  {"module", ".file \"%s\""},
+  {"global", ".global %s"},
+  {"fileprelude", ""},
+  {"functionheader",
+   "; ---------------------------------\n"
+   "; Function %s\n"
+   "; ---------------------------------"},
+  {"functionlabeldef", "%s:"},
+  {"globalfunctionlabeldef", "%s::"},
+  {"los", "(%s & 0xFF)"},
+  {"his", "(%s >> 8)"},
+  {"hihis", "(%s >> 16)"},
+  {"hihihis", "(%s >> 24)"},
+  {"lod", "(%d & 0xFF)"},
+  {"hid", "(%d >> 8)"},
+  {"hihid", "(%d >> 16)"},
+  {"hihihid", "(%d >> 24)"},
+  {"lol", "(%05d$ & 0xFF)"},
+  {"hil", "(%05d$ >> 8)"},
+  {"hihil", "(%05d$ >> 16)"},
+  {"hihihil", "(%05d$ >> 24)"},
+  {"equ", "="},
+  {"org", ".org 0x%04X"},
+  {0}
+};
+
 static const ASM_MAPPING _asxxxx_mapping[] = {
   {"labeldef", "%s::"},
   {"slabeldef", "%s:"},
@@ -504,48 +555,6 @@ static const ASM_MAPPING _asxxxx_smallpdk_mapping[] = {
   {NULL, NULL}
 };
 
-#if 0
-/* not used */
-static const ASM_MAPPING _gas_mapping[] = {
-  {"labeldef", "%s::"},
-  {"slabeldef", "%s:"},
-  {"tlabeldef", "%05d$:"},
-  {"tlabel", "%05d$"},
-  {"immed", "#"},
-  {"zero", "#0x00"},
-  {"one", "#0x01"},
-  {"area", ".section %s"},
-  {"areacode", ".section %s"},
-  {"areadata", ".section %s"},
-  {"areahome", ".section %s"},
-  {"ascii", ".ascii \"%s\""},
-  {"ds", ".ds %d"},
-  {"db", ".db"},
-  {"dbs", ".db %s"},
-  {"dw", ".dw"},
-  {"dws", ".dw %s"},
-  {"constbyte", "0x%02X"},
-  {"constword", "0x%04X"},
-  {"immedword", "#0x%04X"},
-  {"immedbyte", "#0x%02X"},
-  {"hashedstr", "#%s"},
-  {"lsbimmeds", "#<%s"},
-  {"msbimmeds", "#>%s"},
-  {"module", ".file \"%s.c\""},
-  {"global", ".globl %s"},
-  {"extern", ".globl %s"},
-  {"fileprelude", ""},
-  {"functionheader",
-   "; ---------------------------------\n"
-   "; Function %s\n"
-   "; ---------------------------------"},
-  {"functionlabeldef", "%s:"},
-  {"globalfunctionlabeldef", "%s::"},
-  {"bankimmeds", "0     ; PENDING: bank support"},
-  {NULL, NULL}
-};
-#endif
-
 static const ASM_MAPPING _a390_mapping[] = {
   {"labeldef", "%s:"},
   {"slabeldef", "%s:"},
@@ -608,13 +617,10 @@ const ASM_MAPPINGS asm_asxxxx_smallpdk_mapping = {
   _asxxxx_smallpdk_mapping
 };
 
-#if 0
-/* not used */
 const ASM_MAPPINGS asm_gas_mapping = {
   NULL,
   _gas_mapping
 };
-#endif
 
 const ASM_MAPPINGS asm_a390_mapping = {
   NULL,
