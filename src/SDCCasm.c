@@ -401,7 +401,7 @@ err_no_line:
 }
 
 static const ASM_MAPPING _gas_mapping[] = {
-  {"labeldef", "%s::"},
+  {"labeldef", "%s:"},
   {"slabeldef", "%s:"},
   {"tlabeldef", "%05d$:"},
   {"tlabel", "%05d$"},
@@ -409,11 +409,12 @@ static const ASM_MAPPING _gas_mapping[] = {
   {"zero", "#0x00"},
   {"one", "#0x01"},
   {"area", ".section %s"},
-  {"areacode", ".section .text"},
-  {"areadata", ".section .bss"},
+  {"areacode", ".section %s"},
+  {"areadata", ".section %s"},
   {"areahome", ".section %s"},
   {"ascii", ".ascii \"%s\""},
-  {"ds", ".comm %d"},
+  {"comm", ".comm %s, %d, %d"},
+  {"local", ".local %s"},
   {"db", ".byte"},
   {"dbs", ".byte %s"},
   {"dw", ".word"},
@@ -433,7 +434,7 @@ static const ASM_MAPPING _gas_mapping[] = {
    "; Function %s\n"
    "; ---------------------------------"},
   {"functionlabeldef", "%s:"},
-  {"globalfunctionlabeldef", "%s::"},
+  {"globalfunctionlabeldef", "%s:"},
   {"los", "(%s & 0xFF)"},
   {"his", "(%s >> 8)"},
   {"hihis", "(%s >> 16)"},

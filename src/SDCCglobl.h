@@ -260,7 +260,7 @@ struct options
     int cc_only;                /* compile only flag              */
     int intlong_rent;           /* integer & long support routines reentrant */
     int float_rent;             /* floating point routines are reentrant */
-    int out_fmt;                /* 0 = undefined, 'i' = intel Hex format, 's' = motorola S19 format, 'E' = elf format, 'e' = true ELF format, 'Z' = gb format */
+    int out_fmt;                /* 0 = undefined, 'i' = intel Hex format, 's' = motorola S19 format, 'E' = elf format, 'Z' = gb format */
     int cyclomatic;             /* print cyclomatic information */
     int noOverlay;              /* don't overlay local variables & parameters */
     int xram_movc;              /* use movc instead of movx to read xram (mcs51) */
@@ -328,6 +328,7 @@ struct options
     int max_allocs_per_node;    /* Maximum number of allocations / combinations considered at each node in the tree-decomposition based algorithms */
     bool noOptsdccInAsm;        /* Do not emit .optsdcc in asm */
     bool oldralloc;             /* Use old register allocator */
+    int gasOutput;              /* Output assembly in GNU as format */
   };
 
 /* forward definition for variables accessed globally */
@@ -362,7 +363,6 @@ extern struct optimize optimize;
 extern struct options options;
 extern unsigned maxInterrupts;
 extern int ignoreTypedefType;
-extern int gasOutput;
 
 /* Visible from SDCCmain.c */
 extern set *preArgvSet;

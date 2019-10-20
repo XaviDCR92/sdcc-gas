@@ -198,7 +198,11 @@ SDCCgen.o: SDCCgen.c common.h SDCCglobl.h SDCCset.h ../sdccconf.h \
  SDCCsystem.h port.h SDCCargs.h ../support/util/newalloc.h \
  ../support/util/dbuf_string.h ../support/util/dbuf.h
 SDCCgas.o: SDCCgas.c SDCCgas.h SDCCglobl.h SDCCset.h ../sdccconf.h \
- SDCCerr.h ../support/util/newalloc.h
+ SDCCerr.h SDCCmem.h ../support/util/dbuf.h SDCCsymt.h SDCChasht.h \
+ SDCCval.h SDCCicode.h SDCCbitv.h SDCCast.h port.h SDCCargs.h SDCCpeeph.h \
+ SDCCgen.h SDCCicode.h SDCCbitv.h SDCCset.h SDCCast.h \
+ ../support/util/newalloc.h ../support/util/dbuf_string.h \
+ ../support/util/dbuf.h
 SDCClex.o: SDCClex.c common.h SDCCglobl.h SDCCset.h ../sdccconf.h \
  SDCCerr.h SDCCmem.h ../support/util/dbuf.h SDCCsymt.h SDCChasht.h \
  SDCCval.h SDCCast.h SDCCy.h SDCCbitv.h SDCCicode.h SDCClabel.h \

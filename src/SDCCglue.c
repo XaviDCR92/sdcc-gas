@@ -33,6 +33,11 @@
 
 symbol *interrupts[INTNO_MAX + 1];
 
+static void emit_ds_comm( struct dbuf_s *oBuf,
+                          const char *name,
+                          unsigned int size,
+                          unsigned int alignment);
+
 void printIval (symbol *, sym_link *, initList *, struct dbuf_s *, bool check);
 set *publics = NULL;            /* public variables */
 set *externs = NULL;            /* Variables that are declared as extern */
@@ -146,6 +151,9 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
   if (!map)
     return;
 
+  if (options.gasOutput && !map->syms)
+    return;
+
   if (addPublics)
     {
       /* PENDING: special case here - should remove */
@@ -154,7 +162,8 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
       else if (!strcmp (map->sname, DATA_NAME))
         {
           dbuf_tprintf (&map->oBuf, "\t!areadata\n", map->sname);
-          if (options.data_seg && strcmp (DATA_NAME, options.data_seg))
+          if (options.data_seg && strcmp (DATA_NAME, options.data_seg) && !options.gasOutput)
+            /* GNU as only needs .bss. */
             dbuf_tprintf (&map->oBuf, "\t!area\n", options.data_seg);
         }
       else if (!strcmp (map->sname, HOME_NAME))
@@ -366,10 +375,17 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
               dbuf_printf (&map->oBuf, "==.\n");
             }
           if (IS_STATIC (sym->etype) || sym->level)
-            dbuf_tprintf (&map->oBuf, "!slabeldef\n", sym->rname);
+            if (options.gasOutput)
+              dbuf_tprintf (&map->oBuf, "\t!local\n", sym->rname);
+            else
+              dbuf_tprintf (&map->oBuf, "!slabeldef\n", sym->rname);
           else
-            dbuf_tprintf (&map->oBuf, "!labeldef\n", sym->rname);
-          dbuf_tprintf (&map->oBuf, "\t!ds\n", (unsigned int) size & 0xffff);
+            if (options.gasOutput)
+            dbuf_tprintf (&map->oBuf, "!global\n", sym->rname);
+            else
+              dbuf_tprintf (&map->oBuf, "!labeldef\n", sym->rname);
+
+          emit_ds_comm(&map->oBuf, sym->rname, size & 0xffff, 1/* TBD */);
         }
 
       sym->ival = NULL;
@@ -518,7 +534,7 @@ initValPointer (ast *expr)
       while (t->left != NULL && t->opval.op != '[')
         t = t->left;
 
-      return valForStructElem (t, expr->right); 
+      return valForStructElem (t, expr->right);
     }
 
   return NULL;
@@ -854,7 +870,7 @@ printIvalType (symbol * sym, sym_link * type, initList * ilist, struct dbuf_s *o
     {
       if (!!(val = initPointer (ilist, type, 0)))
         {
-          int i, size = getSize (type), le = port->little_endian, top = (options.model == MODEL_FLAT24) ? 3 : 2;;         
+          int i, size = getSize (type), le = port->little_endian, top = (options.model == MODEL_FLAT24) ? 3 : 2;;
           dbuf_printf (oBuf, "\t.byte ");
           for (i = (le ? 0 : size - 1); le ? (i < size) : (i > -1); i += (le ? 1 : -1))
             {
@@ -867,7 +883,7 @@ printIvalType (symbol * sym, sym_link * type, initList * ilist, struct dbuf_s *o
 			    if (val->name && strlen (val->name) > 0)
                   dbuf_printf (oBuf, "(%s >> %d)", val->name, i * 8);
 				else
-                  dbuf_printf (oBuf, "#0x00");				
+                  dbuf_printf (oBuf, "#0x00");
               else
                 dbuf_printf (oBuf, "#0x00");
               if (i == (le ? (size - 1) : 0))
@@ -1983,8 +1999,12 @@ emitStaticSeg (memmap *map, struct dbuf_s *oBuf)
                 }
               else
                 {
-                  dbuf_printf (oBuf, "%s:\n", sym->rname);
-                  dbuf_tprintf (oBuf, "\t!ds\n", (unsigned int) size & 0xffff);
+                  if (options.gasOutput)
+                    dbuf_tprintf(oBuf, "\t!local\n", sym->rname);
+                  else
+                    dbuf_printf (oBuf, "%s:\n", sym->rname);
+
+                  emit_ds_comm(oBuf, sym->rname, size & 0xffff, 1/* TBD */);
                 }
             }
         }
@@ -2108,12 +2128,12 @@ createInterruptVect (struct dbuf_s *vBuf)
     }
 }
 
-char *iComments1 = {
+const char *iComments1 = {
   ";--------------------------------------------------------\n"
   "; File Created by SDCC : free open source ANSI-C Compiler\n"
 };
 
-char *iComments2 = {
+const char *iComments2 = {
   ";--------------------------------------------------------\n"
 };
 
@@ -2177,7 +2197,7 @@ emitOverlay (struct dbuf_s *aBuf)
       if (elementsInSet (ovrset))
         {
           /* output the area information */
-          dbuf_printf (aBuf, "\t.area\t%s\n", port->mem.overlay_name);  /* MOF */
+          dbuf_printf (aBuf, "\t!area\t%s\n", port->mem.overlay_name);  /* MOF */
         }
 
       for (sym = setFirstItem (ovrset); sym; sym = setNextItem (ovrset))
@@ -2224,16 +2244,21 @@ emitOverlay (struct dbuf_s *aBuf)
                 {
                   werrorfl (sym->fileDef, sym->lineDef, E_UNKNOWN_SIZE, sym->name);
                 }
-              /* print extra debug info if required */
-              if (options.debug)
+              /* print extra debug info if required. GNU as does not need this. */
+              if (options.debug && !options.gasOutput)
                 {
                   emitDebugSym (aBuf, sym);
                   dbuf_printf (aBuf, "==.\n");
                 }
 
               /* allocate space */
-              dbuf_tprintf (aBuf, "!slabeldef\n", sym->rname);
-              dbuf_tprintf (aBuf, "\t!ds\n", (unsigned int) getSize (sym->type) & 0xffff);
+              if (options.gasOutput)
+                /* .bss variables do not need a label definition on GNU as. */
+                dbuf_tprintf(aBuf, "\t!local\n", sym->rname);
+              else
+                dbuf_tprintf (aBuf, "!slabeldef\n", sym->rname);
+
+              emit_ds_comm(aBuf, sym->rname, getSize (sym->type) & 0xffff, 1/* TBD */);
             }
         }
     }
@@ -2458,10 +2483,31 @@ glue (void)
   /* create the stack segment MOF */
   if (mainf && IFFUNC_HASBODY (mainf->type))
     {
+      const char *const start_stack = "__start__stack";
+      const unsigned int size = 1;
+
       fprintf (asmFile, "%s", iComments2);
       fprintf (asmFile, "; Stack segment in internal ram \n");
       fprintf (asmFile, "%s", iComments2);
-      fprintf (asmFile, "\t.area\tSSEG\n" "__start__stack:\n\t.ds\t1\n\n");
+
+      if (options.gasOutput)
+        {
+          char section_name[100];
+
+          snprintf( section_name, sizeof section_name / sizeof *section_name,
+                    ".%s", start_stack);
+          /* Set alloc/write flags. */
+          tfprintf(asmFile, "\t!area , \"aw\", @progbits\n", section_name);
+          tfprintf(asmFile, "\t!local\n", start_stack);
+          tfprintf(asmFile, "\t!comm\n\n", start_stack, size, 1);
+        }
+      else
+        {
+          tfprintf(asmFile, "\t!area\n", "SSEG");
+          tfprintf(asmFile, "\t!labeldef\n", start_stack);
+          tfprintf(asmFile, "\t!ds\n\n", size);
+          tfprintf(asmFile, "\t!area\n" "__start__stack:\n", "SSEG");
+        }
     }
 
   /* create the idata segment */
@@ -2539,8 +2585,9 @@ glue (void)
       dbuf_write_and_destroy (&xidata->oBuf, asmFile);
     }
 
-  /* If the port wants to generate any extra areas, let it do so. */
-  if (port->extraAreas.genExtraAreaDeclaration)
+  /* If the port wants to generate any extra areas, let it do so.
+   * This is not needed for GNU as, though. */
+  if (port->extraAreas.genExtraAreaDeclaration && !options.gasOutput)
     {
       port->extraAreas.genExtraAreaDeclaration (asmFile, mainf && IFFUNC_HASBODY (mainf->type));
     }
@@ -2559,16 +2606,24 @@ glue (void)
   fprintf (asmFile, "; global & static initialisations\n");
   fprintf (asmFile, "%s", iComments2);
 
-  /* Everywhere we generate a reference to the static_name area,
-   * (which is currently only here), we immediately follow it with a
-   * definition of the post_static_name area. This guarantees that
-   * the post_static_name area will immediately follow the static_name
-   * area.
-   */
-  tfprintf (asmFile, "\t!area\n", port->mem.home_name);
-  tfprintf (asmFile, "\t!area\n", port->mem.static_name);       /* MOF */
-  tfprintf (asmFile, "\t!area\n", port->mem.post_static_name);
-  tfprintf (asmFile, "\t!area\n", port->mem.static_name);
+  if (!options.gasOutput)
+    {
+      /* Everywhere we generate a reference to the static_name area,
+       * (which is currently only here), we immediately follow it with a
+       * definition of the post_static_name area. This guarantees that
+       * the post_static_name area will immediately follow the static_name
+       * area.
+       */
+      tfprintf (asmFile, "\t!area\n", port->mem.home_name);
+      tfprintf (asmFile, "\t!area\n", port->mem.static_name);       /* MOF */
+      tfprintf (asmFile, "\t!area\n", port->mem.post_static_name);
+      tfprintf (asmFile, "\t!area\n", port->mem.static_name);
+    }
+
+  if (options.gasOutput)
+    {
+      tfprintf (asmFile, "\t!areacode\n", CODE_NAME);
+    }
 
   if (mainf && IFFUNC_HASBODY (mainf->type))
     {
@@ -2600,19 +2655,22 @@ glue (void)
         fprintf (asmFile, "\t%cjmp\t__sdcc_program_startup\n", options.acall_ajmp ? 'a' : 'l');
     }
 
-  fprintf (asmFile, "%s" "; Home\n" "%s", iComments2, iComments2);
-  tfprintf (asmFile, "\t!areahome\n", HOME_NAME);
-  dbuf_write_and_destroy (&home->oBuf, asmFile);
+  if (!options.gasOutput)
+    {
+      fprintf (asmFile, "%s" "; Home\n" "%s", iComments2, iComments2);
+      tfprintf (asmFile, "\t!areahome\n", HOME_NAME);
+      dbuf_write_and_destroy (&home->oBuf, asmFile);
+    }
 
   if (mainf && IFFUNC_HASBODY (mainf->type))
     {
       /* STM8 note: there is no need to call main().
-         Instead of that, it's address is specified in the 
+         Instead of that, its address is specified in the
          interrupts table and always equals to 0x8080.
        */
 
       /* entry point @ start of HOME */
-      fprintf (asmFile, "__sdcc_program_startup:\n");
+      tfprintf (asmFile, "!labeldef\n", "__sdcc_program_startup");
 
       /* put in jump or call to main */
       if(TARGET_IS_STM8)
@@ -2623,6 +2681,7 @@ glue (void)
         fprintf (asmFile, "\t%cjmp\t_main\n", options.acall_ajmp ? 'a' : 'l');        /* needed? */
       fprintf (asmFile, ";\treturn from main will return to caller\n");
     }
+
   /* copy over code */
   fprintf (asmFile, "%s", iComments2);
   fprintf (asmFile, "; code\n");
@@ -2672,3 +2731,13 @@ isTargetKeyword (const char *s)
   return 0;
 }
 
+static void emit_ds_comm( struct dbuf_s *const oBuf,
+                          const char *const name,
+                          const unsigned int size,
+                          const unsigned int alignment)
+{
+  if (options.gasOutput)
+   dbuf_tprintf(oBuf, "\t!comm\n", name, size, alignment);
+  else
+    dbuf_tprintf(oBuf, "\t!ds\n", size);
+}

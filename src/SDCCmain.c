@@ -65,7 +65,6 @@ struct optimize optimize;
 struct options options;
 int preProcOnly = 0;
 int noAssemble = 0;
-int gasOutput;
 set *preArgvSet = NULL;         /* pre-processor arguments  */
 set *asmOptionsSet = NULL;      /* set of assembler options */
 set *linkOptionsSet = NULL;     /* set of linker options */
@@ -174,7 +173,7 @@ static const OPTION optionsTable[] = {
   {'M', NULL, NULL, "Preprocessor option"},
   {'W', NULL, NULL, "Pass through options to the pre-processor (p), assembler (a) or linker (l)"},
   {'S', NULL, &noAssemble, "Compile only; do not assemble or link"},
-  {0  , "--gas", &gasOutput, "Compile only in GAS (GNU Assembler) format. Incompatible with other assembly or compilation options."},
+  {0  , "--gas", &options.gasOutput, "Compile in GAS (GNU Assembler) format."},
   {'c', "--compile-only", &options.cc_only, "Compile and assemble, but do not link"},
   {'E', "--preprocessonly", &preProcOnly, "Preprocess only, do not compile"},
   {0,   "--c1mode", &options.c1mode, "Act in c1 mode.  The standard input is preprocessed code, the output is assembly code."},
@@ -1490,12 +1489,6 @@ parseCmdLine (int argc, char **argv)
         }
     }
 
-  if (gasOutput && noAssemble)
-    {
-      /* Incompatible assembly output formats. */
-      werror(W_ILLEGAL_OPT_COMBINATION);
-    }
-
   /* some sanity checks in c1 mode */
   if (options.c1mode)
     {
@@ -1518,7 +1511,7 @@ parseCmdLine (int argc, char **argv)
       deleteSet (&relFilesSet);
       deleteSet (&libFilesSet);
 
-      if (options.cc_only || noAssemble || preProcOnly || gasOutput)
+      if (options.cc_only || noAssemble || preProcOnly || options.gasOutput)
         {
           werror (W_ILLEGAL_OPT_COMBINATION);
         }
@@ -1598,7 +1591,7 @@ parseCmdLine (int argc, char **argv)
     }
 
   /* if debug option is set then open the cdbFile */
-  if (options.debug && fullSrcFileName)
+  if (options.debug && fullSrcFileName && !options.gasOutput)
     {
       struct dbuf_s adbFile;
 
@@ -2608,6 +2601,8 @@ main (int argc, char **argv, char **envp)
     port->init ();
 
   setDefaultOptions ();
+
+  parseCmdLine (argc, argv);
 #ifdef JAMIN_DS390
   if (ds390_jammed)
     {
@@ -2615,8 +2610,6 @@ main (int argc, char **argv, char **envp)
       options.stack10bit = 0;
     }
 #endif
-
-  parseCmdLine (argc, argv);
 
   if (options.verbose && NULL != port->processor)
     printf ("Processor: %s\n", port->processor);
@@ -2648,7 +2641,8 @@ main (int argc, char **argv, char **envp)
   initMem ();
 
   /* finalize target specific options */
-  port->finaliseOptions ();
+  if (port->finaliseOptions)
+    port->finaliseOptions();
 
   /* finalize common options */
   finalizeOptions ();
@@ -2675,18 +2669,8 @@ main (int argc, char **argv, char **envp)
       if (fatalError)
         exit (EXIT_FAILURE);
 
-      if (gasOutput)
-        {
-          if (port->general.gas_glue)
-            port->general.gas_glue();
-          else
-          {
-            werror(W_ILLEGAL_OPT_COMBINATION, __FILE__, __LINE__, "selected target does not support GNU assembler output");
-            exit (1);
-          }
-        }
-      else if (port->general.do_glue != NULL)
-        (*port->general.do_glue) ();
+      if (port->general.do_glue)
+        port->general.do_glue();
       else
         {
           /* this shouldn't happen */
@@ -2698,7 +2682,7 @@ main (int argc, char **argv, char **envp)
       if (fatalError)
         exit (EXIT_FAILURE);
 
-      if (!options.c1mode && !noAssemble)
+      if (!options.c1mode && !noAssemble && !options.gasOutput)
         {
           if (options.verbose)
             printf ("sdcc: Calling assembler...\n");
@@ -2710,7 +2694,7 @@ main (int argc, char **argv, char **envp)
   if (options.debug && debugFile)
     debugFile->closeFile ();
 
-  if (!options.cc_only && !fatalError && !noAssemble && !options.c1mode && (fullSrcFileName || peekSet (relFilesSet) != NULL))
+  if (!options.cc_only && !fatalError && !noAssemble && !options.gasOutput && !options.c1mode && (fullSrcFileName || peekSet (relFilesSet) != NULL))
     {
       if (options.verbose)
         printf ("sdcc: Calling linker...\n");
@@ -2723,4 +2707,3 @@ main (int argc, char **argv, char **envp)
 
   return 0;
 }
-

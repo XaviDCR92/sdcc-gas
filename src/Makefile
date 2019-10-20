@@ -15,12 +15,12 @@ PORTS           = $(shell cat ../ports.build)
 ALLPORTS        = $(shell cat ../ports.all)
 PORT_LIBS       = $(PORTS:%=%/port.a)
 
-LIBS            = -lm
+LIBS            = -lm 
 
-CFLAGS          =  -pipe -ggdb -g -O2 -Wall -Wno-parentheses
-CXXFLAGS        = -pipe -ggdb -g -O2 -Wall -Wno-parentheses
+CFLAGS          =  -pipe -ggdb -g -Og -Wall -Wno-parentheses
+CXXFLAGS        = -pipe -ggdb -g -Og -Wall -Wno-parentheses
 CPPFLAGS        += -I$(srcdir)
-LDFLAGS         =
+LDFLAGS         = 
 
 ifdef SDCC_SUB_VERSION
 CFLAGS          += -DSDCC_SUB_VERSION_STR=\"$(SDCC_SUB_VERSION)\"

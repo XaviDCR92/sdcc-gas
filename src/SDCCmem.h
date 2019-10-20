@@ -48,10 +48,10 @@ extern FILE *junkFile;
 /* memory map prefixes  MOF added the DATA,CODE,XDATA,BIT */
 #define  XSTACK_NAME       port->mem.xstack_name
 #define  ISTACK_NAME       port->mem.istack_name
-#define  CODE_NAME         port->mem.code_name
-#define  DATA_NAME         port->mem.data_name
-#define  INITIALIZED_NAME  port->mem.initialized_name
-#define  INITIALIZER_NAME  port->mem.initializer_name
+#define  CODE_NAME         (options.gasOutput ? ".text" : port->mem.code_name)
+#define  DATA_NAME         (options.gasOutput ? ".bss" : port->mem.data_name)
+#define  INITIALIZED_NAME  (options.gasOutput ? ".data" : port->mem.data_name)
+#define  INITIALIZER_NAME  (options.gasOutput ? ".data.rodata" : port->mem.data_name)
 #define  IDATA_NAME        port->mem.idata_name
 #define  PDATA_NAME        port->mem.pdata_name
 #define  XDATA_NAME        port->mem.xdata_name
@@ -60,9 +60,9 @@ extern FILE *junkFile;
 #define  BIT_NAME          port->mem.bit_name
 #define  REG_NAME          port->mem.reg_name
 #define  STATIC_NAME       port->mem.static_name
-#define  HOME_NAME         port->mem.home_name
+#define  HOME_NAME         (options.gasOutput ? ".text.interrupt_vector" : port->mem.home_name)
 #define  OVERLAY_NAME      port->mem.overlay_name
-#define  CONST_NAME        port->mem.const_name
+#define  CONST_NAME        (options.gasOutput ? ".rodata" : port->mem.const_name)
 #define  CABS_NAME         port->mem.cabs_name
 #define  XABS_NAME         port->mem.xabs_name
 #define  IABS_NAME         port->mem.iabs_name

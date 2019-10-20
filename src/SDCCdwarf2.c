@@ -1805,8 +1805,6 @@ dwWriteLineNumbers (void)
     lp->begin_sequence = 1;
   while (lp)
     {
-      fprintf(dwarf2FilePtr, ";sdccrm - label [\"%s\"], line %d\n", lp->label, lp->line);
-
       dwWriteLineNumber (lp);
       if (lp->end_sequence && lp->next)
         lp->next->begin_sequence = 1;

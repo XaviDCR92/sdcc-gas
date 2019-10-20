@@ -68,8 +68,8 @@ pdk_genAssemblerEnd (FILE *of)
 int
 pdk_genIVT(struct dbuf_s *oBuf, symbol **intTable, int intCount)
 {
-  dbuf_tprintf (oBuf, "\t.area\tHEADER (ABS)\n");
-  dbuf_tprintf (oBuf, "\t.org\t 0x0020\n");
+  dbuf_tprintf (oBuf, "\t!area\tHEADER (ABS)\n");
+  dbuf_tprintf (oBuf, "\t!org\t 0x0020\n");
   if (interrupts[0])
     dbuf_tprintf (oBuf, "\tgoto\t%s\n", interrupts[0]->rname);
   else
@@ -85,7 +85,7 @@ pdk_genInitStartup (FILE *of)
   fprintf (of, "\t.org 0x00\n");
   fprintf (of, "p::\n");
   fprintf (of, "\t.ds 2\n");
-  
+
 
   fprintf (of, "\t.area\tHEADER (ABS)\n"); // In the header we have 16 bytes. First should be nop.
   fprintf (of, "\t.org 0x0000\n");
@@ -316,7 +316,7 @@ PORT pdk13_port =
      0,
      2,
      1,                         /* sp points to next free stack location */
-  },     
+  },
   { -1, false },                /* no int x int -> long multiplication support routine. */
   { 0,
     {
@@ -482,7 +482,7 @@ PORT pdk14_port =
      0,
      2,
      1,                         /* sp points to next free stack location */
-  },     
+  },
   { -1, false },                /* no int x int -> long multiplication support routine. */
   { 0,
     {
@@ -648,7 +648,7 @@ PORT pdk15_port =
      0,
      2,
      1,                         /* sp points to next free stack location */
-  },     
+  },
   { -1, false },                /* no int x int -> long multiplication support routine. */
   { 0,
     {

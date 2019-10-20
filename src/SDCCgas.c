@@ -45,7 +45,7 @@ void gas_glue(void)
   int clean_dst = 0;
   const char *dst = fullDstFileName;
 
-  if (!gasOutput)
+  if (!options.gasOutput)
     {
       werror(W_ILLEGAL_OPT_COMBINATION, __FILE__, __FUNCTION__,
             "this function must only be called if GAS"
@@ -183,13 +183,21 @@ static void emit_rodata(FILE *const f)
 
                     printf("%s.%s\n", name, field->name);
 
-                    if (SPEC_LONG(ft))
+                    if (IS_LONG(ft))
                       {
-                        fprintf(f, "\t.long %d\n", ft->select.s.const_val.v_long);
+                        fprintf(f, "\t.long %d\n", SPEC_CVAL(ft).v_long);
+                      }
+                    else if (IS_INT(ft))
+                      {
+                        fprintf(f, "\t.word %d\n", SPEC_CVAL(ft).v_uint);
                       }
                     else if (SPEC_SHORT(ft))
                       {
-                        fprintf(f, "\t.hword %d\n", ft->select.s.const_val.v_int);
+                        fprintf(f, "\t.hword %d\n", SPEC_CVAL(ft).v_int);
+                      }
+                    else if (IS_CHAR(ft) || IS_BOOL(ft))
+                      {
+                        fprintf(f, "\t.byte %d\n", SPEC_CVAL(ft).v_char);
                       }
                   }
               }

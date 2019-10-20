@@ -30,6 +30,7 @@
 #include "dbuf_string.h"
 #include "peep.h"
 #include "SDCCgas.h"
+#include "SDCCglobl.h"
 
 #define OPTION_MEDIUM_MODEL         "--model-medium"
 #define OPTION_LARGE_MODEL          "--model-large"
@@ -154,7 +155,6 @@ stm8_genAssemblerEnd (FILE *of)
 static void
 stm8_init (void)
 {
-  asm_addTree (&asm_asxxxx_mapping);
 }
 
 
@@ -187,6 +187,8 @@ stm8_parseOptions (int *pargc, char **argv, int *i)
 static void
 stm8_finaliseOptions (void)
 {
+  asm_addTree (options.gasOutput ? &asm_gas_mapping : &asm_asxxxx_mapping);
+
   port->mem.default_local_map = data;
   port->mem.default_globl_map = data;
 
@@ -238,7 +240,11 @@ stm8_genExtraArea (FILE *of, bool hasMain)
 static void
 stm8_genInitStartup (FILE *of)
 {
-  fprintf (of, "__sdcc_gs_init_startup:\n");
+  const char *const startup = options.gasOutput ?
+                                "_start"
+                              : "__sdcc_gs_init_startup";
+
+  tfprintf (of, "!labeldef\n", startup);
 
   if (options.stack_loc >= 0)
     {
@@ -247,7 +253,7 @@ stm8_genInitStartup (FILE *of)
     }
 
   /* Init static & global variables */
-  fprintf (of, "__sdcc_init_data:\n");
+  tfprintf (of, "!labeldef\n", "__sdcc_init_data");
   fprintf (of, "; stm8_genXINIT() start\n");
 
   /* Zeroing memory (required by standard for static & global variables) */
@@ -277,7 +283,13 @@ int
 stm8_genIVT(struct dbuf_s * oBuf, symbol ** intTable, int intCount)
 {
   int i;
-  dbuf_tprintf (oBuf, "\tint s_GSINIT ; reset\n");
+
+  if (options.gasOutput)
+    {
+      dbuf_tprintf(oBuf, "!area , \"ax\", @progbits\n", ".text.__interrupt");
+    }
+
+  dbuf_tprintf(oBuf, "\tint s_GSINIT ; reset\n");
 
   if(intCount > STM8_INTERRUPTS_COUNT)
     {

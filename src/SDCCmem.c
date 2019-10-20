@@ -145,7 +145,7 @@ initMem ()
      DEBUG-NAME     -   'C'
      POINTER-TYPE   -   CPOINTER
    */
-  code = allocMap (0, 1, 0, 0, 0, 1, options.code_loc, CODE_NAME, 'C', CPOINTER);
+  code = allocMap (0, 1, 0, 0, 0, 1, options.code_loc, DATA_NAME, 'C', CPOINTER);
 
   /* home  segment ;
      SFRSPACE       -   NO
@@ -223,13 +223,13 @@ initMem ()
   if (OVERLAY_NAME)
       overlay = allocMap (0, 0, 0, 1, 0, 0, options.data_loc, DATA_NAME, 'E', POINTER);
 
-  /* Xternal paged segment ;   
+  /* Xternal paged segment ;
      SFRSPACE       -   NO
      FAR-SPACE      -   NO
      PAGED          -   YES
      DIRECT-ACCESS  -   NO
      BIT-ACCESS     -   NO
-     CODE-ACCESS    -   NO 
+     CODE-ACCESS    -   NO
      DEBUG-NAME     -   'P'
      POINTER-TYPE   -   PPOINTER
    */
@@ -664,7 +664,7 @@ allocParms (value *val, bool smallc)
             }
           else                      /* use internal stack   */
             {
-              
+
               SPEC_OCLS (lval->etype) = SPEC_OCLS (lval->sym->etype) = istack;
               if ((port->stack.direction > 0) != smallc)
                 {
@@ -1048,7 +1048,7 @@ clearStackOffsets (void)
        sym = setNextItem (istack->syms))
     {
       const int size = getSize (sym->type);
-      
+
       /* nothing to do with parameters so continue */
       if ((sym->_isparm && !IS_REGPARM (sym->etype)))
         continue;
@@ -1093,7 +1093,7 @@ redoStackOffsets (void)
           /* Remove them all, and let btree_alloc() below put them back in more efficiently. */
           currFunc->stack -= size;
           SPEC_STAK (currFunc->etype) -= size;
-      
+
           if(IS_AGGREGATE (sym->type) || sym->allocreq)
             btree_add_symbol (sym);
         }
