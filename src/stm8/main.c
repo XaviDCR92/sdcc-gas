@@ -281,22 +281,22 @@ stm8_genInitStartup (FILE *of)
       "_start:\n"
       "\t; Zeroing .bss\n"
       "\tldw x, __bss_start\n"
-      "\t$0:\n"
+      "0$:\n"
       "\tclr (x)\n"
       "\tincw x\n"
       "\tcpw x, __bss_end\n"
-      "\tjrne $0\n"
+      "\tjrne 0$\n"
       "\t; Copying .data from ROM to RAM\n"
       "\t; Calculate .data section size\n"
       "\tldw x, __data_load_start\n"
       "\tldw y, __data_start\n"
-      "\t$1:\n"
+      "1$:\n"
       "\tld a, (x)\n"
       "\tld (y), a\n"
       "\tincw x\n"
       "\tincw y\n"
       "\tcpw y, _edata\n"
-      "\tjrne $1\n");
+      "\tjrne 1$\n");
     }
 }
 
@@ -308,9 +308,7 @@ stm8_genIVT(struct dbuf_s * oBuf, symbol ** intTable, int intCount)
   int i;
 
   if (options.gasOutput)
-    {
-      dbuf_tprintf(oBuf, "!area\n", ".vectors");
-    }
+    dbuf_tprintf(oBuf, "\tint __interrupt_vect ; reset\n");
   else
     dbuf_tprintf(oBuf, "\tint s_GSINIT ; reset\n");
 
