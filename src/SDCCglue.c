@@ -154,7 +154,7 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
   if (options.gasOutput && !map->syms)
     return;
 
-  if (addPublics)
+  if (addPublics && !options.gasOutput)
     {
       /* PENDING: special case here - should remove */
       if (!strcmp (map->sname, CODE_NAME))
@@ -162,8 +162,7 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
       else if (!strcmp (map->sname, DATA_NAME))
         {
           dbuf_tprintf (&map->oBuf, "\t!areadata\n", map->sname);
-          if (options.data_seg && strcmp (DATA_NAME, options.data_seg) && !options.gasOutput)
-            /* GNU as only needs .bss. */
+          if (options.data_seg && strcmp (DATA_NAME, options.data_seg))
             dbuf_tprintf (&map->oBuf, "\t!area\n", options.data_seg);
         }
       else if (!strcmp (map->sname, HOME_NAME))
@@ -174,6 +173,15 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
       if (map->regsp)
         dbuf_tprintf (&map->oBuf, "\t!org\n", 0);
     }
+  else if (options.gasOutput)
+    if (map == code)
+      dbuf_tprintf (&map->oBuf, "\t!area\n", ".text");
+    else if (map == data)
+      dbuf_tprintf (&map->oBuf, "\t!area\n", DATA_NAME);
+    else if (map == initialized)
+      dbuf_tprintf (&map->oBuf, "\t!area\n", INITIALIZED_NAME);
+    else if (map == initializer)
+      dbuf_tprintf (&map->oBuf, "\t!area\n", INITIALIZER_NAME);
 
   for (sym = setFirstItem (map->syms); sym; sym = setNextItem (map->syms))
     {
@@ -2497,7 +2505,7 @@ glue (void)
           snprintf( section_name, sizeof section_name / sizeof *section_name,
                     ".%s", start_stack);
           /* Set alloc/write flags. */
-          tfprintf(asmFile, "\t!area , \"aw\", @progbits\n", section_name);
+          tfprintf(asmFile, "\t!area , \"aw\"\n", section_name);
           tfprintf(asmFile, "\t!local\n", start_stack);
           tfprintf(asmFile, "\t!comm\n\n", start_stack, size, 1);
         }
@@ -2686,7 +2694,7 @@ glue (void)
   fprintf (asmFile, "%s", iComments2);
   fprintf (asmFile, "; code\n");
   fprintf (asmFile, "%s", iComments2);
-  tfprintf (asmFile, "\t!areacode\n", options.code_seg);
+  tfprintf (asmFile, "\t!areacode\n", CODE_NAME);
   dbuf_write_and_destroy (&code->oBuf, asmFile);
 
   if (port->genAssemblerEnd)

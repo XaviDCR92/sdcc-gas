@@ -240,41 +240,64 @@ stm8_genExtraArea (FILE *of, bool hasMain)
 static void
 stm8_genInitStartup (FILE *of)
 {
-  const char *const startup = options.gasOutput ?
-                                "_start"
-                              : "__sdcc_gs_init_startup";
-
-  tfprintf (of, "!labeldef\n", startup);
-
-  if (options.stack_loc >= 0)
+  if (!options.gasOutput)
     {
-      fprintf (of, "\tldw\tx, #0x%04x\n", options.stack_loc);
-      fprintf (of, "\tldw\tsp, x\n");
+      tfprintf (of, "!labeldef\n", "__sdcc_gs_init_startup");
+
+      if (options.stack_loc >= 0)
+        {
+          fprintf (of, "\tldw\tx, #0x%04x\n", options.stack_loc);
+          fprintf (of, "\tldw\tsp, x\n");
+        }
+
+      /* Init static & global variables */
+      tfprintf (of, "!labeldef\n", "__sdcc_init_data");
+      fprintf (of, "; stm8_genXINIT() start\n");
+
+      /* Zeroing memory (required by standard for static & global variables) */
+      fprintf (of, "\tldw x, #l_DATA\n");
+      fprintf (of, "\tjreq\t00002$\n");
+      fprintf (of, "00001$:\n");
+      fprintf (of, "\tclr (s_DATA - 1, x)\n");
+      fprintf (of, "\tdecw x\n");
+      fprintf (of, "\tjrne\t00001$\n");
+      fprintf (of, "00002$:\n");
+
+      /* Copy l_INITIALIZER bytes from s_INITIALIZER to s_INITIALIZED */
+      fprintf (of, "\tldw\tx, #l_INITIALIZER\n");
+      fprintf (of, "\tjreq\t00004$\n");
+      fprintf (of, "00003$:\n");
+      fprintf (of, "\tld\ta, (s_INITIALIZER - 1, x)\n");
+      fprintf (of, "\tld\t(s_INITIALIZED - 1, x), a\n");
+      fprintf (of, "\tdecw\tx\n");
+      fprintf (of, "\tjrne\t00003$\n");
+      fprintf (of, "00004$:\n");
+      fprintf (of, "; stm8_genXINIT() end\n");
     }
-
-  /* Init static & global variables */
-  tfprintf (of, "!labeldef\n", "__sdcc_init_data");
-  fprintf (of, "; stm8_genXINIT() start\n");
-
-  /* Zeroing memory (required by standard for static & global variables) */
-  fprintf (of, "\tldw x, #l_DATA\n");
-  fprintf (of, "\tjreq\t00002$\n");
-  fprintf (of, "00001$:\n");
-  fprintf (of, "\tclr (s_DATA - 1, x)\n");
-  fprintf (of, "\tdecw x\n");
-  fprintf (of, "\tjrne\t00001$\n");
-  fprintf (of, "00002$:\n");
-
-  /* Copy l_INITIALIZER bytes from s_INITIALIZER to s_INITIALIZED */
-  fprintf (of, "\tldw\tx, #l_INITIALIZER\n");
-  fprintf (of, "\tjreq\t00004$\n");
-  fprintf (of, "00003$:\n");
-  fprintf (of, "\tld\ta, (s_INITIALIZER - 1, x)\n");
-  fprintf (of, "\tld\t(s_INITIALIZED - 1, x), a\n");
-  fprintf (of, "\tdecw\tx\n");
-  fprintf (of, "\tjrne\t00003$\n");
-  fprintf (of, "00004$:\n");
-  fprintf (of, "; stm8_genXINIT() end\n");
+  else
+    {
+      fprintf(of,
+      ".global _start\n"
+      "_start:\n"
+      "\t; Zeroing .bss\n"
+      "\tldw x, __bss_start\n"
+      "\t$0:\n"
+      "\tclr (x)\n"
+      "\tincw x\n"
+      "\tcpw x, __bss_end\n"
+      "\tjrne $0\n"
+      "\t; Copying .data from ROM to RAM\n"
+      "\t; Calculate .data section size\n"
+      "\tldw x, __data_load_start\n"
+      "\tldw y, __data_start\n"
+      "\t$1:\n"
+      "\tld a, (x)\n"
+      "\tld (y), a\n"
+      "\tincw x\n"
+      "\tincw y\n"
+      "\tcpw y, _edata\n"
+      "\tjrne $1\n");
+    }
 }
 
 #define STM8_INTERRUPTS_COUNT 30
@@ -286,10 +309,10 @@ stm8_genIVT(struct dbuf_s * oBuf, symbol ** intTable, int intCount)
 
   if (options.gasOutput)
     {
-      dbuf_tprintf(oBuf, "!area , \"ax\", @progbits\n", ".text.__interrupt");
+      dbuf_tprintf(oBuf, "!area\n", ".vectors");
     }
-
-  dbuf_tprintf(oBuf, "\tint s_GSINIT ; reset\n");
+  else
+    dbuf_tprintf(oBuf, "\tint s_GSINIT ; reset\n");
 
   if(intCount > STM8_INTERRUPTS_COUNT)
     {
