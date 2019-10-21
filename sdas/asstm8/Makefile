@@ -2,10 +2,10 @@
 #
 #
 
-VERSION         = 3.9.3
-VERSIONHI       = 3
-VERSIONLO       = 9
-VERSIONP        = 3
+VERSION         = 0.0.0
+VERSIONHI       = 0
+VERSIONLO       = 0
+VERSIONP        = 0
 
 SHELL           = /bin/sh
 CC              = gcc
@@ -35,7 +35,7 @@ EXEEXT          =
 
 
 CPPFLAGS        =  -DSDCDB -DNOICE -DINDEXLIB -I. -I$(srcdir) -I$(srcdir)/../asxxsrc -I$(srcdir)/../../support/util
-CFLAGS          =  -pipe -ggdb -g -O2 -Wall -Wno-parentheses $(CPPFLAGS)
+CFLAGS          =  -pipe -ggdb -g -Og -Wall -Wno-parentheses $(CPPFLAGS)
 LDFLAGS         = 
 LIBS            = -lm
 

@@ -2,10 +2,10 @@
 #
 #
 
-VERSION         = 3.9.3
-VERSIONHI       = 3
-VERSIONLO       = 9
-VERSIONP        = 3
+VERSION         = 0.0.0
+VERSIONHI       = 0
+VERSIONLO       = 0
+VERSIONP        = 0
 
 SHELL           = /bin/sh
 CC              = gcc
@@ -35,7 +35,7 @@ EXEEXT          =
 
 
 CPPFLAGS        =  -I.. -I$(srcdir)/..
-CFLAGS          =  -pipe -ggdb -g -O2 -Wall -Wno-parentheses -DINDEXLIB -DUNIX -I. -I$(srcdir)
+CFLAGS          =  -pipe -ggdb -g -Og -Wall -Wno-parentheses -DINDEXLIB -DUNIX -I. -I$(srcdir)
 LDFLAGS         = 
 
 OBJDIR = obj

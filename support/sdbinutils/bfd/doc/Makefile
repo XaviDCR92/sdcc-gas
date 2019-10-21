@@ -153,12 +153,12 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-ACLOCAL = ${SHELL} /home/xavier/sdcc/support/sdbinutils/missing --run aclocal-1.11
+ACLOCAL = ${SHELL} /home/xavier/sdcc_gas/support/sdbinutils/missing --run aclocal-1.11
 AMTAR = $${TAR-tar}
 AR = ar
-AUTOCONF = ${SHELL} /home/xavier/sdcc/support/sdbinutils/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/xavier/sdcc/support/sdbinutils/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/xavier/sdcc/support/sdbinutils/missing --run automake-1.11
+AUTOCONF = ${SHELL} /home/xavier/sdcc_gas/support/sdbinutils/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/xavier/sdcc_gas/support/sdbinutils/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/xavier/sdcc_gas/support/sdbinutils/missing --run automake-1.11
 AWK = gawk
 BFD_HOSTPTR_T = unsigned long
 BFD_HOST_64BIT_LONG = 1
@@ -251,10 +251,10 @@ WARN_CFLAGS = -W -Wall -Wstrict-prototypes -Wmissing-prototypes -Wshadow -Wstack
 WARN_CFLAGS_FOR_BUILD = -W -Wall -Wstrict-prototypes -Wmissing-prototypes -Wshadow -Wstack-usage=262144
 WARN_WRITE_STRINGS = -Wwrite-strings
 XGETTEXT = /usr/bin/xgettext
-abs_builddir = /home/xavier/sdcc/support/sdbinutils/bfd/doc
-abs_srcdir = /home/xavier/sdcc/support/sdbinutils/bfd/doc
-abs_top_builddir = /home/xavier/sdcc/support/sdbinutils/bfd
-abs_top_srcdir = /home/xavier/sdcc/support/sdbinutils/bfd
+abs_builddir = /home/xavier/sdcc_gas/support/sdbinutils/bfd/doc
+abs_srcdir = /home/xavier/sdcc_gas/support/sdbinutils/bfd/doc
+abs_top_builddir = /home/xavier/sdcc_gas/support/sdbinutils/bfd
+abs_top_srcdir = /home/xavier/sdcc_gas/support/sdbinutils/bfd
 ac_ct_CC = 
 ac_ct_DUMPBIN = 
 all_backends = $(BFD32_BACKENDS)
@@ -291,7 +291,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/xavier/sdcc/support/sdbinutils/install-sh
+install_sh = ${SHELL} /home/xavier/sdcc_gas/support/sdbinutils/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale

@@ -41,7 +41,7 @@
 .SILENT:
 
 CC = gcc
-CFLAGS =  -pipe -ggdb -g -O2
+CFLAGS =  -pipe -ggdb -g -Og
 CPPFLAGS =  -DNO_VARARGS
 EXEEXT = 
 PYTHON = python3.6

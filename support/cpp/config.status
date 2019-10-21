@@ -437,7 +437,7 @@ Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/xavier/sdcc/support/cpp'
+ac_pwd='/home/xavier/sdcc_gas/support/cpp'
 srcdir='.'
 AWK='gawk'
 test -n "$AWK" || AWK=awk
@@ -679,7 +679,7 @@ S["build_install_headers_dir"]="install-headers-tar"
 S["build_exeext"]=""
 S["all_stagestuff"]=""
 S["WALL_FLAG"]="-Wall"
-S["objdir"]="/home/xavier/sdcc/support/cpp"
+S["objdir"]="/home/xavier/sdcc_gas/support/cpp"
 S["target_subdir"]=""
 S["host_canonical"]=""
 S["build_canonical"]=""
