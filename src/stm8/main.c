@@ -29,7 +29,6 @@
 #include "gen.h"
 #include "dbuf_string.h"
 #include "peep.h"
-#include "SDCCgas.h"
 #include "SDCCglobl.h"
 
 #define OPTION_MEDIUM_MODEL         "--model-medium"
@@ -277,7 +276,7 @@ stm8_genInitStartup (FILE *of)
   else
     {
       fprintf(of,
-      ".global _start\n"
+      "\t.global _start\n"
       "_start:\n"
       "\t; Zeroing .bss\n"
       "\tldw x, __bss_start\n"
@@ -308,7 +307,8 @@ stm8_genIVT(struct dbuf_s * oBuf, symbol ** intTable, int intCount)
   int i;
 
   if (options.gasOutput)
-    dbuf_tprintf(oBuf, "\tint __interrupt_vect ; reset\n");
+    /* Set entry point address. */
+    dbuf_tprintf(oBuf, "\tint _start ; reset\n");
   else
     dbuf_tprintf(oBuf, "\tint s_GSINIT ; reset\n");
 
@@ -441,7 +441,6 @@ PORT stm8_port =
     MODEL_MEDIUM | MODEL_LARGE,
     MODEL_MEDIUM,
     &get_model,                 /* model string used as library destination */
-    gas_glue
   },
   {                             /* Assembler */
     stm8AsmCmd,

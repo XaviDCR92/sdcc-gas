@@ -2339,7 +2339,12 @@ void
 stm8_emitDebuggerSymbol (const char *debugSym)
 {
   G.debugLine = 1;
-  emit2 ("", "%s ==.", debugSym);
+
+  if (options.gasOutput)
+    emit2 ("", "%s:", debugSym);
+  else
+    emit2 ("", "%s ==.", debugSym);
+
   G.debugLine = 0;
 }
 
@@ -3358,6 +3363,8 @@ genFunction (iCode *ic)
   emit2 (";", " function %s", sym->name);
   emit2 (";", "-----------------------------------------");
 
+  /* Place each new function into its own section so GNU ld
+   * can perform dead code elimination via --gc-sections. */
   if (options.function_sections && options.gasOutput)
     {
       char name[256];

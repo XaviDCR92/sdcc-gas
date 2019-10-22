@@ -124,19 +124,22 @@ aopLiteral (value *val, int offset)
 static void
 emitDebugSym (struct dbuf_s *oBuf, symbol * sym)
 {
-  if (sym->level && sym->localof)       /* symbol scope is local */
     {
-      dbuf_printf (oBuf, "L%s.%s$", moduleName, sym->localof->name);
+      if (sym->level && sym->localof)       /* symbol scope is local */
+        {
+          dbuf_printf (oBuf, "L%s.%s$", moduleName, sym->localof->name);
+        }
+      else if (IS_STATIC (sym->etype))      /* symbol scope is file */
+        {
+          dbuf_printf (oBuf, "F%s$", moduleName);
+        }
+      else                          /* symbol scope is global */
+        {
+          dbuf_printf (oBuf, "G$");
+        }
+
+      dbuf_printf (oBuf, "%s$%ld_%ld$%d", sym->name, sym->level / LEVEL_UNIT, sym->level % LEVEL_UNIT, sym->block);
     }
-  else if (IS_STATIC (sym->etype))      /* symbol scope is file */
-    {
-      dbuf_printf (oBuf, "F%s$", moduleName);
-    }
-  else                          /* symbol scope is global */
-    {
-      dbuf_printf (oBuf, "G$");
-    }
-  dbuf_printf (oBuf, "%s$%ld_%ld$%d", sym->name, sym->level / LEVEL_UNIT, sym->level % LEVEL_UNIT, sym->block);
 }
 
 /*-----------------------------------------------------------------*/
@@ -149,9 +152,6 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
   ast *ival = NULL;
 
   if (!map)
-    return;
-
-  if (options.gasOutput && !map->syms)
     return;
 
   if (addPublics && !options.gasOutput)
@@ -380,7 +380,11 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
           if (options.debug)
             {
               emitDebugSym (&map->oBuf, sym);
-              dbuf_printf (&map->oBuf, "==.\n");
+
+              if (options.gasOutput)
+                dbuf_printf (&map->oBuf, ":\n");
+              else
+                dbuf_printf (&map->oBuf, "==.\n");
             }
           if (IS_STATIC (sym->etype) || sym->level)
             if (options.gasOutput)
@@ -2252,11 +2256,15 @@ emitOverlay (struct dbuf_s *aBuf)
                 {
                   werrorfl (sym->fileDef, sym->lineDef, E_UNKNOWN_SIZE, sym->name);
                 }
-              /* print extra debug info if required. GNU as does not need this. */
-              if (options.debug && !options.gasOutput)
+              /* print extra debug info if required. */
+              if (options.debug)
                 {
                   emitDebugSym (aBuf, sym);
-                  dbuf_printf (aBuf, "==.\n");
+
+                  if (options.gasOutput)
+                    dbuf_printf (aBuf, ":\n");
+                  else
+                    dbuf_printf (aBuf, "==.\n");
                 }
 
               /* allocate space */
@@ -2648,13 +2656,14 @@ glue (void)
 
   /* STM8 / PDK14 note: there are no such instructions supported.
      Also, we don't need this logic as well. */
-  if (port->general.glue_up_main && mainf && IFFUNC_HASBODY (mainf->type))
+  if (port->general.glue_up_main && mainf && IFFUNC_HASBODY (mainf->type) && !options.gasOutput)
     {
       /* This code is generated in the post-static area.
-       * This area is guaranteed to follow the static area
-       * by the ugly shucking and jiving about 20 lines ago.
-       */
+        * This area is guaranteed to follow the static area
+        * by the ugly shucking and jiving about 20 lines ago.
+        */
       tfprintf (asmFile, "\t!area\n", port->mem.post_static_name);
+
       if(TARGET_IS_STM8)
         fprintf (asmFile, "\tjp\t__sdcc_program_startup\n");
       else if(TARGET_PDK_LIKE)

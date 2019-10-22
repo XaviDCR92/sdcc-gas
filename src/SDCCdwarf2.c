@@ -100,7 +100,11 @@ dwNewDebugSymbol (void)
 {
   char debugSym[SDCC_NAME_MAX];
 
-  sprintf (debugSym, "S%s$%s$%d", dwModuleName, currFunc->name, dwDebugSymbol);
+  if (options.gasOutput)
+    sprintf (debugSym, "%s_%s_%d$", dwModuleName, currFunc->name, dwDebugSymbol);
+  else
+    sprintf (debugSym, "S%s$%s$%d", dwModuleName, currFunc->name, dwDebugSymbol);
+
   dwDebugSymbol++;
   return Safe_strdup (debugSym);
 }

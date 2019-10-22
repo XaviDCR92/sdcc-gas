@@ -119,10 +119,6 @@ typedef struct
     /** return the model string, used as library destination;
         port->target is used as model string if get_model is NULL */
     const char *(*get_model) (void);
-    /** Pointer to GAS (GNU assembler) glue function.
-     *  If none is available, it means there is no support
-     *  for this port yet. */
-    void (*gas_glue)(void);
   }
   general;
 

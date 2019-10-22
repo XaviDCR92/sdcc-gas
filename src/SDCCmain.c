@@ -1592,21 +1592,22 @@ parseCmdLine (int argc, char **argv)
     }
 
   /* if debug option is set then open the cdbFile */
-  if (options.debug && fullSrcFileName && !options.gasOutput)
+  if (options.debug && fullSrcFileName)
     {
-      struct dbuf_s adbFile;
+        struct dbuf_s adbFile;
 
-      dbuf_init (&adbFile, PATH_MAX);
-      dbuf_append_str (&adbFile, dstFileName);
-      dbuf_append_str (&adbFile, ".adb");
+        dbuf_init (&adbFile, PATH_MAX);
+        dbuf_append_str (&adbFile, dstFileName);
+        dbuf_append_str (&adbFile, ".adb");
 
-      if (debugFile->openFile (dbuf_c_str (&adbFile)))
-        debugFile->writeModule (moduleName);
-      else
-        werror (E_FILE_OPEN_ERR, dbuf_c_str (&adbFile));
+        if (debugFile->openFile (dbuf_c_str (&adbFile)))
+          debugFile->writeModule (moduleName);
+        else
+          werror (E_FILE_OPEN_ERR, dbuf_c_str (&adbFile));
 
-      dbuf_destroy (&adbFile);
+        dbuf_destroy (&adbFile);
     }
+
   MSVC_style (options.vc_err_style);
 
   return 0;
