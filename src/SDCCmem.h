@@ -62,7 +62,7 @@ extern FILE *junkFile;
 #define  STATIC_NAME       port->mem.static_name
 #define  HOME_NAME         (options.gasOutput ? ".vectors" : port->mem.home_name)
 #define  OVERLAY_NAME      port->mem.overlay_name
-#define  CONST_NAME        (options.gasOutput ? ".rodata" : port->mem.const_name)
+#define  CONST_NAME        (options.gasOutput ? ".text.rodata" : port->mem.const_name)
 #define  CABS_NAME         port->mem.cabs_name
 #define  XABS_NAME         port->mem.xabs_name
 #define  IABS_NAME         port->mem.iabs_name

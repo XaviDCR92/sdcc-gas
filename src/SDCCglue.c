@@ -260,6 +260,7 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
                  in the static seg */
               newSym = copySymbol (sym);
               SPEC_OCLS (newSym->etype) = (SPEC_OCLS (sym->etype) == xidata) ? xinit : initializer;
+
               SNPRINTF (newSym->name, sizeof (newSym->name), options.gasOutput ? "%s" : "__xinit_%s", sym->name);
               SNPRINTF (newSym->rname, sizeof (newSym->rname), options.gasOutput ? "%s" : "__xinit_%s", sym->rname);
 
@@ -2074,7 +2075,7 @@ emitMaps (void)
   emitRegularMap (code, TRUE, FALSE);
 
   if (options.const_seg)
-    dbuf_tprintf (&code->oBuf, "\t!area\n", options.const_seg);
+    dbuf_tprintf (&code->oBuf, "\t!area\n", CONST_NAME);
   emitStaticSeg (statsg, &code->oBuf);
 
   if (port->genXINIT)
@@ -2084,7 +2085,7 @@ emitMaps (void)
     }
   if (initializer)
     {
-      dbuf_tprintf (&code->oBuf, "\t!area\n", initializer->sname);
+      dbuf_tprintf (&code->oBuf, "\t!area\n", INITIALIZER_NAME);
       emitStaticSeg (initializer, &code->oBuf);
     }
   dbuf_tprintf (&code->oBuf, "\t!area\n", c_abs->sname);
