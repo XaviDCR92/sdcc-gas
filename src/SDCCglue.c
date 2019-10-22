@@ -178,10 +178,6 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
       dbuf_tprintf (&map->oBuf, "\t!area\n", ".text");
     else if (map == data)
       dbuf_tprintf (&map->oBuf, "\t!area\n", DATA_NAME);
-    else if (map == initialized)
-      dbuf_tprintf (&map->oBuf, "\t!area\n", INITIALIZED_NAME);
-    else if (map == initializer)
-      dbuf_tprintf (&map->oBuf, "\t!area\n", INITIALIZER_NAME);
 
   for (sym = setFirstItem (map->syms); sym; sym = setNextItem (map->syms))
     {
@@ -264,8 +260,8 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
                  in the static seg */
               newSym = copySymbol (sym);
               SPEC_OCLS (newSym->etype) = (SPEC_OCLS (sym->etype) == xidata) ? xinit : initializer;
-              SNPRINTF (newSym->name, sizeof (newSym->name), "__xinit_%s", sym->name);
-              SNPRINTF (newSym->rname, sizeof (newSym->rname), "__xinit_%s", sym->rname);
+              SNPRINTF (newSym->name, sizeof (newSym->name), options.gasOutput ? "%s" : "__xinit_%s", sym->name);
+              SNPRINTF (newSym->rname, sizeof (newSym->rname), options.gasOutput ? "%s" : "__xinit_%s", sym->rname);
 
               /* find the first non-array link */
               t = newSym->type;
@@ -386,18 +382,22 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
               else
                 dbuf_printf (&map->oBuf, "==.\n");
             }
-          if (IS_STATIC (sym->etype) || sym->level)
-            if (options.gasOutput)
-              dbuf_tprintf (&map->oBuf, "\t!local\n", sym->rname);
-            else
-              dbuf_tprintf (&map->oBuf, "!slabeldef\n", sym->rname);
-          else
-            if (options.gasOutput)
-            dbuf_tprintf (&map->oBuf, "!global\n", sym->rname);
-            else
-              dbuf_tprintf (&map->oBuf, "!labeldef\n", sym->rname);
 
-          emit_ds_comm(&map->oBuf, sym->rname, size & 0xffff, 1/* TBD */);
+          if ((map != initialized && options.gasOutput) || !options.gasOutput)
+            {
+              if (IS_STATIC (sym->etype) || sym->level)
+                if (options.gasOutput)
+                  dbuf_tprintf (&map->oBuf, "\t!local\n", sym->rname);
+                else
+                  dbuf_tprintf (&map->oBuf, "!slabeldef\n", sym->rname);
+              else
+                if (options.gasOutput)
+                dbuf_tprintf (&map->oBuf, "!global\n", sym->rname);
+                else
+                  dbuf_tprintf (&map->oBuf, "!labeldef\n", sym->rname);
+
+              emit_ds_comm(&map->oBuf, sym->rname, size & 0xffff, 1/* TBD */);
+            }
         }
 
       sym->ival = NULL;
