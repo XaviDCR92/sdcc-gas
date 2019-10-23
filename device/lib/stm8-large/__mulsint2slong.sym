@@ -1,18 +1,0 @@
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 1.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
-    .__.$$$.=  002710 L   |     .__.ABS.=  000000 G   |     .__.CPU.=  000000 L
-    .__.H$L.=  000001 L   |   1 ___mulsi   000005 GR  |   1 ___mului   000000 GR
-  1 end        000057 R   |   1 left_non   00000E R   |   1 neg_y      000055 R
-  1 right_no   000016 R   |   1 skip_m1    000037 R   |   1 skip_m2    000049 R
-
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
-Hexadecimal [24-Bits]
-
-Area Table
-
-   0 _CODE      size      0   flags    0
-   1 CODE       size     58   flags    0
-
