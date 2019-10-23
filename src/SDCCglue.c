@@ -2357,8 +2357,10 @@ glue (void)
   tfprintf (asmFile, "\t!module\n", moduleName);
   if (mcs51_like)
     {
-      if(!options.noOptsdccInAsm)
+      if(!options.noOptsdccInAsm && !options.gasOutput)
         fprintf (asmFile, "\t.optsdcc -m%s", port->target);
+      else if (options.gasOutput && options.noOptsdccInAsm)
+        werror(W_IGNORED_OPT_IN_ASM);
 
       switch (options.model)
         {
@@ -2398,8 +2400,11 @@ glue (void)
     }
   else if (!TARGET_PIC_LIKE && !options.noOptsdccInAsm)
     {
-      fprintf (asmFile, "\t.optsdcc -m%s\n", port->target);
+      if(!options.gasOutput)
+        fprintf (asmFile, "\t.optsdcc -m%s", port->target);
     }
+  else if (options.noOptsdccInAsm && options.gasOutput)
+    werror(W_IGNORED_OPT_IN_ASM);
 
   tfprintf (asmFile, "\t!fileprelude\n");
 

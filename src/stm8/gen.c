@@ -3561,7 +3561,7 @@ genReturn (const iCode *ic)
       for(i = 0; i < size; i++)
         if (aopInReg (left->aop, i, A_IDX))
           {
-            emit2 ("ld", "(#%d, x), a", size - 1 - i);
+            emit2 ("ld", options.gasOutput ? "(%d, x), a" : "(#%d, x), a", size - 1 - i);
             cost (2, 1);
             break;
           }
@@ -3573,7 +3573,7 @@ genReturn (const iCode *ic)
               genMove_o (ASMOP_Y, 0, left->aop, i, 2, TRUE, FALSE, TRUE);
               if (size - 2 - i)
                 {
-                  emit2 ("ldw", "(#%d, x), y", size - 2 - i);
+                  emit2 ("ldw", options.gasOutput ? "(%d, x), y" : "(#%d, x), y", size - 2 - i);
                   cost (2, 2);
                 }
               else
@@ -3585,8 +3585,9 @@ genReturn (const iCode *ic)
             }
           else if (aopInReg (left->aop, i, XL_IDX) || aopInReg (left->aop, i, XH_IDX))
             {
-              emit2 ("ld", "a, (#%d, sp)", (int)(aopInReg (left->aop, i, XL_IDX)) + 1);
-              emit2 ("ld", "(#%d, x), a", size - 1 - i);
+              emit2 ("ld", options.gasOutput ? "a, (%d, sp)" : "a, (#%d, sp)",
+                    (int)(aopInReg (left->aop, i, XL_IDX)) + 1);
+              emit2 ("ld", options.gasOutput ? "(%d, x), a" : "(#%d, x), a", size - 1 - i);
               cost (4, 2);
               i++;
             }
@@ -3595,7 +3596,7 @@ genReturn (const iCode *ic)
               cheapMove (ASMOP_A, 0, left->aop, i, FALSE);
               if (size - 1 - i)
                 {
-                  emit2 ("ld", "(#%d, x), a", size - 1 - i);
+                  emit2 ("ld", options.gasOutput ? "(%d, x), a" : "(#%d, x), a", size - 1 - i);
                   cost (2, 1);
                 }
               else
@@ -7651,7 +7652,13 @@ genJumpTab (const iCode *ic)
   for (jtab = setFirstItem (IC_JTLABELS (ic)); jtab; jtab = setNextItem (IC_JTLABELS (ic)))
     {
       if (!regalloc_dry_run)
-        emit2 (".dw", "#!tlabel", labelKey2num (jtab->key));
+        {
+          struct dbuf_s b;
+
+          dbuf_init(&b, 1024);
+          /* emit2 (".dw", "#!tlabel", labelKey2num (jtab->key)); */
+          emit2 ("", "!dw %d", labelKey2num (jtab->key));
+        }
       cost (2, 0);
     }
 

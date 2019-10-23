@@ -37,14 +37,14 @@
 #define DEFAULT_ERROR_OUT       stderr
 #endif
 
-struct SDCCERRG _SDCCERRG; 
+struct SDCCERRG _SDCCERRG;
 
 extern char *filename;
 extern int lineno;
 extern int fatalError;
 
-/* Currently the errIndex field must match the position of the 
- * entry in the array. It is only included in order to make 
+/* Currently the errIndex field must match the position of the
+ * entry in the array. It is only included in order to make
  * human error lookup easier.
  */
 struct
@@ -561,6 +561,8 @@ struct
     "invalid value for __z88dk_shortcall %s parameter: %x", 0},
   { E_DUPLICATE_PARAMTER_NAME, ERROR_LEVEL_ERROR,
     "duplicate parameter name %s for function %s", 0},
+  {W_IGNORED_OPT_IN_ASM, ERROR_LEVEL_WARNING,
+    "no optsdcc in assembly file configuration is ignored when using GNU as format output"}
 };
 
 /* -------------------------------------------------------------------------------

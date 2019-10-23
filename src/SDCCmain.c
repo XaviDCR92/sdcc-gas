@@ -1512,7 +1512,7 @@ parseCmdLine (int argc, char **argv)
       deleteSet (&relFilesSet);
       deleteSet (&libFilesSet);
 
-      if (options.cc_only || noAssemble || preProcOnly || options.gasOutput)
+      if (options.cc_only || noAssemble || preProcOnly)
         {
           werror (W_ILLEGAL_OPT_COMBINATION);
         }
@@ -1956,8 +1956,11 @@ assemble (char **envp)
         }
       else
         {
+          const char *const ext = options.gasOutput ?
+                                  port->linker.o_ext
+                                : port->linker.rel_ext;
           /* the assembled file gets the name of the first module */
-          dbuf_printf (&asmName, "%s%s", dstFileName, port->linker.rel_ext);
+          dbuf_printf (&asmName, "%s%s", dstFileName, ext);
         }
 
       if (port->assembler.cmd)
@@ -1966,8 +1969,8 @@ assemble (char **envp)
           char *dfn = shell_escape (dstFileName);
           char *asmn = shell_escape (dbuf_c_str (&asmName));
 
-          buf = buildCmdLine (port->assembler.cmd, dfn, asmn,
-                    options.debug ? port->assembler.debug_opts : port->assembler.plain_opts, asmOptionsSet);
+          buf = buildCmdLine (options.gasOutput ? port->assembler.binutils_cmd : port->assembler.cmd,
+                    dfn, asmn, options.debug ? port->assembler.debug_opts : port->assembler.plain_opts, asmOptionsSet);
           Safe_free (dfn);
           Safe_free (asmn);
         }
@@ -2684,7 +2687,7 @@ main (int argc, char **argv, char **envp)
       if (fatalError)
         exit (EXIT_FAILURE);
 
-      if (!options.c1mode && !noAssemble && !options.gasOutput)
+      if (!options.c1mode && !noAssemble)
         {
           if (options.verbose)
             printf ("sdcc: Calling assembler...\n");
@@ -2696,7 +2699,7 @@ main (int argc, char **argv, char **envp)
   if (options.debug && debugFile)
     debugFile->closeFile ();
 
-  if (!options.cc_only && !fatalError && !noAssemble && !options.gasOutput && !options.c1mode && (fullSrcFileName || peekSet (relFilesSet) != NULL))
+  if (!options.cc_only && !fatalError && !noAssemble  && !options.c1mode && (fullSrcFileName || peekSet (relFilesSet) != NULL))
     {
       if (options.verbose)
         printf ("sdcc: Calling linker...\n");

@@ -285,8 +285,7 @@ stm8_genInitStartup (FILE *of)
       "\tincw x\n"
       "\tcpw x, __bss_end\n"
       "\tjrne 0$\n"
-      "\t; Copying .data from ROM to RAM\n"
-      "\t; Calculate .data section size\n"
+      "\t; Transfer .data from ROM to RAM\n"
       "\tldw x, __data_load_start\n"
       "\tldw y, __data_start\n"
       "1$:\n"
@@ -427,6 +426,11 @@ static const char *stm8AsmCmd[] =
   "sdasstm8", "$l", "$3", "\"$1.asm\"", NULL
 };
 
+static const char *stm8AsmGNUCmd[] =
+{
+  "stm8-as", "\"$1.asm\"", "-o", "\"$1.o\"", NULL
+};
+
 static const char *const _libs_stm8[] = { "stm8", NULL, };
 
 PORT stm8_port =
@@ -448,7 +452,9 @@ PORT stm8_port =
     "-plosgffwy",               /* Options with debug */
     "-plosgffw",                /* Options without debug */
     0,
-    ".asm"
+    ".asm",
+    NULL,
+    stm8AsmGNUCmd               /* GNU assembler command */
   },
   {                             /* Linker */
     _linkCmd,
@@ -458,6 +464,7 @@ PORT stm8_port =
     1,
     NULL,                       /* crt */
     _libs_stm8,                 /* libs */
+    ".o"                        /* ELF output extension */
   },
   {                             /* Peephole optimizer */
     stm8_defaultRules,
