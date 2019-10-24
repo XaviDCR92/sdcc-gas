@@ -334,7 +334,8 @@ newSymbol (const char *name, long scope)
   sym->for_newralloc = 0;
   sym->isinscope = 1;
   sym->usl.spillLoc = 0;
-  sym->funcDivFlagSafe = 0;
+#warning Please check this
+  sym->funcDivFlagSafe = 1;
   sym->funcUsesVolatile = 1;
 
   return sym;
@@ -4407,7 +4408,7 @@ initCSupport (void)
               dbuf_init (&dbuf, 128);
               dbuf_printf (&dbuf, "_%s%s%s", srlrr[slsr], ssu[su * 3], sbwd[bwd]);
               rlrr[slsr][bwd][su] = sym =
-                funcOfTypeVarg (_mangleFunctionName (dbuf_c_str (&dbuf)), 
+                funcOfTypeVarg (_mangleFunctionName (dbuf_c_str (&dbuf)),
                                 sbwdCodes[bwd + 4*su], 2, &params[0]);
               FUNC_ISREENT (sym->type) = options.intlong_rent ? 1 : 0;
               FUNC_NONBANKED (sym->type) = 1;

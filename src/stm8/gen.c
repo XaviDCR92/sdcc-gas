@@ -3385,16 +3385,6 @@ genFunction (iCode *ic)
   emit2 (";", " function %s", sym->name);
   emit2 (";", "-----------------------------------------");
 
-  /* Place each new function into its own section so GNU ld
-   * can perform dead code elimination via --gc-sections. */
-  if (options.function_sections && options.gasOutput)
-    {
-      char name[256];
-
-      snprintf(name, sizeof name, "%s.%s", CODE_NAME, sym->name);
-      emit2(".section", " %s", name);
-    }
-
   D (emit2 (";", stm8_assignment_optimal ? "Register assignment is optimal." : "Register assignment might be sub-optimal."));
   D (emit2 (";", "Stack space usage: %d bytes.", sym->stack));
 
@@ -8199,6 +8189,16 @@ genSTM8Code (iCode *lic)
   int cblock = 0;
   int cln = 0;
   regalloc_dry_run = FALSE;
+
+  /* Place each new function into its own section so GNU ld
+   * can perform dead code elimination via --gc-sections. */
+  if (options.function_sections && options.gasOutput && currFunc)
+    {
+      char name[256];
+
+      snprintf(name, sizeof name, "%s.%s", CODE_NAME, currFunc->rname);
+      emit2(".section", " %s", name);
+    }
 
   /* if debug information required */
   if (options.debug && currFunc && !regalloc_dry_run)

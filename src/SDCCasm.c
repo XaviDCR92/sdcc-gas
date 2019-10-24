@@ -402,7 +402,7 @@ err_no_line:
 
 static const ASM_MAPPING _gas_mapping[] = {
   {"labeldef", "%s:"},
-  {"slabeldef", "%s:"},
+  {"slabeldef", ".%s:"},
   {"tlabeldef", "%05d$:"},
   {"tlabel", "%05d$"},
   {"immed", "#"},
@@ -449,6 +449,7 @@ static const ASM_MAPPING _gas_mapping[] = {
   {"hihihil", "(%05d$ >> 24)"},
   {"equ", "="},
   {"org", ".org 0x%04X"},
+  {"noload", ", \"\""},
   {0}
 };
 
@@ -501,6 +502,7 @@ static const ASM_MAPPING _asxxxx_mapping[] = {
   {"hihihil", "(%05d$ >> 24)"},
   {"equ", "="},
   {"org", ".org 0x%04X"},
+  {"noload", "(NOLOAD)"},
   {NULL, NULL}
 };
 
@@ -553,6 +555,7 @@ static const ASM_MAPPING _asxxxx_smallpdk_mapping[] = {
   {"hihihil", "(%05d$ >> 24)"},
   {"equ", "="},
   {"org", ".org 0x%04X"},
+  {"noload", "(NOLOAD)"},
   {NULL, NULL}
 };
 
@@ -605,6 +608,7 @@ static const ASM_MAPPING _a390_mapping[] = {
   {"hihihil", "((L%09d / 16777216) & 0FFh)"},
   {"equ", " equ"},
   {"org", ".org 0x%04X"},
+  {"noload", "(NOLOAD)"},
   {NULL, NULL}
 };
 

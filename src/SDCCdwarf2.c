@@ -49,6 +49,7 @@ int dwWriteALine (const char *module, int Line);
 int dwWriteFrameAddress (const char *variable, struct reg_info *reg, int offset);
 int dwWriteBasicSymbol (symbol *sym, int isStructSym, int isFunc);
 
+#define LOCAL_LABEL(str) "." str
 
 DEBUGFILE dwarf2DebugFile =
   {
@@ -101,7 +102,7 @@ dwNewDebugSymbol (void)
   char debugSym[SDCC_NAME_MAX];
 
   if (options.gasOutput)
-    sprintf (debugSym, "%s_%s_%d$", dwModuleName, currFunc->name, dwDebugSymbol);
+    sprintf (debugSym, LOCAL_LABEL("L%s_%s_%d"), dwModuleName, currFunc->name, dwDebugSymbol);
   else
     sprintf (debugSym, "S%s$%s$%d", dwModuleName, currFunc->name, dwDebugSymbol);
 
@@ -729,7 +730,7 @@ dwWriteLocLists (void)
   dwlocregion * lrp;
   dwloclist * llp;
 
-  tfprintf (dwarf2FilePtr, "\n\t!area\n", ".debug_loc (NOLOAD)");
+  tfprintf (dwarf2FilePtr, "\n\t!area!noload\n", ".debug_loc");
   tfprintf (dwarf2FilePtr, "!slabeldef\n", "Ldebug_loc_start");
 
   llp = dwRootLocList;
@@ -1007,7 +1008,7 @@ dwWriteAttr (dwattr * ap)
             break;
           case DW_AT_location:
           case DW_AT_frame_base:
-            dwWriteWord ("Ldebug_loc_start", ap->val.loclist->baseOffset, NULL);
+            dwWriteWord (LOCAL_LABEL ("Ldebug_loc_start"), ap->val.loclist->baseOffset, NULL);
             break;
           default:
             dwWriteWord (NULL, ap->val.data, NULL);
@@ -1345,7 +1346,7 @@ dwWriteAbbrevs (void)
   dwattr * ap;
   int key;
 
-  tfprintf (dwarf2FilePtr, "\n\t!area\n", ".debug_abbrev (NOLOAD)");
+  tfprintf (dwarf2FilePtr, "\n\t!area!noload\n", ".debug_abbrev");
   tfprintf (dwarf2FilePtr, "!slabeldef\n", "Ldebug_abbrev");
 
   tp = hTabFirstItem (dwAbbrevTable, &key);
@@ -1411,15 +1412,15 @@ dwWriteTag (dwtag *tp, void *info)
 static void
 dwWriteTags (void)
 {
-  tfprintf (dwarf2FilePtr, "\n\t!area\n", ".debug_info (NOLOAD)");
+  tfprintf (dwarf2FilePtr, "\n\t!area!noload\n", ".debug_info");
 
-  dwWriteWordDelta ("Ldebug_info_end", "Ldebug_info_start");
+  dwWriteWordDelta (LOCAL_LABEL ("Ldebug_info_end"), LOCAL_LABEL ("Ldebug_info_start"));
 
   tfprintf (dwarf2FilePtr, "!slabeldef\n", "Ldebug_info_start");
 
   dwWriteHalf (NULL, 2, NULL); /* DWARF version */
 
-  dwWriteWord ("Ldebug_abbrev", 0, NULL);
+  dwWriteWord (LOCAL_LABEL ("Ldebug_abbrev"), 0, NULL);
 
   dwWriteByte (NULL, port->debugger.dwarf.addressSize, NULL);
 
@@ -1528,16 +1529,15 @@ dwWritePubnames (void)
   dwattr * ap1;
   dwattr * ap2;
 
-  tfprintf (dwarf2FilePtr, "\n\t!area\n", ".debug_pubnames (NOLOAD)");
+  tfprintf (dwarf2FilePtr, "\n\t!area!noload\n", ".debug_pubnames");
 
-  dwWriteWordDelta ("Ldebug_pubnames_end", "Ldebug_pubnames_start");
+  dwWriteWordDelta (LOCAL_LABEL ("Ldebug_pubnames_end"), LOCAL_LABEL ("Ldebug_pubnames_start"));
 
   tfprintf (dwarf2FilePtr, "!slabeldef\n", "Ldebug_pubnames_start");
 
   dwWriteHalf (NULL, 2, NULL); /* DWARF version */
-
-  dwWriteWord ("Ldebug_info_start-4", 0, NULL);
-  dwWriteWordDelta ("4+Ldebug_info_end", "Ldebug_info_start");
+  dwWriteWord (LOCAL_LABEL ("Ldebug_info_start")"-4", 0, NULL);
+  dwWriteWordDelta ("4+"LOCAL_LABEL ("Ldebug_info_end"), LOCAL_LABEL ("Ldebug_info_start"));
 
   if (dwRootTag && dwRootTag->firstChild)
     {
@@ -1754,15 +1754,15 @@ dwWriteLineNumbers (void)
   dwfile * srcfile;
   dwline * lp;
 
-  tfprintf (dwarf2FilePtr, "\n\t!area\n", ".debug_line (NOLOAD)");
+  tfprintf (dwarf2FilePtr, "\n\t!area!noload\n", ".debug_line");
 
-  dwWriteWordDelta ("Ldebug_line_end", "Ldebug_line_start");
+  dwWriteWordDelta (LOCAL_LABEL ("Ldebug_line_end"), LOCAL_LABEL ("Ldebug_line_start"));
 
   tfprintf (dwarf2FilePtr, "!slabeldef\n", "Ldebug_line_start");
 
   dwWriteHalf (NULL, 2, NULL); /* DWARF version */
 
-  dwWriteWordDelta ("Ldebug_line_stmt-6", "Ldebug_line_start");
+  dwWriteWordDelta (LOCAL_LABEL ("Ldebug_line_stmt") "-6", LOCAL_LABEL ("Ldebug_line_start"));
 
   dwWriteByte (NULL, 1, NULL); /* we track everything in 1 byte increments */
 
@@ -1974,12 +1974,13 @@ dwGenCFIins (int callsize, int id)
   int i;
   char s[32];
 
-  tfprintf (dwarf2FilePtr, "\n\t!area\n", ".debug_frame (NOLOAD)");
+  tfprintf (dwarf2FilePtr, "\n\t!area!noload\n", ".debug_frame");
 
   /* FIXME: these two dw should be combined into a dd */
   tfprintf (dwarf2FilePtr, "\t!dw\t0\n");
   tfprintf (dwarf2FilePtr, "\t!dw\t");
-  tfprintf (dwarf2FilePtr, "Ldebug_CIE%d_end-Ldebug_CIE%d_start\n", id, id);
+
+  tfprintf (dwarf2FilePtr, "4+" LOCAL_LABEL ("Ldebug_CIE")"%d_end-" LOCAL_LABEL ("Ldebug_CIE") "%d_start\n", id, id);
 
   snprintf(s, sizeof(s), "Ldebug_CIE%d_start", id);
   tfprintf (dwarf2FilePtr, "!slabeldef\n", s);
@@ -2060,7 +2061,7 @@ dwWriteFDE (dwfde * fp, int id)
 
   //CIE ptr
   char s[32];
-  snprintf(s, sizeof(s), "Ldebug_CIE%d_start-4", id);
+  snprintf(s, sizeof(s), LOCAL_LABEL ("Ldebug_CIE") "%d_start-4", id);
   dwWriteWord (s, 0, NULL);
 
   //initial loc
@@ -2799,7 +2800,6 @@ dwWriteSymbolInternal (symbol *sym)
   return 1;
 }
 
-
 /*-----------------------------------------------------------------------*/
 /* dwWriteFunction - generate a tag for a function.                      */
 /*-----------------------------------------------------------------------*/
@@ -2884,10 +2884,14 @@ dwWriteEndFunction (symbol *sym, iCode *ic, int offset)
       dwLineLast->end_sequence = 1;
     }
 
-  if (IS_STATIC (sym->etype))
-    sprintf (debugSym, "XF%s$%s$0$0", dwModuleName, sym->name);
+  if (!options.gasOutput)
+    if (IS_STATIC (sym->etype))
+      sprintf (debugSym, "XF%s$%s$0$0", dwModuleName, sym->name);
+    else
+      sprintf (debugSym, "XG$%s$0$0", sym->name);
   else
-    sprintf (debugSym, "XG$%s$0$0", sym->name);
+    sprintf (debugSym, LOCAL_LABEL("L%s_%sendf"), dwModuleName, sym->name);
+
   emitDebuggerSymbol (debugSym);
 
   dwAddTagAttr (dwFuncTag, dwNewAttrAddrLabel (DW_AT_high_pc,
@@ -3035,7 +3039,7 @@ dwWriteModule (const char *name)
   dwAddTagAttr (tp, dwNewAttrString (DW_AT_name, fullSrcFileName));
 
   dwAddTagAttr (tp, dwNewAttrLabelRef (DW_AT_stmt_list,
-                                       "Ldebug_line_start", -4));
+                                       LOCAL_LABEL ("Ldebug_line_start"), -4));
 
   dwRootTag = tp;
 

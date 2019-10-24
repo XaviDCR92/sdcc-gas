@@ -2512,26 +2512,15 @@ glue (void)
   /* create the stack segment MOF */
   if (mainf && IFFUNC_HASBODY (mainf->type))
     {
-      const char *const start_stack = "__start__stack";
       const unsigned int size = 1;
 
       fprintf (asmFile, "%s", iComments2);
       fprintf (asmFile, "; Stack segment in internal ram \n");
       fprintf (asmFile, "%s", iComments2);
 
-      if (options.gasOutput)
+      if (!options.gasOutput)
         {
-          char section_name[100];
-
-          snprintf( section_name, sizeof section_name / sizeof *section_name,
-                    ".%s", start_stack);
-          /* Set alloc/write flags. */
-          tfprintf(asmFile, "\t!area , \"aw\"\n", section_name);
-          tfprintf(asmFile, "\t!local\n", start_stack);
-          tfprintf(asmFile, "\t!comm\n\n", start_stack, size, 1);
-        }
-      else
-        {
+          const char *const start_stack = "__start__stack";
           tfprintf(asmFile, "\t!area\n", "SSEG");
           tfprintf(asmFile, "\t!labeldef\n", start_stack);
           tfprintf(asmFile, "\t!ds\n\n", size);
