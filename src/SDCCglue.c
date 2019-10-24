@@ -1499,8 +1499,8 @@ printIvalFuncPtr (sym_link * type, initList * ilist, struct dbuf_s *oBuf)
     {
       if (TARGET_PDK_LIKE)
         {
-          dbuf_printf (oBuf, "\tret #<%s\n", name);
-          dbuf_printf (oBuf, "\tret #>%s\n", name);
+          dbuf_tprintf (oBuf, "\tret !lsbimmeds\n", name);
+          dbuf_tprintf (oBuf, "\tret !msbimmeds\n", name);
         }
       else if (TARGET_IS_STM8 && FUNCPTRSIZE == 3)
         {
@@ -1560,7 +1560,7 @@ printIvalCharPtr (symbol * sym, sym_link * type, value * val, struct dbuf_s *oBu
         {
           if (TARGET_PDK_LIKE && !TARGET_IS_PDK16)
             {
-              dbuf_printf (oBuf, "\tret #<%s\n", val->name);
+              dbuf_tprintf (oBuf, "\t!lsbimmeds", val->name);
               dbuf_printf (oBuf, IN_CODESPACE (SPEC_OCLS (val->etype)) ? "\tret #>(%s + 0x8000)\n" : "\tret #0\n", val->name);
             }
           else if (port->use_dw_for_init)
@@ -2130,7 +2130,14 @@ createInterruptVect (struct dbuf_s *vBuf)
       return;
     }
 
-  dbuf_tprintf (vBuf, "\t!areacode\n", HOME_NAME);
+  dbuf_tprintf (vBuf, "\t!areacode", HOME_NAME);
+
+  if (options.gasOutput)
+    /* Read-executable flags must be defined so ld can
+     * place the interrupt vectors into a separate section.*/
+    dbuf_tprintf (vBuf, ",\t\"ax\"");
+
+  dbuf_printf(vBuf, "\n");
   dbuf_printf (vBuf, "__interrupt_vect:\n");
 
 

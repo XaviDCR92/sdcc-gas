@@ -139,6 +139,8 @@ typedef struct
     const char *file_ext;
     /** If non-null will be used to execute the assembler. */
     void (*do_assemble) (set *);
+    /** Command to run the GNU assembler. */
+    const char **binutils_cmd;
   }
   assembler;
 
@@ -157,6 +159,8 @@ typedef struct
     const int needLinkerScript;
     const char *const *crt;
     const char *const *libs;
+    /** Extension for ELF object files generated using GNU binutils (.o) */
+    const char *o_ext;
   }
   linker;
 

@@ -20,6 +20,7 @@
 
 #include "ralloc.h"
 #include "gen.h"
+#include "dbuf.h"
 
 /* Use the D macro for basic (unobtrusive) debugging messages */
 #define D(x) do if (options.verboseAsm) { x; } while (0)
@@ -435,10 +436,31 @@ aopGet(const asmop *aop, int offset)
     {
       wassertl_bt (offset < (2 + (options.model == MODEL_LARGE)), "Immediate operand out of range");
       if (offset == 0)
-        SNPRINTF (buffer, sizeof(buffer), "#<(%s + %d)", aop->aopu.immd, aop->aopu.immd_off);
+        {
+          struct dbuf_s temp;
+
+          dbuf_init(&temp, sizeof buffer);
+          /* SNPRINTF (buffer, sizeof(buffer), "#<(%s + %d)", aop->aopu.immd, aop->aopu.immd_off); */
+          SNPRINTF(buffer, sizeof buffer, "%s + %d", aop->aopu.immd, aop->aopu.immd_off);
+          dbuf_tprintf(&temp, "!lsbimmeds", buffer);
+          SNPRINTF(buffer, sizeof buffer, "%s", dbuf_c_str(&temp));
+          dbuf_destroy(&temp);
+
+          return buffer;
+        }
       else
-        SNPRINTF (buffer, sizeof(buffer), "#((%s + %d) >> %d)", aop->aopu.immd, aop->aopu.immd_off, offset * 8);
-      return (buffer);
+        {
+          struct dbuf_s temp;
+
+          dbuf_init(&temp, sizeof buffer);
+          /* SNPRINTF (buffer, sizeof(buffer), "#((%s + %d) >> %d)", aop->aopu.immd, aop->aopu.immd_off, offset * 8); */
+          SNPRINTF(buffer, sizeof buffer, "%s + %d", aop->aopu.immd, aop->aopu.immd_off);
+          dbuf_tprintf(&temp, "!msbimmeds", buffer);
+          SNPRINTF(buffer, sizeof buffer, "%s", dbuf_c_str(&temp));
+          dbuf_destroy(&temp);
+
+          return buffer;
+        }
     }
 
   if (aop->type == AOP_DIR)
