@@ -1942,7 +1942,7 @@ emitStaticSeg (memmap *map, struct dbuf_s *oBuf)
       /* if it has an absolute address and no initializer */
       if (SPEC_ABSA (sym->etype) && !sym->ival)
         {
-          if (options.debug)
+          if (options.debug && !options.gasOutput)
             {
               emitDebugSym (oBuf, sym);
               dbuf_printf (oBuf, " == 0x%04x\n", SPEC_ADDR (sym->etype));
@@ -1964,7 +1964,7 @@ emitStaticSeg (memmap *map, struct dbuf_s *oBuf)
                 {
                   dbuf_tprintf (oBuf, "\t!org\n", SPEC_ADDR (sym->etype));
                 }
-              if (options.debug)
+              if (options.debug && !options.gasOutput)
                 {
                   emitDebugSym (oBuf, sym);
                   dbuf_printf (oBuf, " == .\n");
@@ -1985,7 +1985,7 @@ emitStaticSeg (memmap *map, struct dbuf_s *oBuf)
           else
             {
               /* allocate space */
-              if (options.debug)
+              if (options.debug && !options.gasOutput)
                 {
                   emitDebugSym (oBuf, sym);
                   dbuf_printf (oBuf, " == .\n");
@@ -2249,7 +2249,7 @@ emitOverlay (struct dbuf_s *aBuf)
           if (SPEC_ABSA (sym->etype))
             {
               /* print extra debug info if required */
-              if (options.debug)
+              if (options.debug && !options.gasOutput)
                 {
                   emitDebugSym (aBuf, sym);
                   dbuf_printf (aBuf, " == 0x%04x\n", SPEC_ADDR (sym->etype));
@@ -2520,11 +2520,9 @@ glue (void)
 
       if (!options.gasOutput)
         {
-          const char *const start_stack = "__start__stack";
           tfprintf(asmFile, "\t!area\n", "SSEG");
-          tfprintf(asmFile, "\t!labeldef\n", start_stack);
           tfprintf(asmFile, "\t!ds\n\n", size);
-          tfprintf(asmFile, "\t!area\n" "__start__stack:\n", "SSEG");
+          tfprintf(asmFile, "\t__start__stack:\n");
         }
     }
 

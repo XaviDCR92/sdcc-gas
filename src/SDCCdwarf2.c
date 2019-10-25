@@ -1537,7 +1537,7 @@ dwWritePubnames (void)
 
   dwWriteHalf (NULL, 2, NULL); /* DWARF version */
   dwWriteWord (LOCAL_LABEL ("Ldebug_info_start")"-4", 0, NULL);
-  dwWriteWordDelta ("4+"LOCAL_LABEL ("Ldebug_info_end"), LOCAL_LABEL ("Ldebug_info_start"));
+  dwWriteWordDelta ("4+" LOCAL_LABEL ("Ldebug_info_end"), LOCAL_LABEL ("Ldebug_info_start"));
 
   if (dwRootTag && dwRootTag->firstChild)
     {
@@ -2925,7 +2925,7 @@ dwWriteLabel (symbol *sym, const iCode *ic)
   if (sym->isitmp)
     return 1;
 
-  sprintf (debugSym, "L%s$%s$%s", dwModuleName, currFunc->name, sym->name);
+  sprintf (debugSym, LOCAL_LABEL ("L") "%s$%s$%s", dwModuleName, currFunc->name, sym->name);
   emitDebuggerSymbol (debugSym);
 
   tp = dwNewTag (DW_TAG_label);
