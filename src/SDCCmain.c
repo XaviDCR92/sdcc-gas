@@ -153,6 +153,8 @@ char buffer[PATH_MAX * 2];
 #define OPTION_DUMP_AST             "--dump-ast"
 #define OPTION_DUMP_I_CODE          "--dump-i-code"
 #define OPTION_DUMP_GRAPHS          "--dump-graphs"
+#define OPTION_FUNCTION_SECTIONS    "--function-sections"
+#define OPTION_DATA_SECTIONS        "--data-sections"
 
 #define OPTION_SMALL_MODEL          "--model-small"
 #define OPTION_MEDIUM_MODEL         "--model-medium"
@@ -174,7 +176,8 @@ static const OPTION optionsTable[] = {
   {'W', NULL, NULL, "Pass through options to the pre-processor (p), assembler (a) or linker (l)"},
   {'S', NULL, &noAssemble, "Compile only; do not assemble or link"},
   {0  , "--gas", &options.gasOutput, "Compile in GAS (GNU Assembler) format."},
-  {0  , "--function-sections", &options.function_sections, "Place each function into a separate section. Useful for link-time dead code elimination."},
+  {0  , OPTION_FUNCTION_SECTIONS, &options.function_sections, "Place each function into a separate section. Useful for link-time dead code elimination."},
+  {0  , OPTION_DATA_SECTIONS, &options.data_sections, "Place each static variable into a separate section. Useful for link-time dead code elimination."},
   {'c', "--compile-only", &options.cc_only, "Compile and assemble, but do not link"},
   {'E', "--preprocessonly", &preProcOnly, "Preprocess only, do not compile"},
   {0,   "--c1mode", &options.c1mode, "Act in c1 mode.  The standard input is preprocessed code, the output is assembly code."},
@@ -629,9 +632,6 @@ setDefaultOptions (void)
   options.std_c99 = 1;
   options.std_c11 = 1;          /* default to C11 (we want inline by default, so we need at least C99, and support for C11 is more complete than C99) */
   options.std_c2x = 0;
-  options.code_seg = CODE_NAME ? Safe_strdup (CODE_NAME) : NULL;        /* default to CSEG for generated code */
-  options.const_seg = CONST_NAME ? Safe_strdup (CONST_NAME) : NULL;     /* default to CONST for generated code */
-  options.data_seg = DATA_NAME ? Safe_strdup (DATA_NAME) : NULL;        /* default to DATA for non-initialized data */
   options.stack10bit = 0;
   options.out_fmt = 0;
   options.dump_graphs = 0;
@@ -652,6 +652,18 @@ setDefaultOptions (void)
 
   /* now for the ports */
   port->setDefaultOptions ();
+}
+
+static void finalizeDefaultOptions(void)
+{
+  if (!options.code_seg)
+    options.code_seg = CODE_NAME ? Safe_strdup (CODE_NAME) : NULL;        /* default to CSEG for generated code */
+
+  if (!options.const_seg)
+    options.const_seg = CONST_NAME ? Safe_strdup (CONST_NAME) : NULL;     /* default to CONST for generated code */
+
+  if (!options.data_seg)
+    options.data_seg = DATA_NAME ? Safe_strdup (DATA_NAME) : NULL;        /* default to DATA for non-initialized data */
 }
 
 /*-----------------------------------------------------------------*/
@@ -2608,6 +2620,9 @@ main (int argc, char **argv, char **envp)
   setDefaultOptions ();
 
   parseCmdLine (argc, argv);
+
+  finalizeDefaultOptions ();
+
 #ifdef JAMIN_DS390
   if (ds390_jammed)
     {

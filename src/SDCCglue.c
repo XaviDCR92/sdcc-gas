@@ -177,7 +177,8 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
     if (map == code)
       dbuf_tprintf (&map->oBuf, "\t!area\n", ".text");
     else if (map == data)
-      dbuf_tprintf (&map->oBuf, "\t!area\n", DATA_NAME);
+      if (!options.data_sections)
+        dbuf_tprintf (&map->oBuf, "\t!area\n", DATA_NAME);
 
   for (sym = setFirstItem (map->syms); sym; sym = setNextItem (map->syms))
     {
@@ -388,12 +389,17 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
             {
               if (IS_STATIC (sym->etype) || sym->level)
                 if (options.gasOutput)
-                  dbuf_tprintf (&map->oBuf, "\t!local\n", sym->rname);
+                  {
+                    if (options.data_sections)
+                      dbuf_tprintf (&map->oBuf, "\t!area.%s\n", options.data_seg, sym->rname);
+
+                    dbuf_tprintf (&map->oBuf, "\t!local\n", sym->rname);
+                  }
                 else
                   dbuf_tprintf (&map->oBuf, "!slabeldef\n", sym->rname);
               else
                 if (options.gasOutput)
-                dbuf_tprintf (&map->oBuf, "!global\n", sym->rname);
+                  dbuf_tprintf (&map->oBuf, "!global\n", sym->rname);
                 else
                   dbuf_tprintf (&map->oBuf, "!labeldef\n", sym->rname);
 
@@ -1997,8 +2003,13 @@ emitStaticSeg (memmap *map, struct dbuf_s *oBuf)
                  IS_INT (sym->type->next) && IS_LONG (sym->type->next) && SPEC_CVAL (sym->etype).v_char32))
                 {
                   if (options.const_seg)
-                    dbuf_tprintf(&code->oBuf, "\t!area\n", options.const_seg);
-                  dbuf_printf (oBuf, "%s:\n", sym->rname);
+                    if (options.data_sections)
+                      dbuf_tprintf(&code->oBuf, "\t!area.%s\n", options.const_seg, sym->rname);
+                    else
+                      dbuf_tprintf(&code->oBuf, "\t!area\n", options.const_seg);
+
+                  dbuf_tprintf (oBuf, "!labeldef\n", sym->rname);
+
                   if (IS_CHAR (sym->type->next))
                     printChar (oBuf, SPEC_CVAL (sym->etype).v_char, size);
                   else if (IS_INT (sym->type->next) && !IS_LONG (sym->type->next))

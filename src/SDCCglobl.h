@@ -330,6 +330,7 @@ struct options
     bool oldralloc;             /* Use old register allocator */
     int gasOutput;              /* Output assembly in GNU as format */
     int function_sections;      /* Place each function into a separate section. Useful for link-time dead code elimination. */
+    int data_sections;          /* Place each static variable into a separate section. Useful for link-time dead code elimination. */
   };
 
 /* forward definition for variables accessed globally */
