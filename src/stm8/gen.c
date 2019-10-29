@@ -3464,39 +3464,49 @@ genEndFunction (iCode *ic)
       return;
   }
 
-  /* adjust the stack for the function */
-  if (sym->stack)
-    adjustStack (sym->stack, retsize != 1, retsize != 2 && retsize != 4, retsize != 4);
-
-  wassertl (!G.stack.pushed, "Unbalanced stack.");
-
-  if (IFFUNC_ISCRITICAL (sym->type))
-      genEndCritical (NULL);
-
-  if (IFFUNC_ISISR (sym->type))
+  if (IFFUNC_ISNORETURN (OP_SYMBOL (IC_LEFT (ic))->type))
     {
+      D (emit2 (";", "C11 noreturn function."));
       /* if debug then send end of function */
       if (options.debug && currFunc && !regalloc_dry_run)
         debugFile->writeEndFunction (currFunc, ic, 1);
-
-      emit2 ("iret", "");
-      cost (1, 11);
     }
   else
     {
-      /* if debug then send end of function */
-      if (options.debug && currFunc && !regalloc_dry_run)
-        debugFile->writeEndFunction (currFunc, ic, 1);
+      /* adjust the stack for the function */
+      if (sym->stack)
+        adjustStack (sym->stack, retsize != 1, retsize != 2 && retsize != 4, retsize != 4);
 
-      if (options.model == MODEL_LARGE)
+      wassertl (!G.stack.pushed, "Unbalanced stack.");
+
+      if (IFFUNC_ISCRITICAL (sym->type))
+          genEndCritical (NULL);
+
+      if (IFFUNC_ISISR (sym->type))
         {
-          emit2 ("retf", "");
-          cost (1, 5);
+          /* if debug then send end of function */
+          if (options.debug && currFunc && !regalloc_dry_run)
+            debugFile->writeEndFunction (currFunc, ic, 1);
+
+          emit2 ("iret", "");
+          cost (1, 11);
         }
       else
         {
-          emit2 ("ret", "");
-          cost (1, 4);
+          /* if debug then send end of function */
+          if (options.debug && currFunc && !regalloc_dry_run)
+            debugFile->writeEndFunction (currFunc, ic, 1);
+
+          if (options.model == MODEL_LARGE)
+            {
+              emit2 ("retf", "");
+              cost (1, 5);
+            }
+          else
+            {
+              emit2 ("ret", "");
+              cost (1, 4);
+            }
         }
     }
 }
