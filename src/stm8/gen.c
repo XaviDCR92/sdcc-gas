@@ -7655,7 +7655,13 @@ genJumpTab (const iCode *ic)
 
   if (!regalloc_dry_run)
     {
-      emit2 ("ldw", "x, (#!tlabel, x)", labelKey2num (jtab->key));
+      if (options.gasOutput)
+        /* The '#' character might confuse GNU as to think !tlabel
+         * is an immediate operand instead of a label address. */
+        emit2 ("ldw", "x, (!tlabel, x)", labelKey2num (jtab->key));
+      else
+        emit2 ("ldw", "x, (#!tlabel, x)", labelKey2num (jtab->key));
+
       emit2 ("jp", "(x)");
     }
   cost (4, 3);
@@ -7669,7 +7675,7 @@ genJumpTab (const iCode *ic)
 
           dbuf_init(&b, 1024);
           /* emit2 (".dw", "#!tlabel", labelKey2num (jtab->key)); */
-          emit2 ("", "!dw %d", labelKey2num (jtab->key));
+          emit2 ("", "!dw !tlabel", labelKey2num (jtab->key));
         }
       cost (2, 0);
     }
