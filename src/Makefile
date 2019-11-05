@@ -2,10 +2,10 @@
 #
 #
 
-srcdir          = @srcdir@
-top_srcdir      = @top_srcdir@
-top_builddir    = @top_builddir@
-VPATH           = @srcdir@
+srcdir          = .
+top_srcdir      = ..
+top_builddir    = ..
+
 
 include $(top_builddir)/Makefile.common
 
@@ -15,12 +15,12 @@ PORTS           = $(shell cat ../ports.build)
 ALLPORTS        = $(shell cat ../ports.all)
 PORT_LIBS       = $(PORTS:%=%/port.a)
 
-LIBS            = -lm @LIBS@
+LIBS            = -lm 
 
-CFLAGS          = @CFLAGS@ @WALL_FLAG@
-CXXFLAGS        = @CXXFLAGS@ @WALL_FLAG@
+CFLAGS          =  -pipe -ggdb -g -Og -Wall -Wno-parentheses
+CXXFLAGS        = -pipe -ggdb -g -Og -Wall -Wno-parentheses
 CPPFLAGS        += -I$(srcdir)
-LDFLAGS         = @LDFLAGS@
+LDFLAGS         = 
 
 ifdef SDCC_SUB_VERSION
 CFLAGS          += -DSDCC_SUB_VERSION_STR=\"$(SDCC_SUB_VERSION)\"
@@ -36,7 +36,7 @@ OBJECTS         = SDCCy.o SDCChasht.o SDCCmain.o \
                   SDCCasm.o SDCCmacro.o SDCCutil.o SDCCdebug.o cdbFile.o SDCCdwarf2.o\
                   SDCCerr.o SDCCsystem.o SDCCgen.o
 
-SPECIAL         = SDCCy.h 
+SPECIAL         = SDCCy.h
 ifeq ($(USE_ALT_LEX), 1)
 OBJECTS         += altlex.o
 SPECIAL         += reswords.h
@@ -57,7 +57,7 @@ TARGET          = $(top_builddir)/bin/sdcc$(EXEEXT)
 # ------------------------------------------
 all: checkconf version.h $(TARGET)
 
-$(PORT_LIBS): FORCE 
+$(PORT_LIBS): FORCE
 	$(MAKE) -C $(dir $@)
 
 FORCE:

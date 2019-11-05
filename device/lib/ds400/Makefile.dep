@@ -1,9 +1,0 @@
-tinibios.rel: tinibios.c ../../include/tinibios.h \
- ../../include/ds80c390.h ../../include/time.h \
- ../../include/ds400/ds400rom.h ../../include/stdio.h \
- ../../include/stdarg.h ../../include/sdcc-lib.h \
- ../../include/asm/mcs51/features.h
-memcpyx.rel: memcpyx.c ../../include/string.h
-ds400rom.rel: ds400rom.c ../../include/stdio.h ../../include/stdarg.h \
- ../../include/sdcc-lib.h ../../include/asm/mcs51/features.h \
- ../../include/ds400/ds400rom.h
