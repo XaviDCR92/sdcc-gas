@@ -672,7 +672,7 @@ resolveSymbols (ast * tree)
 
     /* If entering a block with symbols defined, mark the symbols in-scope */
     /* before continuing down the tree, and mark them out-of-scope again   */
-    /* on the way back up */ 
+    /* on the way back up */
     if (tree->type == EX_OP && tree->opval.op == BLOCK && tree->values.sym)
       {
         symbol * sym = tree->values.sym;
@@ -691,7 +691,7 @@ resolveSymbols (ast * tree)
           }
         return tree;
       }
-      
+
 resolveChildren:
   resolveSymbols (tree->left);
   resolveSymbols (tree->right);
@@ -1176,7 +1176,7 @@ createIvalStruct (ast * sym, sym_link * type, initList * ilist, ast * rootValue)
             ps->implicit = 1;
             lAst = newNode (PTR_OP, newNode ('&', sym, NULL), newAst_VALUE (symbolVal (ps)));
             lAst = decorateType (resolveSymbols (lAst), RESULT_TYPE_NONE);
-            rast = decorateType (resolveSymbols (createIval (lAst, ps->type, NULL, rast, rootValue, 1)), RESULT_TYPE_NONE);          
+            rast = decorateType (resolveSymbols (createIval (lAst, ps->type, NULL, rast, rootValue, 1)), RESULT_TYPE_NONE);
           }
 
       /* initialize this field */
@@ -1389,7 +1389,7 @@ createIvalCharPtr (ast * sym, sym_link * type, ast * iexpr, ast * rootVal)
               else
                 c = SPEC_CVAL (iexpr->etype).v_char32[symsize];
               if (options.std_c99 && c == '\0' && size == symsize + 1)
-                { 
+                {
                   if (!options.lessPedantic)
                     werrorfl (iexpr->filename, iexpr->lineno, W_STRING_CANNOT_BE_TERMINATED, name);
                 }
@@ -1763,7 +1763,7 @@ processBlockVars (ast * tree, int *stack, int action)
           sym = sym->next;
         }
     }
-    
+
   return tree;
 }
 
@@ -2459,7 +2459,7 @@ isInitiallyTrue (ast *initExpr, ast * condExpr)
     return TRUE;
   if (!initExpr)
     return FALSE;
-  
+
   /* first check the initExpr */
   if (IS_AST_OP (initExpr) && initExpr->opval.op == '=' &&      /* is assignment */
       IS_AST_SYM_VALUE (initExpr->left))
@@ -2494,7 +2494,7 @@ isInitiallyTrue (ast *initExpr, ast * condExpr)
     return FALSE;
 
   /* Replace the symbol with its initial value and see if the condition */
-  /* simplifies to a non-zero (TRUE) literal value */      
+  /* simplifies to a non-zero (TRUE) literal value */
   condExpr = copyAst (condExpr);
   if (replLoopSymByVal (condExpr, sym, AST_VALUE (initExpr)))
     {
@@ -2558,7 +2558,7 @@ createDoFor (symbol * trueLabel, symbol * continueLabel, symbol * falseLabel,
     }
   else
     loopExpr = createLabel (continueLabel, loopExpr);
-   
+
   /* now start putting them together */
   forTree = newNode (NULLOP, initExpr, forBody);
   forTree = newNode (NULLOP, forTree, loopExpr);
@@ -2644,8 +2644,8 @@ getResultTypeFromType (sym_link * type)
 
 /*    BOOL and single bit BITFIELD are not interchangeable!
  *    There must be a cast to do this safely, in which case
- *    the previous IS_BOOLEAN test will handle it. 
-      
+ *    the previous IS_BOOLEAN test will handle it.
+
       if (blen <= 1)
         return RESULT_TYPE_BOOL;
 */
@@ -2916,7 +2916,7 @@ void
 checkPtrCast (sym_link *newType, sym_link *orgType, bool implicit, bool orgIsNullPtrConstant)
 {
   int errors = 0;
-  
+
   if (IS_ARRAY (orgType))
     {
       value *val;
@@ -2969,7 +2969,7 @@ checkPtrCast (sym_link *newType, sym_link *orgType, bool implicit, bool orgIsNul
             }
           else if (IS_GENPTR (newType) && IS_VOID (newType->next)) // cast to void* is always allowed
             {
-              if (IS_FUNCPTR (orgType)) 
+              if (IS_FUNCPTR (orgType))
                 errors += werror (FUNCPTRSIZE > GPTRSIZE ? E_INCOMPAT_PTYPES : W_INCOMPAT_PTYPES);
             }
           else if (IS_GENPTR (orgType) && IS_VOID (orgType->next)) // cast from void* is always allowed - as long as we cast to a pointer to an object type
@@ -3305,7 +3305,7 @@ rewriteAstNodeOp (ast *tree, int op, ast *left, ast *right)
   tree->left = left;
   tree->right = right;
   tree->decorated = 0;
-  
+
   rewriteAstJoinSideEffects (tree, oLeft, oRight);
 }
 
@@ -3325,7 +3325,7 @@ rewriteAstNodeVal (ast *tree, value *val)
   tree->right = NULL;
   TETYPE (tree) = getSpec (TTYPE (tree) = tree->opval.val->type);
   tree->decorated = 0;
-  
+
   rewriteAstJoinSideEffects (tree, oLeft, oRight);
 }
 
@@ -3805,7 +3805,7 @@ decorateType (ast *tree, RESULT_TYPE resultType)
           if (otree != tree)
             return decorateType (otree, RESULT_TYPE_NONE);
 
-          /* if right is a literal and has the same size with left, 
+          /* if right is a literal and has the same size with left,
              then also sync their signess to avoid unecessary cast */
           if (IS_LITERAL (RTYPE (tree)) && getSize (RTYPE (tree)) == getSize (LTYPE (tree)))
             SPEC_USIGN (RTYPE (tree)) = SPEC_USIGN (LTYPE (tree));
@@ -4021,7 +4021,7 @@ decorateType (ast *tree, RESULT_TYPE resultType)
             }
         }
 
-      /* if right is a literal and has the same size with left, 
+      /* if right is a literal and has the same size with left,
          then also sync their signess to avoid unecessary cast */
       if (IS_LITERAL (RTYPE (tree)) && getSize (RTYPE (tree)) == getSize (LTYPE (tree)))
         SPEC_USIGN (RTYPE (tree)) = SPEC_USIGN (LTYPE (tree));
@@ -5320,7 +5320,7 @@ decorateType (ast *tree, RESULT_TYPE resultType)
       if (IS_LITERAL (LTYPE (tree)))
         {
           ast * heir;
-          
+
           ++noAlloc;
           tree->right = decorateType (tree->right, resultTypeProp);
           --noAlloc;
@@ -5329,7 +5329,7 @@ decorateType (ast *tree, RESULT_TYPE resultType)
             heir = tree->right->left;
           else
             heir = tree->right->right;
-            
+
           heir = decorateType (heir, resultTypeProp);
           if (IS_LITERAL (TETYPE (heir)))
             TTYPE (heir) = valRecastLitVal (TTYPE (tree->right), valFromType (TETYPE (heir)))->type;
@@ -5423,7 +5423,7 @@ decorateType (ast *tree, RESULT_TYPE resultType)
             werror (E_NO_MATCH_IN_GENERIC);
             goto errorTreeReturn;
           }
-        
+
         tree = found_expr;
       }
       return tree;
@@ -6323,7 +6323,7 @@ createFor (symbol * trueLabel, symbol * continueLabel, symbol * falseLabel,
 
   /* attach condition label to condition */
   condExpr = createLabel (condLabel, condExpr);
-  
+
   /* attach continue to forLoop expression & attach */
   /* goto the forcond @ and of loopExpression       */
   loopExpr = newNode (NULLOP, loopExpr, newNode (GOTO, newAst_VALUE (symbolVal (condLabel)), NULL));
@@ -6339,7 +6339,7 @@ createFor (symbol * trueLabel, symbol * continueLabel, symbol * falseLabel,
   forTree = newNode (NULLOP, initExpr, condExpr);
   forTree = newNode (NULLOP, forTree, forBody);
   forTree = newNode (NULLOP, forTree, loopExpr);
-  
+
   /* the break label is already in the tree as a sibling */
   /* to the original FOR node this tree is replacing */
   return forTree;

@@ -36,6 +36,7 @@
 #define OPTION_CODE_SEG             "--codeseg"
 #define OPTION_CONST_SEG            "--constseg"
 #define OPTION_ELF                  "--out-fmt-elf"
+#define OPTION_ASM                  "--asm="
 
 extern DEBUGFILE dwarf2DebugFile;
 extern int dwarf2FinalizeFile(FILE *);
@@ -46,6 +47,7 @@ static OPTION stm8_options[] = {
   {0, OPTION_CODE_SEG,        &options.code_seg, "<name> use this name for the code segment", CLAT_STRING},
   {0, OPTION_CONST_SEG,       &options.const_seg, "<name> use this name for the const segment", CLAT_STRING},
   {0, OPTION_ELF,             NULL, "Output executable in ELF format (deprecated)"},
+  {0, OPTION_ASM,             NULL, "Define assembler name (asxxxx/gas)"},
   {0}
 };
 
@@ -178,6 +180,21 @@ stm8_parseOptions (int *pargc, char **argv, int *i)
       options.out_fmt = 'E';
       debugFile = &dwarf2DebugFile;
       return TRUE;
+    }
+  else if (!strncmp (argv[*i], OPTION_ASM, sizeof (OPTION_ASM) - 1))
+    {
+      char *asmblr = getStringArg (OPTION_ASM, argv, i, *pargc);
+
+      if (!strcmp (asmblr, "gas"))
+        {
+          options.gasOutput = true;
+          return TRUE;
+        }
+      else if (!strcmp (asmblr, "asxxxx"))
+        {
+          options.gasOutput = false;
+          return TRUE;
+        }
     }
 
   return FALSE;

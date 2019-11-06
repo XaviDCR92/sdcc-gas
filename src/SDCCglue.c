@@ -35,8 +35,7 @@ symbol *interrupts[INTNO_MAX + 1];
 
 static void emit_ds_comm( struct dbuf_s *oBuf,
                           const char *name,
-                          unsigned int size,
-                          unsigned int alignment);
+                          unsigned int size);
 
 void printIval (symbol *, sym_link *, initList *, struct dbuf_s *, bool check);
 set *publics = NULL;            /* public variables */
@@ -124,22 +123,20 @@ aopLiteral (value *val, int offset)
 static void
 emitDebugSym (struct dbuf_s *oBuf, symbol * sym)
 {
-    {
-      if (sym->level && sym->localof)       /* symbol scope is local */
-        {
-          dbuf_printf (oBuf, "L%s.%s$", moduleName, sym->localof->name);
-        }
-      else if (IS_STATIC (sym->etype))      /* symbol scope is file */
-        {
-          dbuf_printf (oBuf, "F%s$", moduleName);
-        }
-      else                          /* symbol scope is global */
-        {
-          dbuf_printf (oBuf, "G$");
-        }
+    if (sym->level && sym->localof)       /* symbol scope is local */
+      {
+        dbuf_printf (oBuf, "L%s.%s$", moduleName, sym->localof->name);
+      }
+    else if (IS_STATIC (sym->etype))      /* symbol scope is file */
+      {
+        dbuf_printf (oBuf, "F%s$", moduleName);
+      }
+    else                          /* symbol scope is global */
+      {
+        dbuf_printf (oBuf, "G$");
+      }
 
-      dbuf_printf (oBuf, "%s$%ld_%ld$%d", sym->name, sym->level / LEVEL_UNIT, sym->level % LEVEL_UNIT, sym->block);
-    }
+    dbuf_printf (oBuf, "%s$%ld_%ld$%d", sym->name, sym->level / LEVEL_UNIT, sym->level % LEVEL_UNIT, sym->block);
 }
 
 /*-----------------------------------------------------------------*/
@@ -400,10 +397,12 @@ emitRegularMap (memmap *map, bool addPublics, bool arFlag)
               else
                 if (options.gasOutput)
                   dbuf_tprintf (&map->oBuf, "!global\n", sym->rname);
+                else if (IS_STATIC (sym->etype))
+                  dbuf_tprintf (&map->oBuf, "!slabeldef\n", sym->rname);
                 else
                   dbuf_tprintf (&map->oBuf, "!labeldef\n", sym->rname);
 
-              emit_ds_comm(&map->oBuf, sym->rname, size & 0xffff, 1/* TBD */);
+              emit_ds_comm(&map->oBuf, sym->rname, size & 0xffff);
             }
         }
 
@@ -1566,7 +1565,7 @@ printIvalCharPtr (symbol * sym, sym_link * type, value * val, struct dbuf_s *oBu
         {
           if (TARGET_PDK_LIKE && !TARGET_IS_PDK16)
             {
-              dbuf_tprintf (oBuf, "\t!lsbimmeds", val->name);
+              dbuf_tprintf (oBuf, "\tret !lsbimmeds", val->name);
               dbuf_printf (oBuf, IN_CODESPACE (SPEC_OCLS (val->etype)) ? "\tret #>(%s + 0x8000)\n" : "\tret #0\n", val->name);
             }
           else if (port->use_dw_for_init)
@@ -2008,7 +2007,10 @@ emitStaticSeg (memmap *map, struct dbuf_s *oBuf)
                     else
                       dbuf_tprintf(&code->oBuf, "\t!area\n", options.const_seg);
 
-                  dbuf_tprintf (oBuf, "!labeldef\n", sym->rname);
+                  if (IS_STATIC (sym->etype))
+                    dbuf_tprintf (oBuf, "!slabeldef\n", sym->rname);
+                  else
+                    dbuf_tprintf (oBuf, "!labeldef\n", sym->rname);
 
                   if (IS_CHAR (sym->type->next))
                     printChar (oBuf, SPEC_CVAL (sym->etype).v_char, size);
@@ -2028,7 +2030,7 @@ emitStaticSeg (memmap *map, struct dbuf_s *oBuf)
                   else
                     dbuf_printf (oBuf, "%s:\n", sym->rname);
 
-                  emit_ds_comm(oBuf, sym->rname, size & 0xffff, 1/* TBD */);
+                  emit_ds_comm(oBuf, sym->rname, size & 0xffff);
                 }
             }
         }
@@ -2086,7 +2088,7 @@ emitMaps (void)
   emitRegularMap (code, TRUE, FALSE);
 
   if (options.const_seg)
-    dbuf_tprintf (&code->oBuf, "\t!area\n", CONST_NAME);
+    dbuf_tprintf (&code->oBuf, "\t!area\n", options.const_seg);
   emitStaticSeg (statsg, &code->oBuf);
 
   if (port->genXINIT)
@@ -2096,7 +2098,7 @@ emitMaps (void)
     }
   if (initializer)
     {
-      dbuf_tprintf (&code->oBuf, "\t!area\n", INITIALIZER_NAME);
+      dbuf_tprintf (&code->oBuf, "\t!area\n", options.gasOutput ? INITIALIZER_NAME : initializer->sname);
       emitStaticSeg (initializer, &code->oBuf);
     }
   dbuf_tprintf (&code->oBuf, "\t!area\n", c_abs->sname);
@@ -2228,7 +2230,7 @@ emitOverlay (struct dbuf_s *aBuf)
       if (elementsInSet (ovrset))
         {
           /* output the area information */
-          dbuf_printf (aBuf, "\t!area\t%s\n", port->mem.overlay_name);  /* MOF */
+          dbuf_tprintf (aBuf, "\t!area\n", port->mem.overlay_name);  /* MOF */
         }
 
       for (sym = setFirstItem (ovrset); sym; sym = setNextItem (ovrset))
@@ -2293,7 +2295,7 @@ emitOverlay (struct dbuf_s *aBuf)
               else
                 dbuf_tprintf (aBuf, "!slabeldef\n", sym->rname);
 
-              emit_ds_comm(aBuf, sym->rname, getSize (sym->type) & 0xffff, 1/* TBD */);
+              emit_ds_comm(aBuf, sym->rname, getSize (sym->type) & 0xffff);
             }
         }
     }
@@ -2523,17 +2525,17 @@ glue (void)
   /* create the stack segment MOF */
   if (mainf && IFFUNC_HASBODY (mainf->type))
     {
-      const unsigned int size = 1;
-
       fprintf (asmFile, "%s", iComments2);
       fprintf (asmFile, "; Stack segment in internal ram \n");
       fprintf (asmFile, "%s", iComments2);
 
       if (!options.gasOutput)
         {
+          const unsigned int size = 1;
+
           tfprintf(asmFile, "\t!area\n", "SSEG");
-          tfprintf(asmFile, "\t!ds\n\n", size);
           tfprintf(asmFile, "\t__start__stack:\n");
+          tfprintf(asmFile, "\t!ds\n\n", size);
         }
     }
 
@@ -2714,7 +2716,7 @@ glue (void)
   fprintf (asmFile, "%s", iComments2);
   fprintf (asmFile, "; code\n");
   fprintf (asmFile, "%s", iComments2);
-  tfprintf (asmFile, "\t!areacode\n", CODE_NAME);
+  tfprintf (asmFile, "\t!areacode\n", options.code_seg);
   dbuf_write_and_destroy (&code->oBuf, asmFile);
 
   if (port->genAssemblerEnd)
@@ -2761,11 +2763,10 @@ isTargetKeyword (const char *s)
 
 static void emit_ds_comm( struct dbuf_s *const oBuf,
                           const char *const name,
-                          const unsigned int size,
-                          const unsigned int alignment)
+                          const unsigned int size)
 {
   if (options.gasOutput)
-   dbuf_tprintf(oBuf, "\t!comm\n", name, size, alignment);
+   dbuf_tprintf(oBuf, "\t!comm\n", name, size);
   else
     dbuf_tprintf(oBuf, "\t!ds\n", size);
 }

@@ -206,17 +206,17 @@ _hc08_genAssemblerPreamble (FILE * of)
   symbol *mainExists=newSymbol("main", 0);
   mainExists->block=0;
 
-  fprintf (of, "\t.area %s\n",HOME_NAME);
-  fprintf (of, "\t.area GSINIT0 (CODE)\n");
-  fprintf (of, "\t.area %s\n",port->mem.static_name);
-  fprintf (of, "\t.area %s\n",port->mem.post_static_name);
-  fprintf (of, "\t.area %s\n",CODE_NAME);
-  fprintf (of, "\t.area %s\n",port->mem.xinit_name);
-  fprintf (of, "\t.area %s\n",port->mem.const_name);
-  fprintf (of, "\t.area %s\n",port->mem.data_name);
-  fprintf (of, "\t.area %s\n",port->mem.overlay_name);
-  fprintf (of, "\t.area %s\n",port->mem.xdata_name);
-  fprintf (of, "\t.area %s\n",port->mem.xidata_name);
+  tfprintf (of, "\t!area\n",HOME_NAME);
+  tfprintf (of, "\t!area\n", "GSINIT0 (CODE)");
+  tfprintf (of, "\t!area\n",port->mem.static_name);
+  tfprintf (of, "\t!area\n",port->mem.post_static_name);
+  tfprintf (of, "\t!area\n",CODE_NAME);
+  tfprintf (of, "\t!area\n",port->mem.xinit_name);
+  tfprintf (of, "\t!area\n",port->mem.const_name);
+  tfprintf (of, "\t!area\n",port->mem.data_name);
+  tfprintf (of, "\t!area\n",port->mem.overlay_name);
+  tfprintf (of, "\t!area\n",port->mem.xdata_name);
+  tfprintf (of, "\t!area\n",port->mem.xidata_name);
 
   if ((mainExists=findSymWithLevel(SymbolTab, mainExists)))
     {
@@ -592,7 +592,7 @@ hc08_instructionSize(const char *inst, const char *op1, const char *op2)
   int size;
   long offset;
   char * endnum = NULL;
-  
+
   opcode = bsearch (inst, hc08opcodeDataTable,
                     sizeof(hc08opcodeDataTable)/sizeof(hc08opcodedata),
                     sizeof(hc08opcodedata), hc08_opcodeCompare);
@@ -603,15 +603,15 @@ hc08_instructionSize(const char *inst, const char *op1, const char *op2)
     {
       case HC08OP_INH: /* Inherent addressing mode */
         return 1;
-        
+
       case HC08OP_BSC: /* Bit set/clear direct addressing mode */
       case HC08OP_BR:  /* Branch (1 byte signed offset) */
       case HC08OP_IM1: /* 1 byte immediate addressing mode */
         return 2;
-        
+
       case HC08OP_BTB:  /* Bit test direct addressing mode and branch */
         return 3;
-        
+
       case HC08OP_RMW: /* read/modify/write instructions */
         if (!op2[0]) /* if not ,x or ,sp must be direct addressing mode */
           return 2;
@@ -620,7 +620,7 @@ hc08_instructionSize(const char *inst, const char *op1, const char *op2)
         if (op2[0] == 'x')  /* if ,x with offset */
           return 2;
         return 3;  /* Otherwise, must be ,sp with offset */
-        
+
       case HC08OP_STD: /* standard instruction */
         if (!op2[0])
           {

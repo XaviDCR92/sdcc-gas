@@ -384,9 +384,9 @@ pic14emitOverlay (struct dbuf_s * aBuf)
 
                         /* I don't think this applies to us. We are using gpasm.  CRF */
 
-                        dbuf_printf (aBuf, ";\t.area _DUMMY\n");
+                        dbuf_tprintf (aBuf, ";\t!area\n", "_DUMMY");
                         /* output the area informtion */
-                        dbuf_printf (aBuf, ";\t.area\t%s\n", port->mem.overlay_name);   /* MOF */
+                        dbuf_tprintf (aBuf, ";\t!area\t\n", port->mem.overlay_name);   /* MOF */
                 }
 
                 for (sym = setFirstItem (ovrset); sym;

@@ -50,8 +50,8 @@ extern FILE *junkFile;
 #define  ISTACK_NAME       port->mem.istack_name
 #define  CODE_NAME         (options.gasOutput ? ".text" : port->mem.code_name)
 #define  DATA_NAME         (options.gasOutput ? ".bss" : port->mem.data_name)
-#define  INITIALIZED_NAME  port->mem.data_name
-#define  INITIALIZER_NAME  (options.gasOutput ? ".data" : port->mem.data_name)
+#define  INITIALIZED_NAME  (options.gasOutput ? port->mem.data_name : port->mem.initialized_name)
+#define  INITIALIZER_NAME  (options.gasOutput ? ".data" : port->mem.initializer_name)
 #define  IDATA_NAME        port->mem.idata_name
 #define  PDATA_NAME        port->mem.pdata_name
 #define  XDATA_NAME        port->mem.xdata_name

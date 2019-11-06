@@ -145,7 +145,7 @@ initMem ()
      DEBUG-NAME     -   'C'
      POINTER-TYPE   -   CPOINTER
    */
-  code = allocMap (0, 1, 0, 0, 0, 1, options.code_loc, DATA_NAME, 'C', CPOINTER);
+  code = allocMap (0, 1, 0, 0, 0, 1, options.code_loc, CODE_NAME, 'C', CPOINTER);
 
   /* home  segment ;
      SFRSPACE       -   NO

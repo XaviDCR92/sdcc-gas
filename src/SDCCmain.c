@@ -175,7 +175,6 @@ static const OPTION optionsTable[] = {
   {'M', NULL, NULL, "Preprocessor option"},
   {'W', NULL, NULL, "Pass through options to the pre-processor (p), assembler (a) or linker (l)"},
   {'S', NULL, &noAssemble, "Compile only; do not assemble or link"},
-  {0  , "--gas", &options.gasOutput, "Compile in GAS (GNU Assembler) format."},
   {0  , OPTION_FUNCTION_SECTIONS, &options.function_sections, "Place each function into a separate section. Useful for link-time dead code elimination."},
   {0  , OPTION_DATA_SECTIONS, &options.data_sections, "Place each static variable into a separate section. Useful for link-time dead code elimination."},
   {'c', "--compile-only", &options.cc_only, "Compile and assemble, but do not link"},
