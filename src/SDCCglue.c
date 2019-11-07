@@ -1565,7 +1565,7 @@ printIvalCharPtr (symbol * sym, sym_link * type, value * val, struct dbuf_s *oBu
         {
           if (TARGET_PDK_LIKE && !TARGET_IS_PDK16)
             {
-              dbuf_tprintf (oBuf, "\tret !lsbimmeds", val->name);
+              dbuf_tprintf (oBuf, "\tret !lsbimmeds\n", val->name);
               dbuf_printf (oBuf, IN_CODESPACE (SPEC_OCLS (val->etype)) ? "\tret #>(%s + 0x8000)\n" : "\tret #0\n", val->name);
             }
           else if (port->use_dw_for_init)
