@@ -2007,7 +2007,7 @@ emitStaticSeg (memmap *map, struct dbuf_s *oBuf)
                     else
                       dbuf_tprintf(&code->oBuf, "\t!area\n", options.const_seg);
 
-                  if (IS_STATIC (sym->etype))
+                  if (IS_STATIC (sym->etype) && !options.gasOutput)
                     dbuf_tprintf (oBuf, "!slabeldef\n", sym->rname);
                   else
                     dbuf_tprintf (oBuf, "!labeldef\n", sym->rname);
